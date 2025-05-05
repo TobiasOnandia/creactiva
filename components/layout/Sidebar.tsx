@@ -26,7 +26,7 @@ export function Sidebar() {
                   ${
                     isActive
                       ? "bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 border border-cyan-500/30 shadow-lg shadow-cyan-500/10"
-                      : "hover:bg-neutral-800/60 border border-transparent hover:border-white/5"
+                      : "hover:bg-neutral-800/60 boagrder border-transparent hover:border-white/5"
                   }
                   focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50`}
                 aria-label={item.label}

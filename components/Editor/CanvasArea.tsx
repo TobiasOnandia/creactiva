@@ -2,7 +2,7 @@ import { ImageIcon, PlusIcon, StarIcon, TextIcon } from "lucide-react";
 
 export default function CanvasArea() {
   return (
-    <main className="relative ml-16 mt-16 h-[calc(100vh-4rem)] bg-gradient-to-br from-neutral-950 to-neutral-900/80 overflow-hidden">
+    <main className="relative  h-screen bg-gradient-to-br from-neutral-950 to-neutral-900/80 overflow-hidden">
       {/* Grid de fondo interactivo */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(114,186,232,0.03)_0%,_transparent_70%)]">
         <div

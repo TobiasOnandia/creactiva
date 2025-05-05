@@ -6,8 +6,10 @@ import { Sidebar } from "@/components/layout/Sidebar";
 export default function Home() {
   return (
     <>
-      <Header />
-      <CanvasArea />
+      <div>
+        <Header />
+        <CanvasArea />
+      </div>
       <Sidebar />
       {/* <PropertiesPanel /> */}
     </>
