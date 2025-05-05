@@ -1,6 +1,5 @@
 "use client";
-import { bottomNavItems, mainNavItems } from "@/config";
-import { PlusIcon } from "lucide-react";
+import { mainNavItems } from "@/config";
 import { useState } from "react";
 import { SecondaryPanel } from "../Editor/SecondaryPanel";
 

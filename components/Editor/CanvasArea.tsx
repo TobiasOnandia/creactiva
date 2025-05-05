@@ -1,6 +1,30 @@
+import { useDroppable } from "@dnd-kit/core";
 import { ImageIcon, PlusIcon, StarIcon, TextIcon } from "lucide-react";
 
-export default function CanvasArea() {
+interface CanvasAreaProps {
+  droppedElements: {
+    id: string;
+    type: string;
+    label: string;
+    colorClass: string;
+  }[];
+}
+
+export default function CanvasArea({ droppedElements }: CanvasAreaProps) {
+  const { isOver, setNodeRef } = useDroppable({
+    id: "canvas",
+  });
+
+  const dropTargetStyle = {
+    borderColor: isOver
+      ? "rgba(96, 165, 250, 0.5)"
+      : "rgba(255, 255, 255, 0.1)", // Cian o Blanco/10
+    // Quizás cambia un poco el fondo también
+    backgroundColor: isOver
+      ? "rgba(96, 165, 250, 0.05)"
+      : "rgba(161, 161, 170, 0.05)", // Un tinte ligeramente azul/gris
+  };
+
   return (
     <main className="relative  h-screen bg-gradient-to-br from-neutral-950 to-neutral-900/80 overflow-hidden">
       {/* Grid de fondo interactivo */}
@@ -18,8 +42,12 @@ export default function CanvasArea() {
       {/* Canvas Principal */}
       <section className="relative h-full w-full overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full">
         {/* Contenedor de la página editable */}
-        <article className="min-h-full min-w-full flex items-center justify-center p-8">
-          <div className="relative bg-neutral-900/80 backdrop-blur-sm border-2 border-dashed border-white/10 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl">
+        <article className="min-h-full min-w-full  flex items-center justify-center p-8">
+          <div
+            ref={setNodeRef}
+            style={dropTargetStyle}
+            className="relative bg-neutral-900/80 backdrop-blur-sm h-124 border-2 border-dashed border-white/10 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl"
+          >
             {/* Herramientas Flotantes */}
             <header className="absolute -top-4 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-neutral-900 border border-white/10 rounded-lg px-2 py-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
               <button className="p-1.5 hover:bg-neutral-800 rounded-md text-neutral-400 hover:text-cyan-400">
@@ -33,41 +61,40 @@ export default function CanvasArea() {
               </button>
             </header>
 
-            {/* Secciones editables */}
-            <section className="p-8 space-y-6">
-              {/* Hero Section */}
-              <header className="relative bg-neutral-800/50 rounded-xl p-6 border border-white/10 hover:border-cyan-500/30 transition-colors cursor-move">
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <h1 className="text-4xl font-bold bg-[linear-gradient(97deg,_#7DFFB2_-12.5%,_#72BAE8_50%,_#C792EA_112.5%)] bg-clip-text text-transparent">
-                    Titulo Principal
-                  </h1>
-                  <p className="text-neutral-400 max-w-xl">
-                    Descripción o texto introductorio para tu página. Edita este
-                    contenido directamente haciendo clic.
+            <div className="space-y-4">
+              {" "}
+              {/* Usa un div para organizar los elementos soltados */}
+              {droppedElements.map((element) => (
+                // Deberías reemplazar este div placeholder por componentes reales
+                // basados en element.type (ej: <TextBlock />, <ImageBlock />)
+                <div
+                  key={element.id} // Usa el ID único para la instancia
+                  className="bg-neutral-800 border border-neutral-700 rounded-md p-4 text-neutral-300"
+                >
+                  <p>
+                    <strong>Tipo:</strong> {element.type}
                   </p>
-                </div>
-              </header>
-
-              {/* Grid de características */}
-              <article className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[1, 2, 3].map((item) => (
-                  <div
-                    key={item}
-                    className="relative space-y-2 bg-neutral-800/50 rounded-xl p-4 border border-white/10 hover:border-cyan-500/30 transition-colors cursor-move"
-                  >
-                    <span className="w-10 h-10 bg-cyan-500/10 rounded-lg flex items-center justify-center">
-                      <StarIcon className="w-5 h-5 text-cyan-400" />
-                    </span>
-                    <h3 className="text-lg font-semibold text-neutral-200">
-                      Característica {item}
-                    </h3>
-                    <p className="text-sm  text-neutral-400">
-                      Descripción de la característica...
+                  <p>
+                    <strong>Etiqueta:</strong> {element.label}
+                  </p>
+                  {/* Ejemplo: Renderizar contenido diferente según el tipo */}
+                  {element.type === "text" && (
+                    <p className="mt-2 text-white">
+                      Contenido de Texto Editable...
                     </p>
-                  </div>
-                ))}
-              </article>
-            </section>
+                  )}
+                  {element.type === "image" && (
+                    <div className="mt-2 w-32 h-20 bg-neutral-700 flex items-center justify-center text-neutral-400">
+                      Placeholder de Imagen
+                    </div>
+                  )}
+                  {element.type === "star" && (
+                    <StarIcon className="mt-2 w-6 h-6 text-yellow-500" />
+                  )}
+                  {/* Añade más condiciones para otros tipos */}
+                </div>
+              ))}
+            </div>
           </div>
         </article>
       </section>
