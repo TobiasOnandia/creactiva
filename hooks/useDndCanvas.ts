@@ -7,6 +7,7 @@ import {
   calculateInitialPosition,
   calculateNewPosition,
 } from "@/calculations/positionCalculations";
+import { DEFAULT_ITEM_HEIGHT, DEFAULT_ITEM_WIDTH } from "@/config";
 
 interface UseDndCanvasReturn {
   canvasElements: CanvasElement[];
@@ -16,17 +17,20 @@ interface UseDndCanvasReturn {
   handleDragEnd: (event: DragEndEvent) => void;
   handleDragCancel: () => void;
   handleCanvasRectChange: (rect: DOMRect) => void;
+  handleCanvasItemResize: (
+    itemId: string,
+    newWidth: number,
+    newHeight: number
+  ) => void;
 }
 
 export const useDndCanvas = (): UseDndCanvasReturn => {
   // === Gestión del Estado ===
   const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
   const [elementCounter, setElementCounter] = useState(0);
-
   const [activeId, setActiveId] = useState<string | null>(null);
   const [activeItemData, setActiveItemData] =
     useState<ActiveDraggableData | null>(null);
-
   const [canvasRect, setCanvasRect] = useState<DOMRect | null>(null);
 
   // === Manejador de Límites del Canvas ===
@@ -50,6 +54,32 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
     },
     [setCanvasElements, setElementCounter]
   ); // Dependencias: Setters son estables
+
+  const handleCanvasItemResize = useCallback(
+    (itemId: string, newWidth: number, newHeight: number) => {
+      console.log(`Resizing item ${itemId} to ${newWidth}x${newHeight}`);
+      setCanvasElements((prevElements) => {
+        const itemIndex = prevElements.findIndex((el) => el.id === itemId);
+        if (itemIndex === -1) {
+          console.warn(
+            `WARNING: Elemento con ID ${itemId} no encontrado para actualizar tamaño.`
+          );
+          return prevElements;
+        }
+
+        // Actualiza el width y height del elemento de forma inmutable
+        const newElements = [...prevElements];
+        newElements[itemIndex] = {
+          ...newElements[itemIndex],
+          width: newWidth,
+          height: newHeight,
+        };
+        console.log(`SUCCESS: Elemento en canvas ${itemId} redimensionado.`);
+        return newElements; // Devuelve el nuevo estado
+      });
+    },
+    [setCanvasElements]
+  );
 
   // === Función Auxiliar Interna: Actualizar Posición de Elemento Existente en Estado ===
   // Solo se encarga de la *actualización* del estado, recibiendo el ID y la nueva posición ya calculada.
@@ -93,10 +123,6 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
   // Este manejador coordina: determina qué pasó, llama al cálculo, llama a la actualización de estado.
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
-      // console.log("--- Drag Ended ---");
-      // console.log("Event:", event);
-      // console.log("activeId at end:", activeId);
-
       // Verificar si soltó sobre el canvas Y tenemos los bounds necesarios para cálculos
       if (
         event.over &&
@@ -116,7 +142,6 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
             canvasRect,
             event.active.rect.current.initial as DOMRect
           );
-
           // Crear el objeto completo del nuevo elemento
           const newElementId = `canvas-item-${elementCounter}`; // Usar contador AQUI
           const newElement: CanvasElement = {
@@ -126,7 +151,8 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
             colorClass: activeItemData.colorClass,
             x: initialPosition.x, // Usar posición calculada
             y: initialPosition.y, // Usar posición calculada
-            // ... otras props
+            width: DEFAULT_ITEM_WIDTH,
+            height: DEFAULT_ITEM_HEIGHT,
           };
 
           // *** Llamar a la función auxiliar INTERNA para ACTUALIZAR el estado ***
@@ -196,5 +222,6 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
     handleDragEnd, // Devolvemos el manejador principal
     handleDragCancel,
     handleCanvasRectChange, // Para que CanvasArea reporte sus límites
+    handleCanvasItemResize,
   };
 };

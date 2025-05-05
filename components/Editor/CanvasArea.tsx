@@ -10,11 +10,17 @@ interface CanvasAreaProps {
   droppedElements: CanvasElement[]; // Ahora incluye x e y
   // Añade una prop para comunicar sus dimensiones al padre (Home/hook)
   onCanvasRectChange: (rect: DOMRect) => void;
+  onCanvasItemResize: (
+    itemId: string,
+    newWidth: number,
+    newHeight: number
+  ) => void;
 }
 
 export default function CanvasArea({
   droppedElements,
   onCanvasRectChange,
+  onCanvasItemResize,
 }: CanvasAreaProps) {
   // Referencia para el div que es el área droppable real
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -84,6 +90,9 @@ export default function CanvasArea({
                 id={element.id}
                 type={element.type}
                 label={element.label}
+                width={element.width} // <-- Pasa el ancho
+                height={element.height}
+                onResizeStop={onCanvasItemResize}
                 colorClass={element.colorClass}
                 x={element.x} // Pasa la posición X del estado
                 y={element.y} // Pasa la posición Y del estado

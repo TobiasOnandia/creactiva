@@ -1,8 +1,8 @@
 // components/Editor/CanvasItem.tsx
 import { useDraggable } from "@dnd-kit/core";
 // Importa el modificador para restringir al elemento padre
-import { restrictToParentElement } from "@dnd-kit/modifiers";
-import { TextIcon, ImageIcon, StarIcon } from "lucide-react"; // Importa iconos para placeholders
+import { StarIcon } from "lucide-react"; // Importa iconos para placeholders
+import { Resizable, ResizeCallback } from "re-resizable";
 
 interface CanvasItemProps {
   id: string; // ID único de este elemento en el canvas
@@ -12,6 +12,10 @@ interface CanvasItemProps {
   x: number; // Posición X inicial (controlada por el estado del padre)
   y: number; // Posición Y inicial (controlada por el estado del padre)
   canvasId: string;
+  width: number;
+  height: number;
+  onResizeStop: (itemId: string, newWidth: number, newHeight: number) => void;
+
   // textContent?: string;
   // imageUrl?: string;
 }
@@ -24,6 +28,9 @@ export const CanvasItem = ({
   x,
   y,
   canvasId,
+  width,
+  height,
+  onResizeStop,
 }: CanvasItemProps) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -55,6 +62,18 @@ export const CanvasItem = ({
     cursor: isDragging ? "grabbing" : "grab", // Cursor
     // Puedes usar colorClass para el fondo o borde aquí si quieres:
     // backgroundColor: colorClass.replace('/10', '/20'), // Ejemplo: cambia bg-cyan-500/10 a bg-cyan-500/20
+  };
+
+  const handleResizeStop = (
+    event: MouseEvent | TouchEvent,
+    direction: any, // Tipo de re-resizable
+    refToElement: HTMLElement, // Referencia al elemento redimensionado
+    delta: { width: number; height: number } // Delta del cambio de tamaño
+  ) => {
+    const newWidth = refToElement.offsetWidth;
+    const newHeight = refToElement.offsetHeight;
+
+    onResizeStop(id, newWidth, newHeight);
   };
 
   // Renderiza el contenido del elemento basándose en su tipo
@@ -101,15 +120,37 @@ export const CanvasItem = ({
   };
 
   return (
-    <div
-      ref={setNodeRef} // Referencia para el hook Draggable
-      {...attributes} // Atributos para accesibilidad/interacción
-      {...listeners} // Event listeners para el arrastre
-      style={style} // Aplica posición y transformación
-      // Clases adicionales si las necesitas
-      className="select-none" // Evita seleccionar texto mientras arrastras
+    <Resizable
+      size={{ width, height }} // Pasa el tamaño del estado del padre
+      onResizeStop={handleResizeStop} // Usa el manejador
+      // Configura qué manejadores quieres habilitar (bottom, right, bottomRight son comunes)
+      enable={{
+        top: false,
+        right: true,
+        bottom: true,
+        left: false,
+        topRight: false,
+        bottomRight: true,
+        bottomLeft: false,
+        topLeft: false,
+      }}
+      minWidth={20}
+      minHeight={20}
+      lockAspectRatio={true}
+      handleClasses={{
+        bottomRight: "resize-handle bottom-right",
+      }}
     >
-      {renderContent()} {/* Renderiza el contenido basado en el tipo */}
-    </div>
+      <div
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners} // Event listeners para el arrastre
+        style={style} // Aplica posición y transformación
+        // Clases adicionales si las necesitas
+        className="select-none" // Evita seleccionar texto mientras arrastras
+      >
+        {renderContent()} {/* Renderiza el contenido basado en el tipo */}
+      </div>
+    </Resizable>
   );
 };

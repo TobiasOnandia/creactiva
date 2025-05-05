@@ -11,4 +11,6 @@ export interface CanvasElement {
   colorClass: string;
   x: number;
   y: number;
+  width: number;
+  height: number;
 }

@@ -16,3 +16,6 @@ export const mainNavItems = [
 export const bottomNavItems = [
   { id: "help", label: "Ayuda", icon: HelpCircle },
 ];
+
+export const DEFAULT_ITEM_WIDTH = 150;
+export const DEFAULT_ITEM_HEIGHT = 100;

@@ -24,6 +24,7 @@ export default function Home() {
     handleDragEnd,
     handleDragCancel,
     handleCanvasRectChange, // Esta función la pasamos a CanvasArea
+    handleCanvasItemResize,
   } = useDndCanvas();
 
   const sensors = useSensors(useSensor(PointerSensor));
@@ -40,6 +41,7 @@ export default function Home() {
       <CanvasArea
         droppedElements={canvasElements}
         onCanvasRectChange={handleCanvasRectChange}
+        onCanvasItemResize={handleCanvasItemResize}
       />
 
       <Sidebar />
