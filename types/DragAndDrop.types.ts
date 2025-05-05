@@ -9,4 +9,6 @@ export interface CanvasElement {
   type: string;
   label: string;
   colorClass: string;
+  x: number;
+  y: number;
 }

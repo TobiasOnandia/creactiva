@@ -1,100 +1,96 @@
+// components/Editor/CanvasArea.tsx
+"use client";
+
 import { useDroppable } from "@dnd-kit/core";
-import { ImageIcon, PlusIcon, StarIcon, TextIcon } from "lucide-react";
+import { useRef, useEffect, useCallback } from "react"; // Importa useRef y useEffect
+import { CanvasElement } from "@/types/DragAndDrop.types"; // Importa el tipo CanvasElement
+import { CanvasItem } from "./CanvasItem"; // Importa el nuevo componente CanvasItem
 
 interface CanvasAreaProps {
-  droppedElements: {
-    id: string;
-    type: string;
-    label: string;
-    colorClass: string;
-  }[];
+  droppedElements: CanvasElement[]; // Ahora incluye x e y
+  // Añade una prop para comunicar sus dimensiones al padre (Home/hook)
+  onCanvasRectChange: (rect: DOMRect) => void;
 }
 
-export default function CanvasArea({ droppedElements }: CanvasAreaProps) {
+export default function CanvasArea({
+  droppedElements,
+  onCanvasRectChange,
+}: CanvasAreaProps) {
+  // Referencia para el div que es el área droppable real
+  const canvasRef = useRef<HTMLDivElement>(null);
+
+  // Configura el droppable, usando la ref
   const { isOver, setNodeRef } = useDroppable({
-    id: "canvas",
+    id: "canvas", // El ID del droppable
   });
 
+  // Combina la ref del hook con la ref local
+  const combinedRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      // La ref del hook Dnd-kit
+      setNodeRef(node);
+      // Nuestra ref local para medir
+      canvasRef.current = node;
+    },
+    [setNodeRef]
+  ); // setNodeRef es una dependencia estable del hook dnd-kit
+
+  // Usa useEffect para notificar al padre cuando la ref tenga un nodo (el div)
+  // Esto le da al hook del padre las dimensiones del canvas
+  useEffect(() => {
+    if (canvasRef.current) {
+      onCanvasRectChange(canvasRef.current.getBoundingClientRect());
+
+      // Opcional: Añadir un ResizeObserver si el tamaño del canvas puede cambiar
+      // const observer = new ResizeObserver(entries => {
+      //     for (let entry of entries) {
+      //         onCanvasRectChange(entry.target.getBoundingClientRect() as DOMRect);
+      //     }
+      // });
+      // observer.observe(canvasRef.current);
+      // return () => observer.disconnect(); // Limpiar al desmontar
+    }
+  }, [onCanvasRectChange]); // Dependencia: la función del padre
+
+  // Feedback visual cuando se arrastra sobre el canvas (lo mismo que antes)
   const dropTargetStyle = {
     borderColor: isOver
       ? "rgba(96, 165, 250, 0.5)"
-      : "rgba(255, 255, 255, 0.1)", // Cian o Blanco/10
-    // Quizás cambia un poco el fondo también
+      : "rgba(255, 255, 255, 0.1)",
     backgroundColor: isOver
       ? "rgba(96, 165, 250, 0.05)"
-      : "rgba(161, 161, 170, 0.05)", // Un tinte ligeramente azul/gris
+      : "rgba(161, 161, 170, 0.05)",
   };
 
   return (
-    <main className="relative  h-screen bg-gradient-to-br from-neutral-950 to-neutral-900/80 overflow-hidden">
-      {/* Grid de fondo interactivo */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(114,186,232,0.03)_0%,_transparent_70%)]">
-        <div
-          className="absolute inset-0 opacity-20 [mask-image:linear-gradient(0deg,rgba(0,0,0,0.1),rgba(0,0,0,0.1))]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
-      </div>
+    <main className="relative h-screen bg-gradient-to-br from-neutral-950 to-neutral-900/80 overflow-hidden">
+      {/* Grid de fondo */}
+      {/* ... */}
 
-      {/* Canvas Principal */}
+      {/* Scrollable area */}
       <section className="relative h-full w-full overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full">
-        {/* Contenedor de la página editable */}
-        <article className="min-h-full min-w-full  flex items-center justify-center p-8">
+        <article className="min-h-full min-w-full flex items-center justify-center p-8">
           <div
-            ref={setNodeRef}
+            ref={combinedRef} // Usa la ref combinada
             style={dropTargetStyle}
-            className="relative bg-neutral-900/80 backdrop-blur-sm h-124 border-2 border-dashed border-white/10 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl"
+            className="relative bg-neutral-900/80 backdrop-blur-sm min-h-[300px] h-auto border-2 border-dashed rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl p-6"
           >
             {/* Herramientas Flotantes */}
-            <header className="absolute -top-4 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-neutral-900 border border-white/10 rounded-lg px-2 py-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-              <button className="p-1.5 hover:bg-neutral-800 rounded-md text-neutral-400 hover:text-cyan-400">
-                <PlusIcon className="w-5 h-5" />
-              </button>
-              <button className="p-1.5 hover:bg-neutral-800 rounded-md text-neutral-400 hover:text-cyan-400">
-                <TextIcon className="w-5 h-5" />
-              </button>
-              <button className="p-1.5 hover:bg-neutral-800 rounded-md text-neutral-400 hover:text-cyan-400">
-                <ImageIcon className="w-5 h-5" />
-              </button>
-            </header>
+            {/* ... */}
 
-            <div className="space-y-4">
-              {" "}
-              {/* Usa un div para organizar los elementos soltados */}
-              {droppedElements.map((element) => (
-                // Deberías reemplazar este div placeholder por componentes reales
-                // basados en element.type (ej: <TextBlock />, <ImageBlock />)
-                <div
-                  key={element.id} // Usa el ID único para la instancia
-                  className="bg-neutral-800 border border-neutral-700 rounded-md p-4 text-neutral-300"
-                >
-                  <p>
-                    <strong>Tipo:</strong> {element.type}
-                  </p>
-                  <p>
-                    <strong>Etiqueta:</strong> {element.label}
-                  </p>
-                  {/* Ejemplo: Renderizar contenido diferente según el tipo */}
-                  {element.type === "text" && (
-                    <p className="mt-2 text-white">
-                      Contenido de Texto Editable...
-                    </p>
-                  )}
-                  {element.type === "image" && (
-                    <div className="mt-2 w-32 h-20 bg-neutral-700 flex items-center justify-center text-neutral-400">
-                      Placeholder de Imagen
-                    </div>
-                  )}
-                  {element.type === "star" && (
-                    <StarIcon className="mt-2 w-6 h-6 text-yellow-500" />
-                  )}
-                  {/* Añade más condiciones para otros tipos */}
-                </div>
-              ))}
-            </div>
+            {droppedElements.map((element) => (
+              <CanvasItem
+                key={element.id} // Usa el ID único del elemento en canvas
+                id={element.id}
+                type={element.type}
+                label={element.label}
+                colorClass={element.colorClass}
+                x={element.x} // Pasa la posición X del estado
+                y={element.y} // Pasa la posición Y del estado
+                canvasId="canvas" // Pasa el ID del canvas para el modificador de arrastre
+                // Pasa aquí otras props específicas del contenido si las tienes
+              />
+            ))}
           </div>
         </article>
       </section>

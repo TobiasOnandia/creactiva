@@ -1,0 +1,115 @@
+// components/Editor/CanvasItem.tsx
+import { useDraggable } from "@dnd-kit/core";
+// Importa el modificador para restringir al elemento padre
+import { restrictToParentElement } from "@dnd-kit/modifiers";
+import { TextIcon, ImageIcon, StarIcon } from "lucide-react"; // Importa iconos para placeholders
+
+interface CanvasItemProps {
+  id: string; // ID único de este elemento en el canvas
+  type: string;
+  label: string;
+  colorClass: string; // Puedes usarla para algo visual en el item del canvas
+  x: number; // Posición X inicial (controlada por el estado del padre)
+  y: number; // Posición Y inicial (controlada por el estado del padre)
+  canvasId: string;
+  // textContent?: string;
+  // imageUrl?: string;
+}
+
+export const CanvasItem = ({
+  id,
+  type,
+  label,
+  colorClass,
+  x,
+  y,
+  canvasId,
+}: CanvasItemProps) => {
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: id, // Usa el ID único del elemento en el canvas
+      data: {
+        type: type,
+        label: label,
+        // Pasa otros datos necesarios si el item del canvas necesita ser identificado al arrastrar
+        isCanvasItem: true, // Un flag útil para saber en handleDragEnd si es un item del canvas
+      },
+    });
+
+  // El estilo combina la posición inicial (x, y) con la transformación de dnd-kit durante el arrastre
+  const style = {
+    position: "absolute" as "absolute", // Los elementos en canvas suelen ser absolutos para free-form
+    left: x,
+    top: y,
+    transform: transform
+      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      : undefined,
+    // Asegura que el elemento arrastrado esté por encima de otros elementos no arrastrados
+    zIndex: isDragging ? 1000 : 1, // Z-index alto mientras se arrastra, normal cuando no
+    // Añade otros estilos básicos si quieres que se parezcan a los del sidebar, pero en canvas
+    padding: "12px", // p-3
+    borderRadius: "8px", // rounded-lg
+    border: `1px solid rgba(255, 255, 255, 0.1)`, // border border-white/10
+    backgroundColor: "rgba(38, 38, 38, 0.8)", // bg-neutral-800/80
+    color: "rgba(212, 212, 212, 0.8)", // text-neutral-300/80
+    cursor: isDragging ? "grabbing" : "grab", // Cursor
+    // Puedes usar colorClass para el fondo o borde aquí si quieres:
+    // backgroundColor: colorClass.replace('/10', '/20'), // Ejemplo: cambia bg-cyan-500/10 a bg-cyan-500/20
+  };
+
+  // Renderiza el contenido del elemento basándose en su tipo
+  const renderContent = () => {
+    // Esto es similar a lo que hacías en RenderDragOverlayContent, pero aquí es el contenido real del item en canvas
+    switch (type) {
+      case "text":
+      case "header":
+      case "paragraph":
+        return (
+          <p className="text-neutral-200">Contenido de Texto (Editable?)</p>
+        ); // Podría ser un <textarea> o div contenteditable
+      case "image":
+        return (
+          <div className="w-24 h-16 bg-neutral-700 flex items-center justify-center text-neutral-400">
+            Imagen
+          </div>
+        ); // <img src={imageUrl} />
+      case "button":
+        return (
+          <button
+            className={`px-3 py-1 rounded text-white ${colorClass.replace(
+              "/10",
+              ""
+            )}`}
+          >
+            Botón
+          </button>
+        ); // Usa colorClass para el color de fondo
+      case "divider":
+        return (
+          <div className="w-full h-1 bg-neutral-700 rounded-full my-2"></div>
+        ); // Un separador
+      case "star":
+        return <StarIcon className="w-6 h-6 text-yellow-500" />;
+      // Añade más casos para otros tipos (video, select, checkbox, etc.)
+      default:
+        return (
+          <div className="text-sm">
+            Item: {label} ({type})
+          </div>
+        ); // Fallback
+    }
+  };
+
+  return (
+    <div
+      ref={setNodeRef} // Referencia para el hook Draggable
+      {...attributes} // Atributos para accesibilidad/interacción
+      {...listeners} // Event listeners para el arrastre
+      style={style} // Aplica posición y transformación
+      // Clases adicionales si las necesitas
+      className="select-none" // Evita seleccionar texto mientras arrastras
+    >
+      {renderContent()} {/* Renderiza el contenido basado en el tipo */}
+    </div>
+  );
+};

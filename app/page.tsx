@@ -1,3 +1,4 @@
+// app/page.tsx
 "use client";
 
 import {
@@ -11,8 +12,9 @@ import {
 import CanvasArea from "@/components/Editor/CanvasArea";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RenderDragOverlayContent } from "@/helpers/RenderDragOverlayContent";
-
 import { useDndCanvas } from "@/hooks/useDndCanvas";
+// Importa el modificador personalizado
+import { restrictCanvasItemsModifier } from "@/modifiers/restrictCanvasItemsModifier";
 
 export default function Home() {
   const {
@@ -21,20 +23,27 @@ export default function Home() {
     handleDragStart,
     handleDragEnd,
     handleDragCancel,
+    handleCanvasRectChange, // Esta función la pasamos a CanvasArea
   } = useDndCanvas();
 
   const sensors = useSensors(useSensor(PointerSensor));
 
   return (
-    // Pasa los manejadores obtenidos del hook a DndContext
+    // Pasa el modificador personalizado en el array 'modifiers'
     <DndContext
       sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
+      modifiers={[restrictCanvasItemsModifier]} // <-- ¡Aplícalo aquí!
     >
-      <CanvasArea droppedElements={canvasElements} />
+      <CanvasArea
+        droppedElements={canvasElements}
+        onCanvasRectChange={handleCanvasRectChange}
+      />
+
       <Sidebar />
+
       <DragOverlay>
         {activeItemData ? RenderDragOverlayContent(activeItemData) : null}
       </DragOverlay>
