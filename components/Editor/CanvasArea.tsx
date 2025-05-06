@@ -6,6 +6,7 @@ import { useRef, useEffect, useCallback } from "react"; // Importa useRef y useE
 import { CanvasElement } from "@/types/DragAndDrop.types"; // Importa el tipo CanvasElement
 import { CanvasItem } from "./CanvasItem"; // Importa el nuevo componente CanvasItem
 import { useCanvasStore } from "@/store/canvasStore";
+import { BackgroundCanvas } from "../background/BackgroundCanvas";
 
 interface CanvasAreaProps {
   // Añade una prop para comunicar sus dimensiones al padre (Home/hook)
@@ -70,8 +71,7 @@ export default function CanvasArea({
   return (
     <main className="relative h-screen bg-gradient-to-br from-neutral-950 to-neutral-900/80 overflow-hidden">
       {/* Grid de fondo */}
-      {/* ... */}
-
+      <BackgroundCanvas />
       {/* Scrollable area */}
       <section className="relative h-full w-full overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full">
         <article className="min-h-full min-w-full flex items-center justify-center p-8">
@@ -95,8 +95,6 @@ export default function CanvasArea({
                 colorClass={element.colorClass}
                 x={element.x} // Pasa la posición X del estado
                 y={element.y} // Pasa la posición Y del estado
-                canvasId="canvas" // Pasa el ID del canvas para el modificador de arrastre
-                // Pasa aquí otras props específicas del contenido si las tienes
               />
             ))}
           </div>
