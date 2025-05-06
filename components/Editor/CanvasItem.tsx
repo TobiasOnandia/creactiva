@@ -60,22 +60,20 @@ export const CanvasItem = ({
     backgroundColor: "rgba(38, 38, 38, 0.8)", // bg-neutral-800/80
     color: "rgba(212, 212, 212, 0.8)", // text-neutral-300/80
     cursor: isDragging ? "grabbing" : "grab", // Cursor
-    // Puedes usar colorClass para el fondo o borde aquí si quieres:
-    // backgroundColor: colorClass.replace('/10', '/20'), // Ejemplo: cambia bg-cyan-500/10 a bg-cyan-500/20
   };
 
   const handleResize = (
     event: MouseEvent | TouchEvent,
-    direction: any, // Tipo de re-resizable
+    direction: any, // Tipo interno de re-resizable
     refToElement: HTMLElement, // Referencia al elemento DOM con el tamaño actual
     delta: { width: number; height: number } // Delta del cambio de tamaño
   ) => {
-    // Obtenemos el tamaño actual del elemento DOM
-    const currentWidth = refToElement.offsetWidth;
-    const currentHeight = refToElement.offsetHeight;
+     // Obtenemos el tamaño actual del elemento DOM interno que Resizable gestiona (y que es el mismo que dnd-kit mueve)
+     const currentWidth = refToElement.offsetWidth;
+     const currentHeight = refToElement.offsetHeight;
 
-    // Llamamos al manejador del padre para ACTUALIZAR el estado en tiempo real
-    onResize(id, currentWidth, currentHeight); // <-- Llama a la prop 'onResize'
+     // Llamamos al manejador del padre para ACTUALIZAR el estado en tiempo real
+     onResize(id, currentWidth, currentHeight); // <-- Llama a la prop 'onResize'
   };
 
   const handleResizeStop = (
@@ -84,11 +82,24 @@ export const CanvasItem = ({
     refToElement: HTMLElement,
     delta: { width: number; height: number }
   ) => {
-     handleResize(event, direction, refToElement, delta);
+    // Llamamos al mismo manejador para asegurarnos de que el tamaño final se registre
+    handleResize(event, direction, refToElement, delta);
+    // Opcional: Aquí podrías añadir lógica extra que solo se ejecuta al soltar (ej: guardar en DB)
+    // console.log(`Resize stopped for ${id}`);
   };
 
-
-
+    const handleMouseDown = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+        const target = event.target as HTMLElement;
+        // --- ¡CRÍTICO! Buscar la clase personalizada 'dnd-cancel-handle' ---
+        // Asegúrate de que esta clase se aplica a TODOS los handles habilitados en handleClasses
+        if (target.closest('.dnd-cancel-handle')) {
+            event.stopPropagation(); // <--- ¡Detener la propagación si es un handle!
+            // Opcional: log para depurar si se detuvo la propagación
+            // console.log("Stopped propagation for resize handle click.");
+        }
+        // Si el clic no fue en un handle, el evento continúa y dnd-kit lo verá.
+      };
+    
   // Renderiza el contenido del elemento basándose en su tipo
   const renderContent = () => {
     // Esto es similar a lo que hacías en RenderDragOverlayContent, pero aquí es el contenido real del item en canvas
@@ -133,37 +144,40 @@ export const CanvasItem = ({
   };
 
   return (
+        <div
+          ref={setNodeRef}
+          {...attributes}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleMouseDown} // Importante para dispositivos táctiles
+
+          {...listeners} // Event listeners para el arrastre
+          style={style} // Aplica posición y transformación
+          // Clases adicionales si las necesitas
+          className="select-none  " // Evita seleccionar texto mientras arrastras
+        >
     <Resizable
-      size={{ width, height }} // Pasa el tamaño del estado del padre
-      onResizeStop={handleResizeStop} // Usa el manejador
-      onResize={handleResize}
-      enable={{
-        top: false,
-        right: true,
-        bottom: true,
-        left: false,
-        topRight: false,
-        bottomRight: true,
-        bottomLeft: false,
-        topLeft: false,
-      }}
-      minWidth={20}
-      minHeight={20}
-      lockAspectRatio={true}
-      handleClasses={{
-        bottomRight: "resize-handle bottom-right",
-      }}
-    >
-      <div
-        ref={setNodeRef}
-        {...attributes}
-        {...listeners} // Event listeners para el arrastre
-        style={style} // Aplica posición y transformación
-        // Clases adicionales si las necesitas
-        className="select-none w-full h-full" // Evita seleccionar texto mientras arrastras
-      >
+          size={{ width, height }} // Le decimos a Resizable el tamaño actual del estado
+          onResize={handleResize} // Llama handleResize DURANTE el arrastre
+          onResizeStop={handleResizeStop} // Llama handleResizeStop al soltar
+          enable={{
+            top: false, right: true, bottom: true, left: false,
+            topRight: false, bottomRight: true, bottomLeft: false, topLeft: false
+          }}
+          minWidth={20} // Opcional: tamaño mínimo
+          minHeight={20} // Opcional: tamaño mínimo
+          lockAspectRatio={true} // Si quieres mantener la proporción
+          // --- re-resizable añade la clase 'resize-handle' por defecto ---
+           handleClasses={{
+            bottomRight: "resize-handle dnd-cancel-handle", // <-- Clase personalizada
+             right: "resize-handle dnd-cancel-handle",       // <-- Añádela aquí
+             bottom: "resize-handle dnd-cancel-handle",      // <-- Añádela aquí
+             // Asegúrate de añadirla a cualquier otro handle que habilites en 'enable'
+             // ej: topLeft: "resize-handle dnd-cancel-handle",
+          }}
+          style={{ position: 'relative', width: '100%', height: '100%' }}
+            >
         {renderContent()} {/* Renderiza el contenido basado en el tipo */}
-      </div>
     </Resizable>
+      </div>
   );
 };
