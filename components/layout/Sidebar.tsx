@@ -2,12 +2,19 @@
 import { mainNavItems } from "@/config";
 import { useState } from "react";
 import { SecondaryPanel } from "@/components/editor/panel/SecondaryPanel";
+import { TemplatesPanel } from "@/components/editor/panel/templates/TemplatesPanel";
 
 export function Sidebar() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState({
+    isOpen: false,
+    panel: "add",
+  });
 
-  const toggleSidebar = () => {
-    setOpen(!open);
+  const toggleSidebar = (type: string) => {
+    setOpen((prev) => ({
+      isOpen: !prev.isOpen,
+      panel: type,
+    }));
   };
 
   return (
@@ -20,7 +27,7 @@ export function Sidebar() {
             return (
               <button
                 key={item.id}
-                onClick={toggleSidebar}
+                onClick={() => toggleSidebar(item.id)}
                 className={`relative flex cursor-pointer items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 group
                   ${
                     isActive
@@ -56,7 +63,8 @@ export function Sidebar() {
       </section>
 
       {/* Panel Secundario */}
-      {open && <SecondaryPanel />}
+      {open.isOpen && open.panel === "add" && <SecondaryPanel />}
+      {open.isOpen && open.panel === "templates" && <TemplatesPanel />}
     </aside>
   );
 }

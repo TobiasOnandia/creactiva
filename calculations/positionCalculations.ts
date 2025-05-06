@@ -2,15 +2,11 @@
 import { DragEndEvent } from "@dnd-kit/core";
 import { CanvasElement } from "@/types/DragAndDrop.types";
 
-// Calculates the initial position (x, y) for a *new* element dropped on the canvas.
-// Position is relative to the canvas origin (top-left).
-// Returns the coordinates clamped within the canvas bounds.
 export const calculateInitialPosition = (
-  dragEvent: DragEndEvent, // Event, needed for active.rect.initial and delta
-  canvasBounds: DOMRect | null, // Bounds of the canvas droppable area
-  itemInitialRect: DOMRect | null // Rect of the item at the start of the drag
+  dragEvent: DragEndEvent,
+  canvasBounds: DOMRect | null,
+  itemInitialRect: DOMRect | null
 ): { x: number; y: number } => {
-  // Validations defensivas
   if (
     !canvasBounds ||
     !itemInitialRect ||
@@ -51,15 +47,11 @@ export const calculateInitialPosition = (
   return { x: boundedX, y: boundedY };
 };
 
-// Calculates the new position (x, y) for an *existing* canvas element after dragging.
-// Position is relative to the canvas origin (top-left).
-// Returns the coordinates clamped within the canvas bounds.
 export const calculateNewPosition = (
-  dragEvent: DragEndEvent, // Event, needed for delta and active.rect.initial
-  canvasBounds: DOMRect | null, // Bounds of the canvas droppable area
-  itemInitialRect: DOMRect | null // Rect of the item at the start of the drag
+  dragEvent: DragEndEvent,
+  canvasBounds: DOMRect | null,
+  itemInitialRect: DOMRect | null
 ): { x: number; y: number } => {
-  // Validaciones
   if (
     !canvasBounds ||
     !itemInitialRect ||
@@ -116,14 +108,12 @@ export const checkCollisions = (
     return false; // Considerar que no hay colisión si la caja es inválida
   }
 
-  // Iterar sobre los elementos existentes en el canvas
   for (const existingElement of existingElements) {
     // Si se proporciona un movingItemId, saltar el elemento que se está moviendo
     if (movingItemId !== null && existingElement.id === movingItemId) {
       continue;
     }
 
-    // Calcular la caja delimitadora del elemento existente
     const existingRect = {
       left: existingElement.x,
       right: existingElement.x + existingElement.width,
@@ -131,21 +121,12 @@ export const checkCollisions = (
       bottom: existingElement.y + existingElement.height,
     };
 
-    // Verificar si hay solapamiento entre potentialRect y existingRect
-    // Dos rectángulos colisionan si NO se cumplen TODAS estas condiciones de NO solapamiento:
-    // 1. El borde izquierdo de potentialRect está a la derecha o igual que el borde derecho de existingRect
-    // 2. El borde derecho de potentialRect está a la izquierda o igual que el borde izquierdo de existingRect
-    // 3. El borde superior de potentialRect está por debajo o igual que el borde inferior de existingRect
-    // 4. El borde inferior de potentialRect está por encima o igual que el borde superior de existingRect
-
     const noOverlap =
       potentialRect.left >= existingRect.right ||
       potentialRect.right <= existingRect.left ||
       potentialRect.top >= existingRect.bottom ||
       potentialRect.bottom <= existingRect.top;
 
-    // Si NO hay solapamiento, 'noOverlap' es true. Si hay solapamiento, 'noOverlap' es false.
-    // Queremos retornar true si hay solapamiento, que es lo opuesto a 'noOverlap'.
     if (!noOverlap) {
       // Se detectó una colisión
       console.log(`Collision detected with element ${existingElement.id}`);
@@ -153,6 +134,5 @@ export const checkCollisions = (
     }
   }
 
-  // Si el bucle termina sin encontrar colisiones
   return false;
 };

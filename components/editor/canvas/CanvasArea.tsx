@@ -1,9 +1,8 @@
-// components/Editor/CanvasArea.tsx
 "use client";
 
 import { useDroppable } from "@dnd-kit/core";
-import { useRef, useEffect, useCallback } from "react"; // Importa useRef y useEffect
-import { CanvasItem } from "@/components/editor/canvas/CanvasItem"; // Importa el nuevo componente CanvasItem
+import { useRef, useEffect, useCallback } from "react";
+import { CanvasItem } from "@/components/editor/canvas/CanvasItem";
 import { useCanvasStore } from "@/store/canvasStore";
 import { BackgroundCanvas } from "@/components/background/BackgroundCanvas";
 
@@ -12,45 +11,27 @@ interface CanvasAreaProps {
 }
 
 export default function CanvasArea({ onCanvasRectChange }: CanvasAreaProps) {
-  // Referencia para el div que es el área droppable real
-
   const canvasRef = useRef<HTMLDivElement>(null);
   const droppedElements = useCanvasStore((state) => state.canvasElements);
   const updateElementSize = useCanvasStore((state) => state.updateElementSize);
-  // Configura el droppable, usando la ref
   const { isOver, setNodeRef } = useDroppable({
     id: "canvas", // El ID del droppable
   });
 
-  // Combina la ref del hook con la ref local
   const combinedRef = useCallback(
     (node: HTMLDivElement | null) => {
-      // La ref del hook Dnd-kit
       setNodeRef(node);
-      // Nuestra ref local para medir
       canvasRef.current = node;
     },
     [setNodeRef]
   ); // setNodeRef es una dependencia estable del hook dnd-kit
 
-  // Usa useEffect para notificar al padre cuando la ref tenga un nodo (el div)
-  // Esto le da al hook del padre las dimensiones del canvas
   useEffect(() => {
     if (canvasRef.current) {
       onCanvasRectChange(canvasRef.current.getBoundingClientRect());
-
-      // Opcional: Añadir un ResizeObserver si el tamaño del canvas puede cambiar
-      // const observer = new ResizeObserver(entries => {
-      //     for (let entry of entries) {
-      //         onCanvasRectChange(entry.target.getBoundingClientRect() as DOMRect);
-      //     }
-      // });
-      // observer.observe(canvasRef.current);
-      // return () => observer.disconnect(); // Limpiar al desmontar
     }
-  }, [onCanvasRectChange]); // Dependencia: la función del padre
+  }, [onCanvasRectChange]);
 
-  // Feedback visual cuando se arrastra sobre el canvas (lo mismo que antes)
   const dropTargetStyle = {
     borderColor: isOver
       ? "rgba(96, 165, 250, 0.5)"
@@ -70,7 +51,7 @@ export default function CanvasArea({ onCanvasRectChange }: CanvasAreaProps) {
           <div
             ref={combinedRef} // Usa la ref combinada
             style={dropTargetStyle}
-            className="relative bg-neutral-900/80 backdrop-blur-sm min-h-[300px] h-auto border-2 border-dashed rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl p-6"
+            className="relative bg-neutral-900/80 backdrop-blur-sm min-h-[768px] h-auto border-2 border-dashed rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl p-6"
           >
             {droppedElements.map((element) => (
               <CanvasItem

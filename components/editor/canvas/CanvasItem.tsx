@@ -1,10 +1,8 @@
-// components/Editor/CanvasItem.tsx
 import { useDraggable } from "@dnd-kit/core";
 import { Resizable } from "re-resizable";
 import { CanvasItemProps } from "@/types/DragAndDrop.types";
 import { CanvasItemContent } from "@/components/editor/content/CanvasItemContent";
 import { useState } from "react";
-import { GripVertical, Hand } from "lucide-react";
 
 export const CanvasItem = ({ element, onResize }: CanvasItemProps) => {
   const { id, type, label, colorClass, x, y, width, height } = element;
@@ -12,7 +10,7 @@ export const CanvasItem = ({ element, onResize }: CanvasItemProps) => {
 
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
-      id: id, // Usa el ID único del elemento en el canvas
+      id: id,
       data: {
         type: type,
         label: label,
@@ -34,11 +32,10 @@ export const CanvasItem = ({ element, onResize }: CanvasItemProps) => {
     border: `1px solid rgba(255, 255, 255, 0.1)`,
     backgroundColor: "rgba(38, 38, 38, 0.8)",
     color: "rgba(212, 212, 212, 0.8)",
-    cursor: isDragging ? "grabbing" : "grab", // Cursor para arrastrar
-    overflow: "hidden", // Evita que el contenido se desborde si se redimensiona a un tamaño pequeño
+    cursor: isDragging ? "grabbing" : "grab",
+    overflow: "hidden",
   };
 
-  // --- Manejador para el evento onResize de re-resizable ---
   const handleResize = (
     event: MouseEvent | TouchEvent,
     direction: any,

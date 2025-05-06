@@ -1,14 +1,16 @@
 import {
+  CopyPlus,
   HelpCircle,
   ImageIcon,
-  LayoutIcon,
+  LayoutTemplate,
   SettingsIcon,
   StickyNote,
 } from "lucide-react";
 
 export const mainNavItems = [
   { id: "pages", label: "Páginas", icon: StickyNote },
-  { id: "add", label: "Añadir Elementos", icon: LayoutIcon },
+  { id: "templates", label: "Plantillas", icon: LayoutTemplate },
+  { id: "add", label: "Añadir Elementos", icon: CopyPlus },
   { id: "assets", label: "Multimedia", icon: ImageIcon },
   { id: "settings", label: "Ajustes Sitio", icon: SettingsIcon },
 ];
