@@ -1,18 +1,6 @@
 // helpers/RenderDragOverlayContent.ts
 import {
-  CheckSquareIcon,
-  ClipboardListIcon,
-  ComponentIcon,
   ImageIcon,
-  LayoutGridIcon,
-  ListIcon,
-  MinusIcon,
-  Pilcrow,
-  PuzzleIcon,
-  SendIcon,
-  SlidersVerticalIcon,
-  SquareStackIcon,
-  TextIcon,
   VideoIcon,
   StarIcon, // Asegúrate de importar todos los iconos que uses
 } from "lucide-react"; // Importa todos los iconos necesarios

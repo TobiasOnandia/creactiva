@@ -2,6 +2,7 @@ export interface ActiveDraggableData {
   type: string;
   label: string;
   colorClass: string;
+  isCanvasItem?: boolean;
 }
 
 export interface CanvasElement {
