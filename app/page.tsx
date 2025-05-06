@@ -37,10 +37,7 @@ export default function Home() {
       onDragCancel={handleDragCancel}
       modifiers={[restrictCanvasItemsModifier]} // <-- ¡Aplícalo aquí!
     >
-      <CanvasArea
-        onCanvasRectChange={handleCanvasRectChange}
-        onCanvasItemResize={handleCanvasItemResize}
-      />
+      <CanvasArea onCanvasRectChange={handleCanvasRectChange} />
 
       <Sidebar />
 

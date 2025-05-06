@@ -1,21 +1,12 @@
 // components/Editor/CanvasItem.tsx
 import { useDraggable } from "@dnd-kit/core";
 import { Resizable } from "re-resizable";
-// Importa el nuevo componente de contenido
-import { CanvasItemContent } from "@/components/editor/content/CanvasItemContent";
 import { CanvasItemProps } from "@/types/DragAndDrop.types";
+import { CanvasItemContent } from "@/components/editor/content/CanvasItemContent";
 
-export const CanvasItem = ({
-  id,
-  type,
-  label,
-  colorClass,
-  x,
-  y,
-  width,
-  height,
-  onResize,
-}: CanvasItemProps) => {
+export const CanvasItem = ({ element, onResize }: CanvasItemProps) => {
+  const { id, type, label, colorClass, x, y, width, height } = element;
+
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
       id: id, // Usa el ID único del elemento en el canvas

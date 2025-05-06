@@ -3,28 +3,20 @@
 
 import { useDroppable } from "@dnd-kit/core";
 import { useRef, useEffect, useCallback } from "react"; // Importa useRef y useEffect
-import { CanvasElement } from "@/types/DragAndDrop.types"; // Importa el tipo CanvasElement
-import { CanvasItem } from "./CanvasItem"; // Importa el nuevo componente CanvasItem
+import { CanvasItem } from "@/components/editor/canvas/CanvasItem"; // Importa el nuevo componente CanvasItem
 import { useCanvasStore } from "@/store/canvasStore";
-import { BackgroundCanvas } from "../../background/BackgroundCanvas";
+import { BackgroundCanvas } from "@/components/background/BackgroundCanvas";
 
 interface CanvasAreaProps {
-  // Añade una prop para comunicar sus dimensiones al padre (Home/hook)
   onCanvasRectChange: (rect: DOMRect) => void;
-  onCanvasItemResize: (
-    itemId: string,
-    newWidth: number,
-    newHeight: number
-  ) => void; // Mantén este nombre para recibir del hook
 }
 
-export default function CanvasArea({
-  onCanvasRectChange,
-  onCanvasItemResize,
-}: CanvasAreaProps) {
+export default function CanvasArea({ onCanvasRectChange }: CanvasAreaProps) {
   // Referencia para el div que es el área droppable real
+
   const canvasRef = useRef<HTMLDivElement>(null);
   const droppedElements = useCanvasStore((state) => state.canvasElements);
+  const updateElementSize = useCanvasStore((state) => state.updateElementSize);
   // Configura el droppable, usando la ref
   const { isOver, setNodeRef } = useDroppable({
     id: "canvas", // El ID del droppable
@@ -80,21 +72,11 @@ export default function CanvasArea({
             style={dropTargetStyle}
             className="relative bg-neutral-900/80 backdrop-blur-sm min-h-[300px] h-auto border-2 border-dashed rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl p-6"
           >
-            {/* Herramientas Flotantes */}
-            {/* ... */}
-
             {droppedElements.map((element) => (
               <CanvasItem
                 key={element.id} // Usa el ID único del elemento en canvas
-                id={element.id}
-                type={element.type}
-                label={element.label}
-                width={element.width} // <-- Pasa el ancho
-                height={element.height}
-                onResize={onCanvasItemResize}
-                colorClass={element.colorClass}
-                x={element.x} // Pasa la posición X del estado
-                y={element.y} // Pasa la posición Y del estado
+                element={element}
+                onResize={updateElementSize}
               />
             ))}
           </div>
