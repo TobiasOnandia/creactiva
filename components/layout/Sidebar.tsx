@@ -23,7 +23,7 @@ export function Sidebar() {
       <section className="flex flex-col justify-center w-16 z-50 py-4">
         <nav className="flex flex-col items-center gap-1.5 px-1.5">
           {mainNavItems.map((item) => {
-            const isActive = item.id === "pages";
+            const isActive = item.id === open.panel && open.isOpen;
             return (
               <button
                 key={item.id}

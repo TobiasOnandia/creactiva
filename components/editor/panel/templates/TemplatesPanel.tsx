@@ -5,7 +5,7 @@ import { LayoutTemplate, SearchIcon } from "lucide-react";
 const categories = ["Landing", "Dashboard", "Blog", "Portfolio"];
 
 // Configuración de plantillas
-const templates = [
+export const templates = [
   {
     title: "Landing Clásica",
     description: "Header + Hero + Contenido + Footer",
