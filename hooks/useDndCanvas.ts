@@ -4,9 +4,10 @@ import { ActiveDraggableData, CanvasElement } from "@/types/DragAndDrop.types";
 import {
   calculateInitialPosition,
   calculateNewPosition,
+  checkCollisions,
 } from "@/calculations/positionCalculations";
-// Importa el hook del store de Zustand
 import { useCanvasStore } from "@/store/canvasStore";
+import { DEFAULT_ITEM_HEIGHT, DEFAULT_ITEM_WIDTH } from "@/config";
 
 interface UseDndCanvasReturn {
   activeId: string | null;
@@ -49,7 +50,6 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
   }, []); // Dependencias: Setters locales son estables
 
   // === Manejadores Principales de Eventos de Dnd-kit ===
-
   const handleDragStart = useCallback(
     (event: DragStartEvent) => {
       setActiveId(event.active.id as string);
@@ -71,10 +71,14 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
         const isNewItem =
           activeId && !String(activeId).startsWith("canvas-item-");
 
+        let potentialPosition: { x: number; y: number };
+        let itemWidth: number;
+        let itemHeight: number;
+        let movingItemId: string | null = null;
         // 2. Si es un item nuevo...
         if (isNewItem && activeItemData) {
           // *** Llamar a la función de CÁLCULO externa ***
-          const initialPosition = calculateInitialPosition(
+          potentialPosition = calculateInitialPosition(
             event, // Pass the event
             canvasRect, // canvasRect local o del store
             event.active.rect.current.initial as DOMRect // <-- Pass initial rect
@@ -86,36 +90,95 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
             type: activeItemData.type,
             label: activeItemData.label,
             colorClass: activeItemData.colorClass,
-            x: initialPosition.x,
-            y: initialPosition.y,
+            x: potentialPosition.x,
+            y: potentialPosition.y,
           }); // <-- Llamar a la acción del store
+
+          itemWidth = DEFAULT_ITEM_WIDTH;
+          itemHeight = DEFAULT_ITEM_HEIGHT;
+          movingItemId = null;
+          
+          // Clear active state after adding new element
+          clearActiveState();
+          return;
         } // 3. Si es un item existente...
         else if (!isNewItem && activeId) {
-          // Encontrar el elemento en el estado (necesario si calculateNewPosition lo requiere,
-          // o si necesitas otras props del estado para la lógica aquí)
-          // Con la versión actual de calculateNewPosition que toma event, canvasRect, initialRect,
-          // no necesitas currentItemState para el cálculo de posición.
-          // Pero podrías necesitarlo para otras lógicas (ej: verificar permisos).
-          // const currentItemState = canvasElements.find(el => el.id === activeId); // canvasElements del store
+          const currentItemState = canvasElements.find(
+            (element) => element.id === activeId
+          );
 
-          // if (currentItemState) { // O simplemente if (activeId) si no necesitas currentItemState
+          if (!currentItemState) {
+            console.warn(
+              "WARNING: Drag ended on canvas, but item ID is unknown or data missing.",
+              activeId,
+              activeItemData
+            );
+            return;
+          }
 
-          // *** Llamar a la función de CÁLCULO externa para NUEVA POSICIÓN ***
-          // Pass event, canvasRect, and event.active.rect.initial
-          const newPosition = calculateNewPosition(
-            event, // <-- Pass the event
+          potentialPosition = calculateInitialPosition(
+            event, // Pass the event
             canvasRect, // canvasRect local o del store
             event.active.rect.current.initial as DOMRect // <-- Pass initial rect
           );
 
-          // *** Llamar a la ACCIÓN del store para actualizar la posición ***
-          updateElementPosition(activeId, newPosition); // <-- Llamar a la acción del store
+          itemWidth = currentItemState.width;
+          itemHeight = currentItemState.height;
+          movingItemId = activeId;
         } else {
           console.warn(
             "WARNING: Drag ended on canvas, but item ID is unknown or data missing.",
             activeId,
             activeItemData
           );
+          return;
+        }
+
+        const potentialRect = {
+          left: potentialPosition.x,
+          right: potentialPosition.x + itemWidth,
+          top: potentialPosition.y,
+          bottom: potentialPosition.y + itemHeight,
+        };
+
+        const hasCollisions = checkCollisions(
+          potentialRect,
+          canvasElements,
+          activeId
+        );
+
+        if (!hasCollisions) {
+          if (isNewItem && activeItemData) {
+            // Crear el objeto completo del nuevo elemento (la posición ya está en potentialPosition)
+            const newElementId = `canvas-item-${Date.now()}-${Math.random()
+              .toString(36)
+              .substring(2, 9)}`; // Generar ID único aquí o en la acción del store
+            const newElement: CanvasElement = {
+              id: newElementId, // Usar el ID generado
+              type: activeItemData.type,
+              label: activeItemData.label,
+              colorClass: activeItemData.colorClass,
+              x: potentialPosition.x, // Usar posición calculada
+              y: potentialPosition.y, // Usar posición calculada
+              width: itemWidth, // Usar el ancho
+              height: itemHeight, // Usar el alto
+              // ... otras props
+            };
+            addElement(newElement); // <-- Llamar a la acción del store para añadir
+            // Nota: Si tu acción addElement en el store ya genera el ID,
+            // solo necesitarías pasar los datos sin ID y la posición calculada.
+            // Asegúrate de que la acción addElement en el store acepte el formato correcto.
+          } else if (!isNewItem && activeId) {
+            // Llamar a la ACCIÓN del store para actualizar la posición
+            updateElementPosition(activeId, potentialPosition); // <-- Llamar a la acción del store para mover
+          }
+          console.log("INFO: No collision detected. State updated.");
+        } else {
+          // --- Si hay colisión, NO actualizar el estado ---
+          console.warn(
+            "WARNING: Collision detected. Element not placed or moved."
+          );
+          // Opcional: Proporcionar feedback visual al usuario (ej: borde rojo en el overlay)
         }
       } else {
         console.log(
@@ -129,10 +192,10 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
       activeId,
       activeItemData,
       canvasRect,
-      canvasElements, // Si lo usas dentro del handler
-      addElement, // Acción del store
-      updateElementPosition, // Acción del store
-      clearActiveState, // Función auxiliar local
+      canvasElements,
+      addElement,
+      updateElementPosition,
+      clearActiveState,
     ]
   );
 
