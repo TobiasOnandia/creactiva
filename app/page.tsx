@@ -18,7 +18,6 @@ import { restrictCanvasItemsModifier } from "@/modifiers/restrictCanvasItemsModi
 
 export default function Home() {
   const {
-    canvasElements,
     activeItemData,
     handleDragStart,
     handleDragEnd,
@@ -39,7 +38,6 @@ export default function Home() {
       modifiers={[restrictCanvasItemsModifier]} // <-- ¡Aplícalo aquí!
     >
       <CanvasArea
-        droppedElements={canvasElements}
         onCanvasRectChange={handleCanvasRectChange}
         onCanvasItemResize={handleCanvasItemResize}
       />

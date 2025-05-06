@@ -5,23 +5,25 @@ import { useDroppable } from "@dnd-kit/core";
 import { useRef, useEffect, useCallback } from "react"; // Importa useRef y useEffect
 import { CanvasElement } from "@/types/DragAndDrop.types"; // Importa el tipo CanvasElement
 import { CanvasItem } from "./CanvasItem"; // Importa el nuevo componente CanvasItem
+import { useCanvasStore } from "@/store/canvasStore";
 
 interface CanvasAreaProps {
-  droppedElements: CanvasElement[]; // Ahora incluye x e y
   // Añade una prop para comunicar sus dimensiones al padre (Home/hook)
   onCanvasRectChange: (rect: DOMRect) => void;
-  onCanvasItemResize: (itemId: string, newWidth: number, newHeight: number) => void; // Mantén este nombre para recibir del hook
-
+  onCanvasItemResize: (
+    itemId: string,
+    newWidth: number,
+    newHeight: number
+  ) => void; // Mantén este nombre para recibir del hook
 }
 
 export default function CanvasArea({
-  droppedElements,
   onCanvasRectChange,
   onCanvasItemResize,
 }: CanvasAreaProps) {
   // Referencia para el div que es el área droppable real
   const canvasRef = useRef<HTMLDivElement>(null);
-
+  const droppedElements = useCanvasStore((state) => state.canvasElements);
   // Configura el droppable, usando la ref
   const { isOver, setNodeRef } = useDroppable({
     id: "canvas", // El ID del droppable
