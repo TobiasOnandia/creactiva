@@ -124,11 +124,19 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       // Verificar si soltó sobre el canvas Y tenemos los bounds necesarios para cálculos
+      console.log("--- Drag Ended Condition Check ---");
+    console.log("event.over:", event.over);
+    console.log("event.over?.id:", event.over?.id);
+    console.log("canvasRect:", canvasRect);
+    console.log("event.active?.rect?.initial:", event.active?.rect?.current.initial);
+    console.log("--- End Drag Ended Condition Check ---");
+      
+      
       if (
         event.over &&
         event.over.id === "canvas" &&
         canvasRect &&
-        event.active?.rect?.current
+        event.active?.rect?.current.initial
       ) {
         // 1. Determinar si es un item nuevo o existente
         const isNewItem =
@@ -159,7 +167,6 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
           addCanvasElementState(newElement); // Pasa el elemento ya formado
         } // 3. Si es un item existente...
         else if (!isNewItem && activeId) {
-          // Encontrar el estado actual del elemento para su posición vieja
           const currentItemState = canvasElements.find(
             (el) => el.id === activeId
           );
@@ -167,8 +174,7 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
           if (currentItemState) {
             // *** Llamar a la función de CÁLCULO externa ***
             const newPosition = calculateNewPosition(
-              currentItemState,
-              event.delta,
+              event, // <-- Pass the event
               canvasRect,
               event.active.rect.current.initial as DOMRect
             );
