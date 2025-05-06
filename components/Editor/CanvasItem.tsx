@@ -14,7 +14,7 @@ interface CanvasItemProps {
   canvasId: string;
   width: number;
   height: number;
-  onResizeStop: (itemId: string, newWidth: number, newHeight: number) => void;
+  onResize: (itemId: string, newWidth: number, newHeight: number) => void;
 
   // textContent?: string;
   // imageUrl?: string;
@@ -30,7 +30,7 @@ export const CanvasItem = ({
   canvasId,
   width,
   height,
-  onResizeStop,
+  onResize,
 }: CanvasItemProps) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -64,17 +64,30 @@ export const CanvasItem = ({
     // backgroundColor: colorClass.replace('/10', '/20'), // Ejemplo: cambia bg-cyan-500/10 a bg-cyan-500/20
   };
 
-  const handleResizeStop = (
+  const handleResize = (
     event: MouseEvent | TouchEvent,
     direction: any, // Tipo de re-resizable
-    refToElement: HTMLElement, // Referencia al elemento redimensionado
+    refToElement: HTMLElement, // Referencia al elemento DOM con el tamaño actual
     delta: { width: number; height: number } // Delta del cambio de tamaño
   ) => {
-    const newWidth = refToElement.offsetWidth;
-    const newHeight = refToElement.offsetHeight;
+    // Obtenemos el tamaño actual del elemento DOM
+    const currentWidth = refToElement.offsetWidth;
+    const currentHeight = refToElement.offsetHeight;
 
-    onResizeStop(id, newWidth, newHeight);
+    // Llamamos al manejador del padre para ACTUALIZAR el estado en tiempo real
+    onResize(id, currentWidth, currentHeight); // <-- Llama a la prop 'onResize'
   };
+
+  const handleResizeStop = (
+    event: MouseEvent | TouchEvent,
+    direction: any,
+    refToElement: HTMLElement,
+    delta: { width: number; height: number }
+  ) => {
+     handleResize(event, direction, refToElement, delta);
+  };
+
+
 
   // Renderiza el contenido del elemento basándose en su tipo
   const renderContent = () => {
@@ -123,7 +136,7 @@ export const CanvasItem = ({
     <Resizable
       size={{ width, height }} // Pasa el tamaño del estado del padre
       onResizeStop={handleResizeStop} // Usa el manejador
-      // Configura qué manejadores quieres habilitar (bottom, right, bottomRight son comunes)
+      onResize={handleResize}
       enable={{
         top: false,
         right: true,
@@ -147,7 +160,7 @@ export const CanvasItem = ({
         {...listeners} // Event listeners para el arrastre
         style={style} // Aplica posición y transformación
         // Clases adicionales si las necesitas
-        className="select-none" // Evita seleccionar texto mientras arrastras
+        className="select-none w-full h-full" // Evita seleccionar texto mientras arrastras
       >
         {renderContent()} {/* Renderiza el contenido basado en el tipo */}
       </div>

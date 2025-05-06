@@ -10,11 +10,8 @@ interface CanvasAreaProps {
   droppedElements: CanvasElement[]; // Ahora incluye x e y
   // Añade una prop para comunicar sus dimensiones al padre (Home/hook)
   onCanvasRectChange: (rect: DOMRect) => void;
-  onCanvasItemResize: (
-    itemId: string,
-    newWidth: number,
-    newHeight: number
-  ) => void;
+  onCanvasItemResize: (itemId: string, newWidth: number, newHeight: number) => void; // Mantén este nombre para recibir del hook
+
 }
 
 export default function CanvasArea({
@@ -92,7 +89,7 @@ export default function CanvasArea({
                 label={element.label}
                 width={element.width} // <-- Pasa el ancho
                 height={element.height}
-                onResizeStop={onCanvasItemResize}
+                onResize={onCanvasItemResize}
                 colorClass={element.colorClass}
                 x={element.x} // Pasa la posición X del estado
                 y={element.y} // Pasa la posición Y del estado
