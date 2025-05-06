@@ -9,38 +9,27 @@ import {
 import { useCanvasStore } from "@/store/canvasStore";
 
 interface UseDndCanvasReturn {
-  // Pero lo mantenemos aquí para consistencia si el componente que usa el hook lo necesita directamente.
-  // Sin embargo, es más idiomático que el componente que renderiza la lista (CanvasArea) lo lea del store.
-  // Para este hook, solo necesitamos retornar los manejadores y el estado activo del arrastre.
-  // Eliminamos canvasElements del retorno del hook.
-  // canvasElements: CanvasElement[]; // <-- Eliminado del retorno
-
   activeId: string | null;
   activeItemData: ActiveDraggableData | null;
   handleDragStart: (event: DragStartEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
   handleDragCancel: () => void;
   handleCanvasRectChange: (rect: DOMRect) => void;
-  handleCanvasItemResize: (itemId: string, newWidth: number, newHeight: number) => void;
-  // handleCanvasItemResize ya no necesita ser devuelto si CanvasArea llama directamente a la acción del store
-  // handleCanvasItemResize: (itemId: string, newWidth: number, newHeight: number) => void; // <-- Eliminado del retorno
+  handleCanvasItemResize: (
+    itemId: string,
+    newWidth: number,
+    newHeight: number
+  ) => void;
 }
 
 export const useDndCanvas = (): UseDndCanvasReturn => {
-  // === Gestión del Estado (ahora desde Zustand) ===
-  // Obtenemos las acciones y el estado necesario directamente del store
   const canvasElements = useCanvasStore((state) => state.canvasElements); // Leemos el estado si es necesario dentro del hook (ej: para find)
   const addElement = useCanvasStore((state) => state.addElement); // Obtenemos la acción
   const updateElementPosition = useCanvasStore(
     (state) => state.updateElementPosition
   ); // Obtenemos la acción
   const updateElementSize = useCanvasStore((state) => state.updateElementSize); // Obtenemos la acción
-  // Si canvasRect está en el store, lo obtendrías aquí:
-  // const canvasRect = useCanvasStore(state => state.canvasRect);
-  // const setCanvasRect = useCanvasStore(state => state.setCanvasRect);
 
-  // === Estado Local del Hook (No en Zustand) ===
-  // activeId y activeItemData solo son relevantes DURANTE el arrastre, no necesitan ser globales
   const [activeId, setActiveId] = useState<string | null>(null);
   const [activeItemData, setActiveItemData] =
     useState<ActiveDraggableData | null>(null);
@@ -67,16 +56,9 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
       setActiveItemData(
         event.active?.data?.current as ActiveDraggableData | null
       );
-      // Opcional: Logs de depuración
-      // console.log("--- Drag Started ---");
-      // console.log("event.active.rect.initial:", event.active?.rect?.initial);
-      // console.log("Element state from canvasElements (if exists):", canvasElements.find(el => el.id === event.active.id)); // canvasElements del store
-      // console.log("--- End Drag Started Log ---");
     },
     [canvasElements]
-  ); // Dependencia canvasElements si se usa para logs/lógica inicial
-
-  // Este manejador coordina: determina qué pasó, llama al cálculo, llama a la acción del store.
+  );
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       if (
@@ -143,12 +125,6 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
 
       clearActiveState();
     },
-    // Dependencias:
-    // - activeId, activeItemData (estado local del hook)
-    // - canvasRect (estado local del hook o del store)
-    // - canvasElements (estado del store, necesario si haces find dentro del handler)
-    // - Las ACCIONES del store (Zustand garantiza que las acciones son estables, pero useCallback las necesita como deps)
-    // - clearActiveState (función auxiliar local)
     [
       activeId,
       activeItemData,
@@ -158,36 +134,26 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
       updateElementPosition, // Acción del store
       clearActiveState, // Función auxiliar local
     ]
-  ); // Dependencias actualizadas
+  );
 
   const handleDragCancel = useCallback(() => {
     clearActiveState();
   }, [clearActiveState]);
 
-  // handleCanvasItemResize ahora se implementa llamando a la acción del store
-  // Este manejador podría pasarse a CanvasArea, o CanvasArea podría llamar a la acción del store directamente.
-  // Si CanvasArea llama directamente a la acción, no necesitas devolver esta función desde el hook.
-  // Si la devuelves, su implementación es simple:
   const handleCanvasItemResize = useCallback(
     (itemId: string, newWidth: number, newHeight: number) => {
-      updateElementSize(itemId, newWidth, newHeight); // <-- Llamar a la acción del store
+      updateElementSize(itemId, newWidth, newHeight);
     },
     [updateElementSize]
   );
 
-  // === Valores Devueltos por el Hook ===
   return {
-    activeId, // Estado local (para DragOverlay)
-    activeItemData, // Estado local (para DragOverlay)
-    // Manejadores de eventos de Dnd-kit
+    activeId,
+    activeItemData,
     handleDragStart,
     handleDragEnd,
     handleDragCancel,
-
-    // Manejador para que CanvasArea reporte sus límites
     handleCanvasRectChange,
-
-    // Manejador de redimensionamiento (si CanvasArea lo necesita recibir del hook)
     handleCanvasItemResize,
   };
 };

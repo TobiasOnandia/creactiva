@@ -3,9 +3,12 @@ import { useDraggable } from "@dnd-kit/core";
 import { Resizable } from "re-resizable";
 import { CanvasItemProps } from "@/types/DragAndDrop.types";
 import { CanvasItemContent } from "@/components/editor/content/CanvasItemContent";
+import { useState } from "react";
+import { GripVertical, Hand } from "lucide-react";
 
 export const CanvasItem = ({ element, onResize }: CanvasItemProps) => {
   const { id, type, label, colorClass, x, y, width, height } = element;
+  const [isResizing, setIsResizing] = useState(false);
 
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -15,6 +18,7 @@ export const CanvasItem = ({ element, onResize }: CanvasItemProps) => {
         label: label,
         isCanvasItem: true,
       },
+      disabled: isResizing,
     });
 
   const style = {
@@ -25,8 +29,6 @@ export const CanvasItem = ({ element, onResize }: CanvasItemProps) => {
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
     zIndex: isDragging ? 1000 : 1,
-    width: width,
-    height: height,
     padding: "12px",
     borderRadius: "8px",
     border: `1px solid rgba(255, 255, 255, 0.1)`,
@@ -75,7 +77,6 @@ export const CanvasItem = ({ element, onResize }: CanvasItemProps) => {
       {...attributes} // <-- Atributos de dnd-kit AQUÍ
       onMouseDown={handleMouseDown} // Manejador para evitar arrastre en handles
       onTouchStart={handleMouseDown} // Importante para dispositivos táctiles
-      {...listeners} // <-- Listeners de dnd-kit AQUÍ
       style={style} // <-- Aplica posición Y TAMAÑO AQUÍ
       className="select-none" // Evita seleccionar texto
     >
@@ -83,8 +84,11 @@ export const CanvasItem = ({ element, onResize }: CanvasItemProps) => {
       {/* Resizable necesita conocer el tamaño, pero su función es añadir handles y reportar cambios */}
       <Resizable
         size={{ width, height }} // Le decimos a Resizable el tamaño CONCETUAL del estado
-        onResize={handleResize} // Llama handleResize DURANTE redimensionamiento
-        onResizeStop={handleResizeStop} // Llama handleResizeStop al soltar
+        onResizeStart={() => setIsResizing(true)}
+        onResizeStop={(e, dir, ref, delta) => {
+          setIsResizing(false);
+          onResize(id, ref.offsetWidth, ref.offsetHeight);
+        }} // Llama handleResizeStop al soltar
         enable={{
           top: false,
           right: true,
@@ -98,26 +102,21 @@ export const CanvasItem = ({ element, onResize }: CanvasItemProps) => {
         minWidth={20} // Opcional: tamaño mínimo
         minHeight={20} // Opcional: tamaño mínimo
         lockAspectRatio={true} // Si quieres mantener la proporción
-        // --- ¡CRÍTICO! Añade la clase personalizada 'dnd-cancel-handle' a TODOS los handles habilitados ---
         handleClasses={{
           bottomRight: "resize-handle dnd-cancel-handle", // <-- Clase personalizada
           right: "resize-handle dnd-cancel-handle", // <-- Añádela aquí
           bottom: "resize-handle dnd-cancel-handle", // <-- Añádela aquí
-          // Asegúrate de añadirla a cualquier otro handle que habilites en 'enable'
         }}
-        // Estilo para el wrapper de Resizable: debe llenar su padre (el div exterior)
+        data-no-dnd="true"
         style={{ position: "relative", width: "100%", height: "100%" }}
       >
-        {/* --- Renderiza el contenido usando el nuevo componente --- */}
-        <CanvasItemContent
-          type={type}
-          label={label}
-          colorClass={colorClass}
-          // Pasa aquí otras props de contenido si las desestructuraste arriba
-          // textContent={textContent}
-          // imageUrl={imageUrl}
-          // ...
-        />
+        <div
+          {...listeners}
+          {...attributes}
+          className="cursor-grab absolute top-0 left-0 p-1 h-full w-full"
+          title="Arrastrar"
+        ></div>
+        <CanvasItemContent type={type} label={label} colorClass={colorClass} />
       </Resizable>
     </div>
   );

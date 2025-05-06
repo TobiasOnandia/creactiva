@@ -9,41 +9,44 @@ import {
   PointerSensor,
 } from "@dnd-kit/core";
 
-import CanvasArea from "@/components/editor/canvas/CanvasArea";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RenderDragOverlayContent } from "@/helpers/RenderDragOverlayContent";
 import { useDndCanvas } from "@/hooks/useDndCanvas";
-// Importa el modificador personalizado
 import { restrictCanvasItemsModifier } from "@/modifiers/restrictCanvasItemsModifier";
+import CanvasArea from "@/components/editor/canvas/CanvasArea";
+// Si usas Zustand, puedes importar el store aquí si necesitas algo globalmente
+// import { useCanvasStore } from "@/store/canvasStore";
 
 export default function Home() {
+  // Obtiene solo lo que el hook devuelve ahora (manejadores y estado activo)
   const {
-    activeItemData,
+    activeItemData, // Necesitamos esto para saber si es un item de canvas
     handleDragStart,
     handleDragEnd,
     handleDragCancel,
-    handleCanvasRectChange, // Esta función la pasamos a CanvasArea
-    handleCanvasItemResize,
+    handleCanvasRectChange,
   } = useDndCanvas();
 
   const sensors = useSensors(useSensor(PointerSensor));
 
   return (
-    // Pasa el modificador personalizado en el array 'modifiers'
     <DndContext
       sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
-      modifiers={[restrictCanvasItemsModifier]} // <-- ¡Aplícalo aquí!
+      modifiers={[restrictCanvasItemsModifier]}
     >
       <CanvasArea onCanvasRectChange={handleCanvasRectChange} />
-
       <Sidebar />
-
-      <DragOverlay>
-        {activeItemData ? RenderDragOverlayContent(activeItemData) : null}
-      </DragOverlay>
+      {/* --- DragOverlay --- */}
+      {/* Renderiza el DragOverlay SOLO si hay un elemento activo Y NO es un item del canvas */}
+      {activeItemData && !activeItemData.type ? (
+        <DragOverlay>
+          {/* Renderiza el contenido del overlay usando los datos activos */}
+          {RenderDragOverlayContent(activeItemData)}
+        </DragOverlay>
+      ) : null}{" "}
     </DndContext>
   );
 }
