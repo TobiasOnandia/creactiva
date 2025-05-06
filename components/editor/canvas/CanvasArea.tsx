@@ -6,7 +6,7 @@ import { useRef, useEffect, useCallback } from "react"; // Importa useRef y useE
 import { CanvasElement } from "@/types/DragAndDrop.types"; // Importa el tipo CanvasElement
 import { CanvasItem } from "./CanvasItem"; // Importa el nuevo componente CanvasItem
 import { useCanvasStore } from "@/store/canvasStore";
-import { BackgroundCanvas } from "../background/BackgroundCanvas";
+import { BackgroundCanvas } from "../../background/BackgroundCanvas";
 
 interface CanvasAreaProps {
   // Añade una prop para comunicar sus dimensiones al padre (Home/hook)

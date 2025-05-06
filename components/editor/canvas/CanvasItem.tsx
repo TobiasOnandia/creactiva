@@ -2,7 +2,7 @@
 import { useDraggable } from "@dnd-kit/core";
 import { Resizable } from "re-resizable";
 // Importa el nuevo componente de contenido
-import { CanvasItemContent } from "@/components/Editor/content/CanvasItemContent";
+import { CanvasItemContent } from "@/components/editor/content/CanvasItemContent";
 import { CanvasItemProps } from "@/types/DragAndDrop.types";
 
 export const CanvasItem = ({

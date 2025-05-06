@@ -1,7 +1,7 @@
 "use client";
 import { mainNavItems } from "@/config";
 import { useState } from "react";
-import { SecondaryPanel } from "../Editor/SecondaryPanel";
+import { SecondaryPanel } from "@/components/editor/panel/SecondaryPanel";
 
 export function Sidebar() {
   const [open, setOpen] = useState(false);

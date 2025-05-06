@@ -9,7 +9,7 @@ import {
   PointerSensor,
 } from "@dnd-kit/core";
 
-import CanvasArea from "@/components/Editor/CanvasArea";
+import CanvasArea from "@/components/editor/canvas/CanvasArea";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RenderDragOverlayContent } from "@/helpers/RenderDragOverlayContent";
 import { useDndCanvas } from "@/hooks/useDndCanvas";
