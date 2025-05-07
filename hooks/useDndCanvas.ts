@@ -97,7 +97,7 @@ export const useDndCanvas = (): UseDndCanvasReturn => {
           itemWidth = DEFAULT_ITEM_WIDTH;
           itemHeight = DEFAULT_ITEM_HEIGHT;
           movingItemId = null;
-          
+
           // Clear active state after adding new element
           clearActiveState();
           return;
