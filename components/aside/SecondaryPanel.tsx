@@ -1,6 +1,6 @@
 import { PuzzleIcon } from "lucide-react";
-import { SectionPanel } from "./SectionsPanel";
 import { sections } from "@/config";
+import { SectionPanel } from "@/components/aside/SectionsPanel";
 
 export const SecondaryPanel = () => {
   return (

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { mainNavItems } from "@/config";
-import { SecondaryPanel } from "../SecondaryPanel";
+import { SecondaryPanel } from "../aside/SecondaryPanel";
 import { TemplatesPanel } from "../templates/TemplatesPanel";
 
 export function Sidebar() {

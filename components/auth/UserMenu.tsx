@@ -8,7 +8,7 @@ export const UserMenu = () => {
   const auth = useAuth();
 
   return (
-    <section className="relative group">
+    <section className="relative group z-50">
       <button className="flex items-center gap-2 rounded-full p-2 bg-neutral-800  hover:bg-neutral-700 transition-colors">
         <User className="text-neutral-400 w-5 h-5" />
       </button>

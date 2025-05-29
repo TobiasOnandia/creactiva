@@ -1,12 +1,5 @@
 import { categories } from "@/config";
-import {
-  FilterIcon,
-  LayoutGridIcon,
-  LayoutTemplate,
-  PlusIcon,
-  SearchIcon,
-  StarIcon,
-} from "lucide-react";
+import { LayoutTemplate, PlusIcon, SearchIcon, StarIcon } from "lucide-react";
 
 export const templates = [
   {

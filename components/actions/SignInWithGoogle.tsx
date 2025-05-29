@@ -1,5 +1,4 @@
 "use client";
-import { useAuth } from "@/context/AuthProvider";
 import { supabaseClient } from "@/utils/supabase/client";
 export const SignInWithGoogle = () => {
   const handleSignInWithGoogle = async () => {
