@@ -27,7 +27,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} bg-neutral-900 antialiased`}>
+      <body
+        className={`${montserrat.variable} bg-neutral-900 antialiased flex flex-row-reverse`}
+      >
         <AuthProvider auth={user}>{children}</AuthProvider>
       </body>
     </html>

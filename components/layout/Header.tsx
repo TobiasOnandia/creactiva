@@ -6,7 +6,7 @@ import { DeviceViewSwitcher } from "@/components/ui/DeviceViewSwitcher";
 
 export const Header = () => {
   return (
-    <header className="mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 md:gap-8 bg-neutral-900/80  h-20 border-b border-white/10 transition-all duration-300 ease-in-out">
+    <header className="mx-auto flex-1 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 md:gap-8 bg-neutral-900/80  h-20 border-b border-white/10 transition-all duration-300 ease-in-out">
       <Link
         href="/"
         className="group flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg transition-transform hover:scale-[0.98]"
