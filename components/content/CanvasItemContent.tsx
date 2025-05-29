@@ -1,5 +1,4 @@
 import React from "react";
-import { StarIcon, ImageIcon, VideoIcon } from "lucide-react";
 import { ItemRenderers } from "../canvas/ItemRenderers";
 
 type CanvasItemType =
@@ -29,8 +28,8 @@ export const CanvasItemContent = ({ type }: CanvasItemContentProps) => {
   }
 
   return (
-    <div className="text-sm text-neutral-300 text-center w-full h-full flex items-center justify-center p-2 border border-dashed border-neutral-600 rounded">
+    <p className="text-sm text-neutral-300 text-center w-full h-full flex items-center justify-center p-2 border border-dashed border-neutral-600 rounded">
       Item: {type} - Contenido no definido
-    </div>
+    </p>
   );
 };
