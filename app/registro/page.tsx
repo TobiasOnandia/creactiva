@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useActionState, useState } from 'react';
 import { SignInWithGoogle } from '@/components/actions/SignInWithGoogle';
 import { Separator } from '@/components/ui/form/Separator';
 import { FormField } from '@/components/ui/form/FormField'; 
@@ -12,6 +12,17 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreedToTerms] = useState(false);
+
+  const [, formAction, isLoading] = useActionState((_:void | null, formData: FormData) => {
+    const username = formData.get("username") as string
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
+    const confirmPassword = formData.get("confirmPassword") as string
+
+    console.log(username,email,password, confirmPassword)
+
+  }, null)
+
 
 
   return (
@@ -27,9 +38,10 @@ export default function RegisterPage() {
         </>
       }
     >
-      <form  className="pt-6 flex flex-col gap-4"> 
+      <form action={formAction}  className="pt-6 flex flex-col gap-4"> 
         <FormField
           id="full-name"
+          name='username'
           label="Nombre completo"
           type="text"
           placeholder="Tu nombre"
@@ -37,6 +49,7 @@ export default function RegisterPage() {
 
         <FormField
           id="email"
+          name='email'
           label="Correo electrónico"
           type="email"
           placeholder="tu@email.com"
@@ -45,6 +58,7 @@ export default function RegisterPage() {
 
         <FormField
           id="password"
+          name='password'
           label="Contraseña"
           type="password"
           placeholder="••••••••"
@@ -65,6 +79,7 @@ export default function RegisterPage() {
         />
 
         <FormField
+          name='confirmPassword'
           id="confirm-password"
           label="Confirmar contraseña"
           type="password"
