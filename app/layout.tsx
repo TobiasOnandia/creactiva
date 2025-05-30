@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import { AuthProvider, useAuth } from "@/context/AuthProvider";
-import { supabaseClient } from "@/utils/supabase/client";
+import { AuthProvider } from "@/context/AuthProvider";
 import { createClient } from "@/utils/supabase/server";
 
 const montserrat = Montserrat({

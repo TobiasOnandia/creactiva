@@ -3,10 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { BackgroundCanvas } from "@/components/background/BackgroundCanvas";
 import { CanvasItemContent } from "@/components/content/CanvasItemContent";
-import { Responsive as ResponsiveGridLayout, Layout } from "react-grid-layout";
+import { Responsive, Layout, WidthProvider } from "react-grid-layout";
 
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 interface CanvasElement {
   id: string;
