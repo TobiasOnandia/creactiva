@@ -1,10 +1,11 @@
 "use client"
+import { CanvasStore } from "@/store/canvasStore";
 import { ImageIcon, StarIcon, VideoIcon } from "lucide-react";
 
-export const ItemRenderers: Record<string, React.FC<{ openStylePanel: () => void }>> = {
-  header: ({openStylePanel}) => (
-    <header onClick={openStylePanel} className="w-full h-full flex items-center px-2 py-1">
-      <h3 className="text-neutral-100 text-lg font-semibold truncate">
+export const ItemRenderers: Record<string, React.FC<{ openStylePanel: () => void, config: Partial<CanvasStore["config"]> }>> = {
+  header: ({openStylePanel, config}) => (
+    <header onClick={openStylePanel} style={config} className="w-full h-full flex items-center px-2 py-1">
+      <h3 className=" font-semibold truncate">
         Encabezado
       </h3>
     </header>

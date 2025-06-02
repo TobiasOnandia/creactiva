@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { CanvasElement } from "@/types/CanvasTypes";
 
-interface CanvasStore {
+export interface CanvasStore {
   canvasElements: CanvasElement[];
   addCanvasElement: (element: CanvasElement) => void;
   isEditMode: boolean;
@@ -11,10 +11,27 @@ interface CanvasStore {
   clearCanvas: () => void;
   isStylePanelOpen: boolean;
   openStylePanel: () => void;
+  config: {
+    backgroundColor: string;
+    color: string;
+    fontSize: string;
+    padding: string;
+    border: string;
+    borderRadius: string;
+  }
+  setConfig: (newConfig: Partial<CanvasStore["config"]>) => void;
 }
 
 export const useCanvasStore = create<CanvasStore>((set) => ({
   canvasElements: [],
+  config: {
+    backgroundColor: "#000000",
+    color: "#ffffff",
+    fontSize: "16px",
+    padding: "10px",
+    border: "1px solid #cccccc",
+    borderRadius: "4px",
+  },
   isStylePanelOpen: false,
   addCanvasElement: (element: CanvasElement) => {
     set((state) => ({
@@ -27,4 +44,5 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
   setActiveDevice: (device: "mobile" | "tablet" | "desktop") => set({ activeDevice: device }),
   clearCanvas: () => set({ canvasElements: [] }),
   openStylePanel: () => set((state) => ({ isStylePanelOpen: !state.isStylePanelOpen })),
+  setConfig: (newConfig: Partial<CanvasStore["config"]>) => set((state) => ({ config: { ...state.config, ...newConfig } })),
 }));

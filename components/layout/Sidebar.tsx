@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { mainNavItems } from "@/config";
-import { SecondaryPanel } from "../aside/SecondaryPanel";
-import { TemplatesPanel } from "../templates/TemplatesPanel";
+import { SecondaryPanel } from "@/components/aside/SecondaryPanel";
+import { TemplatesPanel } from "@/components/templates/TemplatesPanel";
 
 export function Sidebar() {
   const [open, setOpen] = useState({

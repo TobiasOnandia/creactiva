@@ -23,9 +23,10 @@ interface CanvasItemContentProps {
 export const CanvasItemContent = ({ type }: CanvasItemContentProps) => {
   const Renderer = ItemRenderers[type];
   const openStylePanel = useCanvasStore((state) => state.openStylePanel);
-
+  const config = useCanvasStore((state) => state.config);
+  console.log("CanvasItemContent type:", config, "Renderer:", Renderer);
   if (Renderer) {
-    return <Renderer openStylePanel={openStylePanel} />;
+    return <Renderer openStylePanel={openStylePanel} config={config} />;
   }
 
   return (
