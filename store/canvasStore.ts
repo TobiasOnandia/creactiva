@@ -9,10 +9,13 @@ interface CanvasStore {
   activeDevice: "mobile" | "tablet" | "desktop";
   setActiveDevice: (device: "mobile" | "tablet" | "desktop") => void;
   clearCanvas: () => void;
+  isStylePanelOpen: boolean;
+  openStylePanel: () => void;
 }
 
 export const useCanvasStore = create<CanvasStore>((set) => ({
   canvasElements: [],
+  isStylePanelOpen: false,
   addCanvasElement: (element: CanvasElement) => {
     set((state) => ({
       canvasElements: [...state.canvasElements, element],
@@ -23,4 +26,5 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
   activeDevice: "desktop",
   setActiveDevice: (device: "mobile" | "tablet" | "desktop") => set({ activeDevice: device }),
   clearCanvas: () => set({ canvasElements: [] }),
+  openStylePanel: () => set((state) => ({ isStylePanelOpen: !state.isStylePanelOpen })),
 }));

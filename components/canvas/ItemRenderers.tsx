@@ -1,12 +1,13 @@
+"use client"
 import { ImageIcon, StarIcon, VideoIcon } from "lucide-react";
 
-export const ItemRenderers: Record<string, React.FC> = {
-  header: () => (
-    <div className="w-full h-full flex items-center px-2 py-1">
+export const ItemRenderers: Record<string, React.FC<{ openStylePanel: () => void }>> = {
+  header: ({openStylePanel}) => (
+    <header onClick={openStylePanel} className="w-full h-full flex items-center px-2 py-1">
       <h3 className="text-neutral-100 text-lg font-semibold truncate">
         Encabezado
       </h3>
-    </div>
+    </header>
   ),
   text: () => (
     <div className="w-full h-full flex flex-col justify-center space-y-1 px-2 py-1">

@@ -1,4 +1,5 @@
 import { ItemRenderers } from "@/components/canvas/ItemRenderers";
+import { useCanvasStore } from "@/store/canvasStore";
 
 type CanvasItemType =
   | "header"
@@ -21,9 +22,10 @@ interface CanvasItemContentProps {
 
 export const CanvasItemContent = ({ type }: CanvasItemContentProps) => {
   const Renderer = ItemRenderers[type];
+  const openStylePanel = useCanvasStore((state) => state.openStylePanel);
 
   if (Renderer) {
-    return <Renderer />;
+    return <Renderer openStylePanel={openStylePanel} />;
   }
 
   return (
