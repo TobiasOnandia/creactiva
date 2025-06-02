@@ -99,7 +99,7 @@ export function CanvasArea() {
               isDraggable={true}
               isDroppable={true}
               autoSize={true}
-              droppingItem={{ i: "dropping-item", w: 4, h: 2 }}
+              droppingItem={{ i: "dropping-item", w: 2, h: 2 }}
               onDrop={handleDrop}
               isResizable={true}
               compactType={null}

@@ -8,6 +8,7 @@ interface CanvasStore {
   toggleEditMode: () => void;
   activeDevice: "mobile" | "tablet" | "desktop";
   setActiveDevice: (device: "mobile" | "tablet" | "desktop") => void;
+  clearCanvas: () => void;
 }
 
 export const useCanvasStore = create<CanvasStore>((set) => ({
@@ -21,4 +22,5 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
   toggleEditMode: () => set((state) => ({ isEditMode: !state.isEditMode })),
   activeDevice: "desktop",
   setActiveDevice: (device: "mobile" | "tablet" | "desktop") => set({ activeDevice: device }),
+  clearCanvas: () => set({ canvasElements: [] }),
 }));
