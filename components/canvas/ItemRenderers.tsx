@@ -6,7 +6,7 @@ export const ItemRenderers: Record<string, React.FC<{ openStylePanel: () => void
   header: ({openStylePanel, config}) => (
     <header onClick={openStylePanel} style={config} className="w-full h-full flex items-center ">
       <h3 className=" font-semibold truncate">
-        Encabezado
+        {config.content}
       </h3>
     </header>
   ),

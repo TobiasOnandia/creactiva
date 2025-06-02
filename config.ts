@@ -144,6 +144,18 @@ export const styleConfig = [
     ],
   },
   {
+    title: "Contenido",
+    dotColor: "bg-blue-500",
+    fields: [
+      {
+        type: "text",
+        label: "Título",
+        id: "title",
+        defaultValue: "Título del Elemento",
+      },
+    ],
+  },
+  {
     title: "Tipografía",
     dotColor: "bg-green-500",
     fields: [
@@ -156,7 +168,7 @@ export const styleConfig = [
         max: 72,
       },
       {
-        type: "align", // Especial
+        type: "align", 
         label: "Alineación",
       },
     ],

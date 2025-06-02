@@ -12,6 +12,7 @@ export interface CanvasStore {
   isStylePanelOpen: boolean;
   openStylePanel: () => void;
   config: {
+    content: string;
     backgroundColor: string;
     color: string;
     fontSize: string;
@@ -25,6 +26,7 @@ export interface CanvasStore {
 export const useCanvasStore = create<CanvasStore>((set) => ({
   canvasElements: [],
   config: {
+    content: "Titulo del elemento",
     backgroundColor: "#000000",
     color: "#ffffff",
     fontSize: "16px",
