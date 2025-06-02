@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
 import { Monitor, Tablet, Smartphone } from "lucide-react";
+import { useCanvasStore } from "@/store/canvasStore";
 
 type DeviceType = "mobile" | "tablet" | "desktop";
 
@@ -24,7 +24,8 @@ const DEVICE_CONFIG = {
 };
 
 export const DeviceViewSwitcher = () => {
-  const [activeDevice] = useState<DeviceType>("desktop");
+  const activeDevice = useCanvasStore((state) => state.activeDevice);
+  const setActiveDevice = useCanvasStore((state) => state.setActiveDevice);
 
   return (
     <nav className="hidden md:flex flex-1 items-center justify-center">
@@ -37,6 +38,7 @@ export const DeviceViewSwitcher = () => {
           return (
             <li key={currentDeviceType}>
               <button
+                onClick={() => setActiveDevice(currentDeviceType)}
                 className={`relative cursor-pointer flex items-center justify-center w-10 h-10 rounded-md transition-all duration-300 ease-out group
                   ${
                     isActive

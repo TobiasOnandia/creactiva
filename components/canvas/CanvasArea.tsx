@@ -11,11 +11,25 @@ import { CanvasElement } from "@/types/CanvasTypes";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
+
+const DEVICE_CONFIG = {
+  mobile: {
+    maxWidth: "max-w-sm",
+  },
+  tablet: {
+    maxWidth: "max-w-3xl",
+  },
+  desktop: {
+    maxWidth: "max-w-7xl",
+  },
+};
+
 export function CanvasArea() {
   const [currentLayout, setCurrentLayout] = useState<Layout[]>([]);
   const canvasElements = useCanvasStore((state) => state.canvasElements);
   const addCanvasElement = useCanvasStore((state) => state.addCanvasElement);
   const isEditMode = useCanvasStore((state) => state.isEditMode);
+  const activeDevice = useCanvasStore((state) => state.activeDevice);
 
   const handleLayoutChange = (newLayout: Layout[]) => {
     setCurrentLayout(newLayout);
@@ -57,8 +71,8 @@ export function CanvasArea() {
       <BackgroundCanvas />
       <section className="absolute inset-0 p-8 flex items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full">
         <article
-          className="relative z-50  flex-grow w-full h-full bg-neutral-900/80 backdrop-blur-sm  h-full border-2 border-dashed border-neutral-800 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl p-6 flex flex-col"
-            onDragOver={(e) => {
+          className={`relative z-50  flex-grow   bg-neutral-900/80 backdrop-blur-sm  h-full border-2 border-dashed border-neutral-800 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full ${DEVICE_CONFIG[activeDevice].maxWidth} p-6 flex flex-col`}
+          onDragOver={(e) => {
             e.preventDefault();
             e.stopPropagation();
           }}

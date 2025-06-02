@@ -1,4 +1,3 @@
-// src/store/canvasStore.ts
 import { create } from "zustand";
 import { CanvasElement } from "@/types/CanvasTypes";
 
@@ -7,6 +6,8 @@ interface CanvasStore {
   addCanvasElement: (element: CanvasElement) => void;
   isEditMode: boolean;
   toggleEditMode: () => void;
+  activeDevice: "mobile" | "tablet" | "desktop";
+  setActiveDevice: (device: "mobile" | "tablet" | "desktop") => void;
 }
 
 export const useCanvasStore = create<CanvasStore>((set) => ({
@@ -17,5 +18,7 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
     }));
   },
   isEditMode: false,
-  toggleEditMode: () => set((state) => ({ isEditMode: !state.isEditMode }))
+  toggleEditMode: () => set((state) => ({ isEditMode: !state.isEditMode })),
+  activeDevice: "desktop",
+  setActiveDevice: (device: "mobile" | "tablet" | "desktop") => set({ activeDevice: device }),
 }));
