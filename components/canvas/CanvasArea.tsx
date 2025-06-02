@@ -119,7 +119,7 @@ export function CanvasArea() {
             >
               {canvasElements.map((item) => (
                 <div key={item.id} className={`grid-item h-full ${isEditMode ? 'no-drag'  : '' }`}>
-                  <CanvasItemContent type={item.type} config={item.config } />
+                  <CanvasItemContent id={item.id} type={item.type} config={item.config } />
                 </div>
               ))}
             </ResponsiveGridLayout>

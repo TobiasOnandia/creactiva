@@ -20,13 +20,13 @@ type CanvasItemType =
 interface CanvasItemContentProps {
   type: CanvasItemType | string;
   config: ConfigStyle;
+  id:string
 }
 
-export const CanvasItemContent = ({ type, config }: CanvasItemContentProps) => {
+export const CanvasItemContent = ({ id,  type, config }: CanvasItemContentProps) => {
   const Renderer = ItemRenderers[type];
-  const openStylePanel = useCanvasStore((state) => state.openStylePanel);
   if (Renderer) {
-    return <Renderer openStylePanel={openStylePanel} config={config} />;
+    return <Renderer config={config} id={id} />;
   }
 
   return (
