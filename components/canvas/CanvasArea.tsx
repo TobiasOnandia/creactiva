@@ -15,7 +15,7 @@ export function CanvasArea() {
   const [currentLayout, setCurrentLayout] = useState<Layout[]>([]);
   const canvasElements = useCanvasStore((state) => state.canvasElements);
   const addCanvasElement = useCanvasStore((state) => state.addCanvasElement);
-
+  const isEditMode = useCanvasStore((state) => state.isEditMode);
 
   const handleLayoutChange = (newLayout: Layout[]) => {
     setCurrentLayout(newLayout);
@@ -54,9 +54,10 @@ export function CanvasArea() {
 
   return (
     <main className="relative w-full h-screen bg-gradient-to-br from-neutral-950 to-neutral-900/80 overflow-hidden">
+      <BackgroundCanvas />
       <section className="absolute inset-0 p-8 flex items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full">
         <article
-          className="relative z-50 bg-neutral-900/80 backdrop-blur-sm  h-full border-2 border-dashed border-neutral-800 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl p-6 flex flex-col"
+          className="relative z-50  flex-grow w-full h-full bg-neutral-900/80 backdrop-blur-sm  h-full border-2 border-dashed border-neutral-800 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl p-6 flex flex-col"
             onDragOver={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -68,7 +69,6 @@ export function CanvasArea() {
             e.currentTarget.classList.add('border-neutral-800');
           }}
         >
-          <div className="flex-grow w-full h-full">
             <ResponsiveGridLayout
               className="layout h-full"
               layouts={{
@@ -84,6 +84,7 @@ export function CanvasArea() {
               onLayoutChange={handleLayoutChange}
               isDraggable={true}
               isDroppable={true}
+              autoSize={true}
               droppingItem={{ i: "dropping-item", w: 4, h: 2 }}
               onDrop={handleDrop}
               isResizable={true}
@@ -91,14 +92,14 @@ export function CanvasArea() {
               preventCollision={true}
               style={{ minHeight: '100%' }}
               useCSSTransforms={true}
+              draggableCancel=".no-drag"
             >
               {canvasElements.map((item) => (
-                <div key={item.id} className="grid-item h-full">
+                <div key={item.id} className={`grid-item h-full ${isEditMode ? 'no-drag'  : '' }`}>
                   <CanvasItemContent type={item.type} />
                 </div>
               ))}
             </ResponsiveGridLayout>
-          </div>
         </article>
       </section>
     </main>

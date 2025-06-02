@@ -5,6 +5,8 @@ import { CanvasElement } from "@/types/CanvasTypes";
 interface CanvasStore {
   canvasElements: CanvasElement[];
   addCanvasElement: (element: CanvasElement) => void;
+  isEditMode: boolean;
+  toggleEditMode: () => void;
 }
 
 export const useCanvasStore = create<CanvasStore>((set) => ({
@@ -14,4 +16,6 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
       canvasElements: [...state.canvasElements, element],
     }));
   },
+  isEditMode: false,
+  toggleEditMode: () => set((state) => ({ isEditMode: !state.isEditMode }))
 }));

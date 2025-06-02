@@ -3,6 +3,7 @@ import { UserMenu } from "@/components/auth/UserMenu";
 import { ClearButton } from "@/components/ui/buttons/ClearButton";
 import { PublishButton } from "@/components/ui/buttons/PublishButton";
 import { DeviceViewSwitcher } from "@/components/ui/DeviceViewSwitcher";
+import { ModeToggleButton } from "@/components/ui/buttons/ModeToggleButton";
 
 export const Header = () => {
   return (
@@ -24,8 +25,8 @@ export const Header = () => {
 
       <nav className="flex items-center gap-2 sm:gap-3">
         <ClearButton />
-
         <PublishButton />
+        <ModeToggleButton />
 
         <div className="h-6 w-px bg-neutral-700 mx-2" />
 

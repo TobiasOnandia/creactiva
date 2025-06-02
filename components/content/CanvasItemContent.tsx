@@ -1,5 +1,4 @@
-import React from "react";
-import { ItemRenderers } from "../canvas/ItemRenderers";
+import { ItemRenderers } from "@/components/canvas/ItemRenderers";
 
 type CanvasItemType =
   | "header"
