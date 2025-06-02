@@ -12,8 +12,14 @@ export const ColorInput = ({
   const setConfig = useCanvasStore((state) => state.setConfig);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setConfig({ color: value });
+    if(label.toLowerCase() === "color") {
+      const value = e.target.value;
+      setConfig({ color: value });
+    }
+    if(label.toLowerCase() === "fondo") {
+      const value = e.target.value;
+      setConfig({ backgroundColor: value });
+    }
   };
 
   return (

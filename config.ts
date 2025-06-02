@@ -149,7 +149,7 @@ export const styleConfig = [
     fields: [
       {
         type: "number",
-        label: "Tamaño (px)",
+        label: "Tamaño",
         id: "fontSize",
         defaultValue: 16,
         min: 8,
@@ -167,21 +167,21 @@ export const styleConfig = [
     fields: [
       {
         type: "number",
-        label: "Padding (px)",
+        label: "Padding",
         id: "padding",
         defaultValue: 10,
         min: 0,
       },
       {
         type: "number",
-        label: "Borde (px)",
+        label: "Borde",
         id: "borderWidth",
         defaultValue: 1,
         min: 0,
       },
       {
         type: "number",
-        label: "Radio (px)",
+        label: "Radio",
         id: "borderRadius",
         defaultValue: 8,
         min: 0,

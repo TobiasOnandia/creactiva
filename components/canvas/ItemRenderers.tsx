@@ -4,7 +4,7 @@ import { ImageIcon, StarIcon, VideoIcon } from "lucide-react";
 
 export const ItemRenderers: Record<string, React.FC<{ openStylePanel: () => void, config: Partial<CanvasStore["config"]> }>> = {
   header: ({openStylePanel, config}) => (
-    <header onClick={openStylePanel} style={config} className="w-full h-full flex items-center px-2 py-1">
+    <header onClick={openStylePanel} style={config} className="w-full h-full flex items-center ">
       <h3 className=" font-semibold truncate">
         Encabezado
       </h3>

@@ -17,9 +17,24 @@ export const NumberInput = ({
   const setConfig = useCanvasStore((state) => state.setConfig);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setConfig({ fontSize: value });
-  };
+    if (label.toLowerCase() === "padding") {
+      const value = e.target.value;
+      setConfig({ padding: value });
+    }
+    if (label.toLowerCase() === "tamaño") {
+      const value = e.target.value;
+      setConfig({ fontSize: value });
+    }
+
+    if (label.toLowerCase() === "borde") {
+      const value = e.target.value;
+      setConfig({ border: `${value}px solid #cccccc` });
+    }
+    if (label.toLowerCase() === "radio") {
+      const value = e.target.value;
+      setConfig({ borderRadius: `${value}px` });
+    }
+  }
 
   return (
     <label htmlFor={id} className="text-sm flex items-center justify-between text-neutral-400">
