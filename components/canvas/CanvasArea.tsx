@@ -15,7 +15,8 @@ export function CanvasArea() {
   const [currentLayout, setCurrentLayout] = useState<Layout[]>([]);
   const canvasElements = useCanvasStore((state) => state.canvasElements);
   const addCanvasElement = useCanvasStore((state) => state.addCanvasElement);
-  
+
+
   const handleLayoutChange = (newLayout: Layout[]) => {
     setCurrentLayout(newLayout);
   };
@@ -23,7 +24,6 @@ export function CanvasArea() {
   const handleDrop = (layout: Layout[], item: Layout, e: Event) => {
     const dragEvent = e as unknown as DragEvent;
     const droppedElementType = dragEvent.dataTransfer?.getData("text/plain");
-
 
     if (!droppedElementType) {
       console.error("No se pudo obtener el tipo del elemento arrastrado");
@@ -44,6 +44,8 @@ export function CanvasArea() {
       h: 2,
       minH: 2,
       minW: 2,
+      static: false,
+      isDraggable: true,
     };
     
     addCanvasElement(newCanvasElement);
@@ -55,7 +57,10 @@ export function CanvasArea() {
       <section className="absolute inset-0 p-8 flex items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full">
         <article
           className="relative z-50 bg-neutral-900/80 backdrop-blur-sm  h-full border-2 border-dashed border-neutral-800 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl p-6 flex flex-col"
-       
+            onDragOver={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
           onDrop={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -82,9 +87,10 @@ export function CanvasArea() {
               droppingItem={{ i: "dropping-item", w: 4, h: 2 }}
               onDrop={handleDrop}
               isResizable={true}
-              compactType="vertical"
+              compactType={null}
               preventCollision={true}
               style={{ minHeight: '100%' }}
+              useCSSTransforms={true}
             >
               {canvasElements.map((item) => (
                 <div key={item.id} className="grid-item h-full">
