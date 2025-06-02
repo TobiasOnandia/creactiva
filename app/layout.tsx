@@ -3,7 +3,8 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthProvider";
 import { createClient } from "@/utils/supabase/server";
-
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],

@@ -1,63 +1,71 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { BackgroundCanvas } from "@/components/background/BackgroundCanvas";
 import { CanvasItemContent } from "@/components/content/CanvasItemContent";
 import { Responsive, Layout, WidthProvider } from "react-grid-layout";
-
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+import { useCanvasStore } from "@/store/canvasStore";
+import { CanvasElement } from "@/types/CanvasTypes";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-interface CanvasElement {
-  id: string;
-  type: string;
-}
-
 export function CanvasArea() {
-  const initialCanvasElements: CanvasElement[] = [
-    { id: "item1", type: "header" },
-    { id: "item2", type: "text" },
-    { id: "item3", type: "image" },
-    { id: "item4", type: "button" },
-    { id: "item5", type: "video" },
-    { id: "item6", type: "gallery" },
-    { id: "item7", type: "select" },
-  ];
-
   const [currentLayout, setCurrentLayout] = useState<Layout[]>([]);
-
-  useEffect(() => {
-    if (initialCanvasElements.length > 0 && currentLayout.length === 0) {
-      const generatedLayout: Layout[] = initialCanvasElements.map(
-        (item, index) => ({
-          i: item.id,
-          x: (index * 2) % 12,
-          y: Math.floor(index / 6) * 2,
-          w: 2,
-          h: 2,
-          minW: 1,
-          minH: 1,
-        })
-      );
-      setCurrentLayout(generatedLayout);
-    }
-  }, [initialCanvasElements, currentLayout]);
-
+  const canvasElements = useCanvasStore((state) => state.canvasElements);
+  const addCanvasElement = useCanvasStore((state) => state.addCanvasElement);
+  
   const handleLayoutChange = (newLayout: Layout[]) => {
     setCurrentLayout(newLayout);
   };
 
+  const handleDrop = (layout: Layout[], item: Layout, e: Event) => {
+    const dragEvent = e as unknown as DragEvent;
+    const droppedElementType = dragEvent.dataTransfer?.getData("text/plain");
+
+
+    if (!droppedElementType) {
+      console.error("No se pudo obtener el tipo del elemento arrastrado");
+      return;
+    }
+
+    const newCanvasElementId = crypto.randomUUID();
+    const newCanvasElement: CanvasElement = {
+      id: newCanvasElementId,
+      type: droppedElementType,
+    };
+
+    const newLayoutItem: Layout = {
+      i: newCanvasElementId,
+      x: item.x,
+      y: item.y,
+      w: 4,
+      h: 2,
+      minH: 2,
+      minW: 2,
+    };
+    
+    addCanvasElement(newCanvasElement);
+    setCurrentLayout((prev) => [...prev, newLayoutItem]);
+  };
+
   return (
     <main className="relative w-full h-screen bg-gradient-to-br from-neutral-950 to-neutral-900/80 overflow-hidden">
-      <BackgroundCanvas />
-
       <section className="absolute inset-0 p-8 flex items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full">
-        <article className="relative bg-neutral-900/80 backdrop-blur-sm min-h-[768px] h-auto border-2 border-dashed border-neutral-800 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl p-6">
-          {currentLayout.length > 0 ? (
+        <article
+          className="relative z-50 bg-neutral-900/80 backdrop-blur-sm  h-full border-2 border-dashed border-neutral-800 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full max-w-4xl p-6 flex flex-col"
+       
+          onDrop={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.remove('border-cyan-500');
+            e.currentTarget.classList.add('border-neutral-800');
+          }}
+        >
+          <div className="flex-grow w-full h-full">
             <ResponsiveGridLayout
-              className="layout"
+              className="layout h-full"
               layouts={{
                 lg: currentLayout,
                 md: currentLayout,
@@ -67,24 +75,24 @@ export function CanvasArea() {
               }}
               breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
               cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-              rowHeight={30}
+              rowHeight={90}
               onLayoutChange={handleLayoutChange}
               isDraggable={true}
+              isDroppable={true}
+              droppingItem={{ i: "dropping-item", w: 4, h: 2 }}
+              onDrop={handleDrop}
               isResizable={true}
               compactType="vertical"
               preventCollision={true}
+              style={{ minHeight: '100%' }}
             >
-              {initialCanvasElements.map((item) => (
-                <div key={item.id} className="grid-item">
+              {canvasElements.map((item) => (
+                <div key={item.id} className="grid-item h-full">
                   <CanvasItemContent type={item.type} />
                 </div>
               ))}
             </ResponsiveGridLayout>
-          ) : (
-            <p className="flex items-center justify-center h-full text-neutral-400">
-              Cargando elementos del canvas...
-            </p>
-          )}
+          </div>
         </article>
       </section>
     </main>
