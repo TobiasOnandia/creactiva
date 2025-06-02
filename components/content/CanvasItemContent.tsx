@@ -1,5 +1,6 @@
 import { ItemRenderers } from "@/components/canvas/ItemRenderers";
 import { useCanvasStore } from "@/store/canvasStore";
+import { ConfigStyle } from "@/types/CanvasTypes";
 
 type CanvasItemType =
   | "header"
@@ -18,12 +19,12 @@ type CanvasItemType =
 
 interface CanvasItemContentProps {
   type: CanvasItemType | string;
+  config: ConfigStyle;
 }
 
-export const CanvasItemContent = ({ type }: CanvasItemContentProps) => {
+export const CanvasItemContent = ({ type, config }: CanvasItemContentProps) => {
   const Renderer = ItemRenderers[type];
   const openStylePanel = useCanvasStore((state) => state.openStylePanel);
-  const config = useCanvasStore((state) => state.config);
   if (Renderer) {
     return <Renderer openStylePanel={openStylePanel} config={config} />;
   }

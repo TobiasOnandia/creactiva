@@ -48,6 +48,15 @@ export function CanvasArea() {
     const newCanvasElement: CanvasElement = {
       id: newCanvasElementId,
       type: droppedElementType,
+      config: {
+        backgroundColor: "#ffffff",
+        color: "#000000",
+        fontSize: "16px",
+        padding: "8px",
+        border: "1px solid #cccccc",
+        borderRadius: "4px",
+        content: "Nuevo elemento"
+      }
     };
 
     const newLayoutItem: Layout = {
@@ -110,7 +119,7 @@ export function CanvasArea() {
             >
               {canvasElements.map((item) => (
                 <div key={item.id} className={`grid-item h-full ${isEditMode ? 'no-drag'  : '' }`}>
-                  <CanvasItemContent type={item.type} />
+                  <CanvasItemContent type={item.type} config={item.config } />
                 </div>
               ))}
             </ResponsiveGridLayout>

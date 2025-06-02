@@ -9,12 +9,6 @@ import { useCanvasStore } from "@/store/canvasStore";
 
 export const StylePanel = () => {
   const isStylePanelOpen = useCanvasStore((state) => state.isStylePanelOpen);
-  const setConfig = useCanvasStore((state) => state.setConfig);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-     const value = e.target.value;
-      setConfig({ content: value });
-  }
 
   return (
     <aside className={`${isStylePanelOpen ? "block" : "hidden"} h-screen w-96 bg-neutral-900 border-l border-neutral-800 p-6 space-y-6 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full`}>
@@ -34,7 +28,6 @@ export const StylePanel = () => {
                   {field.label}
                   <input
                     type="text"
-                    onChange={handleChange}
                     id={field.id as string}
                     defaultValue={field.defaultValue as string}
                     className="w-full px-2 py-1 bg-neutral-800/50 border border-neutral-700 rounded-md text-neutral-300 text-xs focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
