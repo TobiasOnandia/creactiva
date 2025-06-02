@@ -3,12 +3,13 @@ import { useAuth } from "@/context/AuthProvider";
 import { supabaseClient } from "@/utils/supabase/client";
 import { LogIn, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const UserMenu = () => {
   const auth = useAuth();
-
+  const router = useRouter()
   return (
-    <section className="relative group z-50">
+    <section className="relative group z-100">
       <button className="flex items-center gap-2 rounded-full p-2 bg-neutral-800  hover:bg-neutral-700 transition-colors">
         <User className="text-neutral-400 w-5 h-5" />
       </button>
@@ -31,7 +32,10 @@ export const UserMenu = () => {
         </Link>
         {auth ? (
           <button
-            onClick={() => supabaseClient.auth.signOut()}
+            onClick={() => {
+              supabaseClient.auth.signOut()
+              router.push('/login')
+            }}
             className="flex items-center cursor-pointer gap-2 w-full px-3 py-2 text-sm text-red-400 hover:bg-neutral-800/50"
           >
             <LogOut className="w-4 h-4" />

@@ -1,28 +1,14 @@
 "use client";
 
-import React, { useActionState, useState } from 'react';
+import {useState } from 'react';
 import { SignInWithGoogle } from '@/components/actions/SignInWithGoogle';
 import { Separator } from '@/components/ui/form/Separator';
 import { FormField } from '@/components/ui/form/FormField'; 
 import { Checkbox } from '@/components/ui/form/Checkbox';  
 import { AuthLayout } from '@/components/ui/auth/AuthLayout'; 
+import { signup } from '@/app/actions/loginAction';
 
 export default function RegisterPage() {
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [agreedToTerms] = useState(false);
-
-  const [, formAction, isLoading] = useActionState((_:void | null, formData: FormData) => {
-    const username = formData.get("username") as string
-    const email = formData.get("email") as string
-    const password = formData.get("password") as string
-    const confirmPassword = formData.get("confirmPassword") as string
-
-    console.log(username,email,password, confirmPassword)
-
-  }, null)
-
 
 
   return (
@@ -38,7 +24,7 @@ export default function RegisterPage() {
         </>
       }
     >
-      <form action={formAction}  className="pt-6 flex flex-col gap-4"> 
+      <form action={signup}  className="pt-6 flex flex-col gap-4"> 
         <FormField
           id="full-name"
           name='username'
@@ -62,8 +48,6 @@ export default function RegisterPage() {
           label="Contraseña"
           type="password"
           placeholder="••••••••"
-          showPassword={showPassword}
-          onTogglePasswordVisibility={() => setShowPassword(!showPassword)}
           helperText={
             <ul className="mt-2 grid grid-cols-2 gap-2 text-xs">
               <li className={`flex items-center gap-1.5 text-neutral-500`}>
@@ -84,13 +68,10 @@ export default function RegisterPage() {
           label="Confirmar contraseña"
           type="password"
           placeholder="••••••••"
-          showPassword={showConfirmPassword}
-          onTogglePasswordVisibility={() => setShowConfirmPassword(!showConfirmPassword)}
         />
 
         <Checkbox
           id="terms-checkbox"
-          checked={agreedToTerms}
           label={
             <span>
               Acepto los <a href="#" className="text-cyan-400 hover:text-cyan-300">Términos de servicio</a> y la <a href="#" className="text-cyan-400 hover:text-cyan-300">Política de privacidad</a>

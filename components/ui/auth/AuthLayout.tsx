@@ -1,4 +1,3 @@
-import React from 'react';
 import { BackgroundForm } from '@/components/ui/form/BackgroundForm'; 
 
 interface AuthLayoutProps {

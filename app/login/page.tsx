@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState } from 'react';
 import { SignInWithGoogle } from "@/components/actions/SignInWithGoogle";
 import { Separator } from "@/components/ui/form/Separator";
 import { FormField } from '@/components/ui/form/FormField'; 
 import { AuthLayout } from '@/components/ui/auth/AuthLayout'; 
+import { login } from '../actions/loginAction';
 
 export default function LoginPage() {
-
   return (
     <AuthLayout
       title="Bienvenido de vuelta"
@@ -16,7 +15,7 @@ export default function LoginPage() {
         <>
           ¿No tienes una cuenta?
           <a
-            href="/register" 
+            href="/registro" 
             className="font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
           >
             Regístrate ahora
@@ -24,9 +23,10 @@ export default function LoginPage() {
         </>
       }
     >
-      <form  className="pt-6 flex flex-col gap-4">
+      <form action={login}  className="pt-6 flex flex-col gap-4">
         <FormField
           id="email"
+          name='email'
           label="Correo electrónico"
           type="email"
           placeholder="tu@email.com"
@@ -35,6 +35,7 @@ export default function LoginPage() {
 
           <FormField
             id="password"
+            name='password'
             label="contraseña"
             type="password"
             placeholder="••••••••"

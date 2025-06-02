@@ -1,5 +1,4 @@
 "use client"
-import  { useState } from 'react';
 import { Edit, Eye } from 'lucide-react';
 import { useCanvasStore } from '@/store/canvasStore';
 
