@@ -18,7 +18,7 @@ export function Sidebar() {
   };
 
   return (
-    <aside className=" flex h-screen z-50 bg-neutral-900/80 backdrop-blur-xl border-r border-white/10">
+    <aside className=" flex h-screen z-100 bg-neutral-900/80 backdrop-blur-xl border-r border-white/10">
       <section className="flex flex-col  justify-center w-16 z-50 py-4">
         <nav className="flex flex-col items-center gap-1.5 px-1.5">
           {mainNavItems.map((item) => {

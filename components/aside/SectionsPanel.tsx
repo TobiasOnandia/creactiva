@@ -1,6 +1,7 @@
 "use client";
 import { sections } from "@/config";
 import { PlusCircleIcon } from "lucide-react";
+import { Section } from "../ui/panel/Section";
 
 export const SectionPanel = ({ title, elements }: (typeof sections)[0]) => {
   const handleDragStart = (e: React.DragEvent<HTMLElement>) => {
@@ -11,17 +12,8 @@ export const SectionPanel = ({ title, elements }: (typeof sections)[0]) => {
   };
 
   return (
-    <article className="space-y-2">
-      <header className="flex items-center gap-2 px-1">
-        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
-        <h4 className="text-sm font-medium text-neutral-300 tracking-wide flex-1">
-          {title}
-        </h4>
-        <span className="text-xs text-neutral-500 bg-neutral-800/50 px-2 py-0.5 rounded-full">
-          {elements.length}
-        </span>
-      </header>
 
+    <Section title={title} dotColor="bg-cyan-500">
       {elements.map((element) => (
         <section
           key={crypto.randomUUID()}
@@ -48,6 +40,7 @@ export const SectionPanel = ({ title, elements }: (typeof sections)[0]) => {
           <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-cyan-500/20 transition-colors pointer-events-none" />
         </section>
       ))}
-    </article>
+    </Section>
+      
   );
 };

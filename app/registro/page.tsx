@@ -9,8 +9,6 @@ import { AuthLayout } from '@/components/ui/auth/AuthLayout';
 import { signup } from '@/app/actions/loginAction';
 
 export default function RegisterPage() {
-
-
   return (
     <AuthLayout
       title="Crea tu cuenta"

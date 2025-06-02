@@ -122,3 +122,70 @@ export const sections = [
 ];
 
 export const categories = ["Landing", "Dashboard", "Blog", "Portfolio"];
+
+
+export const styleConfig = [
+  {
+    title: "Colores",
+    dotColor: "bg-orange-500",
+    fields: [
+      {
+        type: "color",
+        label: "Fondo",
+        id: "bgColor",
+        defaultValue: "#1f2937",
+      },
+      {
+        type: "color",
+        label: "Texto",
+        id: "textColor",
+        defaultValue: "#f9fafb",
+      },
+    ],
+  },
+  {
+    title: "Tipografía",
+    dotColor: "bg-green-500",
+    fields: [
+      {
+        type: "number",
+        label: "Tamaño (px)",
+        id: "fontSize",
+        defaultValue: 16,
+        min: 8,
+        max: 72,
+      },
+      {
+        type: "align", // Especial
+        label: "Alineación",
+      },
+    ],
+  },
+  {
+    title: "Espaciado y Borde",
+    dotColor: "bg-purple-500",
+    fields: [
+      {
+        type: "number",
+        label: "Padding (px)",
+        id: "padding",
+        defaultValue: 10,
+        min: 0,
+      },
+      {
+        type: "number",
+        label: "Borde (px)",
+        id: "borderWidth",
+        defaultValue: 1,
+        min: 0,
+      },
+      {
+        type: "number",
+        label: "Radio (px)",
+        id: "borderRadius",
+        defaultValue: 8,
+        min: 0,
+      },
+    ],
+  },
+];

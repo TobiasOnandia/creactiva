@@ -1,5 +1,4 @@
 import { Eye, EyeOff, Mail } from 'lucide-react';
-import { useState } from 'react';
 
 interface FormFieldProps {
   label: string;
