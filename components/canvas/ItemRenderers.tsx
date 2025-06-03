@@ -26,7 +26,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
 
         style={config}
         className="w-full h-full flex flex-col justify-center space-y-1 px-2 py-1"
@@ -43,14 +43,13 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
         style={config}
         className="w-full h-full flex flex-col justify-center space-y-1 px-2 py-1"
       >
-        <div className="w-11/12 h-2 bg-neutral-600 rounded-full"></div>
-        <div className="w-full h-2 bg-neutral-600 rounded-full"></div>
-        <div className="w-10/12 h-2 bg-neutral-600 rounded-full"></div>
+        <p className="">{config.content}</p>
+        <p className=""></p>
+        <p className=""></p>
       </div>
     );
   },
@@ -60,8 +59,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
         style={config}
         className="w-full h-full bg-neutral-700 flex flex-col items-center justify-center text-neutral-400 text-xs rounded"
       >
@@ -76,7 +74,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
 
         style={config}
         className="w-full h-full flex items-center justify-center p-2"
@@ -96,7 +94,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
 
         style={config}
         className="w-full h-full flex items-center px-2"
@@ -111,7 +109,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
 
         style={config}
         className="w-full h-full flex items-center justify-center"
@@ -126,7 +124,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
 
         style={config}
         className="w-full h-full bg-neutral-700 flex flex-col items-center justify-center text-neutral-400 text-xs rounded"
@@ -142,7 +140,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
 
         style={config}
         className="w-full h-full bg-neutral-700 grid grid-cols-2 grid-rows-2 gap-1 p-1 rounded"
@@ -160,7 +158,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
 
         style={config}
         className="w-full h-full bg-neutral-700 flex items-center justify-between px-2 rounded"
@@ -177,7 +175,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
 
         style={config}
         className="w-full h-full flex items-center px-2  py-1"
@@ -195,7 +193,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
 
         style={config}
         className="w-full h-full flex items-center px-2 py-1"
@@ -211,7 +209,7 @@ export const ItemRenderers: Record<
 
     return (
       <div
-               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
 
         style={config}
         className="w-full h-full flex items-center justify-center p-2"

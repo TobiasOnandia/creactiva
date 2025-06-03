@@ -60,7 +60,7 @@ export const NumberInput = ({
       <input
         type="number"
         id={id}
-        value={defaultValueNumber}
+        value={defaultValueNumber as number}
         min={1}
         max={max}
         onChange={handleChange}
