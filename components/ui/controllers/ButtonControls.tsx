@@ -9,80 +9,69 @@ export const ButtonControls = ({
   isSubmit = false,
 }: SpecificProps & { isSubmit?: boolean }) => (
   <Section title="Botón" dotColor="bg-cyan-500">
-    <div className="space-y-4">
-      {/* Texto */}
+    <label className="text-sm text-neutral-400 mb-1 block">Texto</label>
+    <input
+      type="text"
+      value={config.content || ""}
+      onChange={(e) => onChange("content", e.target.value)}
+      className="w-full px-3 py-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
+      placeholder="Texto del botón"
+    />
+
+    <ColorInput
+      label="Color de fondo"
+      id="backgroundColor"
+      defaultValue={config.backgroundColor || "#ffffff"}
+    />
+    <ColorInput
+      label="Color de texto"
+      id="color"
+      defaultValue={config.color || "#000000"}
+    />
+
+    <NumberInput
+      label="Radio de borde"
+      id="borderRadius"
+      defaultValue={parseInt(String(config.borderRadius || 0), 10)}
+      min={0}
+    />
+    <NumberInput
+      label="Ancho"
+      id="width"
+      defaultValue={parseInt(String(config.width || 1), 10)}
+      min={0}
+    />
+
+    {isSubmit && (
       <div>
-        <label className="text-sm text-neutral-400 mb-1 block">Texto</label>
-        <input
-          type="text"
-          value={config.content || ""}
-          onChange={(e) => onChange("content", e.target.value)}
+        <label className="text-sm text-neutral-400 mb-1 block">
+          Acción al enviar
+        </label>
+        <select
+          value={config.action || "submit"}
+          onChange={(e) => onChange("action", e.target.value)}
           className="w-full px-3 py-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
-          placeholder="Texto del botón"
-        />
+        >
+          <option value="submit">Enviar formulario</option>
+          <option value="url">Redirigir a URL</option>
+          <option value="function">Ejecutar función</option>
+        </select>
+
+        {config.action === "url" && (
+          <div className="mt-2">
+            <label className="text-sm text-neutral-400 mb-1 block">
+              URL de destino
+            </label>
+            <input
+              type="text"
+              value={config.url || ""}
+              onChange={(e) => onChange("url", e.target.value)}
+              className="w-full px-3 py-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
+              placeholder="https://ejemplo.com"
+            />
+          </div>
+        )}
       </div>
-
-      {/* Colores */}
-      <div className="grid grid-cols-2 gap-4">
-        <ColorInput
-          label="Color de fondo"
-          id="backgroundColor"
-          defaultValue={config.backgroundColor || "#ffffff"}
-        />
-        <ColorInput
-          label="Color de texto"
-          id="color"
-          defaultValue={config.color || "#000000"}
-        />
-      </div>
-
-      {/* Bordes */}
-      <div className="grid grid-cols-2 gap-4">
-        <NumberInput
-          label="Radio de borde"
-          id="borderRadius"
-          defaultValue={parseInt(String(config.borderRadius || 0), 10)}
-          min={0}
-        />
-        <NumberInput
-          label="Ancho"
-          id="width"
-          defaultValue={parseInt(String(config.width || 1), 10)}
-          min={0}
-        />
-      </div>
-
-      {isSubmit && (
-        <div>
-          <label className="text-sm text-neutral-400 mb-1 block">
-            Acción al enviar
-          </label>
-          <select
-            value={config.action || "submit"}
-            onChange={(e) => onChange("action", e.target.value)}
-            className="w-full px-3 py-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
-          >
-            <option value="submit">Enviar formulario</option>
-            <option value="url">Redirigir a URL</option>
-            <option value="function">Ejecutar función</option>
-          </select>
-
-          {config.action === "url" && (
-            <div className="mt-2">
-              <label className="text-sm text-neutral-400 mb-1 block">
-                URL de destino
-              </label>
-              <input
-                type="text"
-                value={config.url || ""}
-                onChange={(e) => onChange("url", e.target.value)}
-                className="w-full px-3 py-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
-                placeholder="https://ejemplo.com"
-              />
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+    )}
   </Section>
 );

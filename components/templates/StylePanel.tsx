@@ -15,8 +15,8 @@ import { StarControls } from "@/components/ui/controllers/StarControls";
 import { GalleryControls } from "@/components/ui/controllers/GalleryControls";
 import { OptionControls } from "@/components/ui/controllers/OptionControls";
 import { ButtonControls } from "@/components/ui/controllers/ButtonControls";
-import { DesignSection } from "../ui/panel/DesignSection";
-import { AppearanceSection } from "../ui/panel/AppearanceSection";
+import { DesignSection } from "@/components/ui/panel/DesignSection";
+import { AppearanceSection } from "@/components/ui/panel/AppearanceSection";
 
 
 export type SpecificProps = {
@@ -43,7 +43,6 @@ const SPECIFIC_CONTROLS: Record<
   divider: DividerControls,
   star: StarControls,
 };
-
 
 
 export const StylePanel = () => {
@@ -108,7 +107,6 @@ export const StylePanel = () => {
 
       <AppearanceSection config={config} onChange={handleChange} />
 
-      {/* Footer: Botón Eliminar */}
       <footer className="pt-4 border-t border-white/10">
         <button
           onClick={() => deleteElement(isStylePanelOpen.id)}
