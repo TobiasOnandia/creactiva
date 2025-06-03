@@ -9,11 +9,10 @@ export const ItemRenderers: Record<
 > = {
   header: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
     return (
       <header
-        onClick={() => {
-          openStylePanel(id);
-        }}
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
         style={config}
         className="w-full h-full flex items-center "
       >
@@ -23,11 +22,12 @@ export const ItemRenderers: Record<
   },
   text: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full flex flex-col justify-center space-y-1 px-2 py-1"
       >
@@ -39,11 +39,12 @@ export const ItemRenderers: Record<
   },
   paragraph: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full flex flex-col justify-center space-y-1 px-2 py-1"
       >
@@ -55,11 +56,12 @@ export const ItemRenderers: Record<
   },
   image: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full bg-neutral-700 flex flex-col items-center justify-center text-neutral-400 text-xs rounded"
       >
@@ -70,11 +72,12 @@ export const ItemRenderers: Record<
   },
   button: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full flex items-center justify-center p-2"
       >
@@ -89,11 +92,12 @@ export const ItemRenderers: Record<
   },
   divider: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full flex items-center px-2"
       >
@@ -103,11 +107,12 @@ export const ItemRenderers: Record<
   },
   star: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full flex items-center justify-center"
       >
@@ -117,11 +122,12 @@ export const ItemRenderers: Record<
   },
   video: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full bg-neutral-700 flex flex-col items-center justify-center text-neutral-400 text-xs rounded"
       >
@@ -132,11 +138,12 @@ export const ItemRenderers: Record<
   },
   gallery: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full bg-neutral-700 grid grid-cols-2 grid-rows-2 gap-1 p-1 rounded"
       >
@@ -149,11 +156,12 @@ export const ItemRenderers: Record<
   },
   carousel: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full bg-neutral-700 flex items-center justify-between px-2 rounded"
       >
@@ -165,11 +173,12 @@ export const ItemRenderers: Record<
   },
   select: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full flex items-center px-2  py-1"
       >
@@ -182,11 +191,12 @@ export const ItemRenderers: Record<
   },
   checkbox: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full flex items-center px-2 py-1"
       >
@@ -197,11 +207,12 @@ export const ItemRenderers: Record<
   },
   submit: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
     return (
       <div
-        onClick={() => {
-          openStylePanel(id);
-        }}
+               onClick={isEditMode ? () => openStylePanel(id) : undefined}
+
         style={config}
         className="w-full h-full flex items-center justify-center p-2"
       >
