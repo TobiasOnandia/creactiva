@@ -3,6 +3,7 @@ import { useState } from "react";
 import { mainNavItems } from "@/config";
 import { SecondaryPanel } from "@/components/aside/SecondaryPanel";
 import { TemplatesPanel } from "@/components/templates/TemplatesPanel";
+import { PagesPanel } from "@/components/templates/PagesPanel";
 
 export function Sidebar() {
   const [open, setOpen] = useState({
@@ -61,6 +62,8 @@ export function Sidebar() {
 
       {open.isOpen && open.panel === "add" && <SecondaryPanel />}
       {open.isOpen && open.panel === "templates" && <TemplatesPanel />}
+      {open.isOpen && open.panel === "pages" && <PagesPanel />}
+
     </aside>
   );
 }
