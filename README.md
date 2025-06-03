@@ -1,103 +1,117 @@
-Creactiva - Editor Visual de Sitios Web
-¡Bienvenido al repositorio de Creactiva! Esta aplicación es un editor visual de sitios web de arrastrar y soltar, diseñado para permitir a los usuarios construir y personalizar páginas web de manera intuitiva. Construido con tecnologías modernas para una experiencia de usuario fluida y reactiva.
+# Creactiva — Editor Visual de Sitios Web
 
-🚀 Tecnologías Utilizadas
-✨ Características Implementadas
-Aquí te presentamos las funcionalidades clave que ya están operativas en Creactiva:
+¡Bienvenido a **Creactiva**! 🎉  
+Creactiva es un editor visual de sitios web de arrastrar y soltar (drag & drop), diseñado para que los usuarios construyan y personalicen páginas web de manera intuitiva y sin necesidad de programar. Con una experiencia fluida y reactiva, podrás ver los cambios en tiempo real y ajustar cada detalle al instante.
 
-🖱️ Arrastrar y Soltar Elementos:
-Los usuarios pueden seleccionar y arrastrar elementos predefinidos (como encabezados, texto, imágenes, botones) desde un panel lateral (sidebar) y soltarlos directamente en el lienzo de diseño.
 
-📐 Diseño de Cuadrícula Interactivo:
-Los elementos en el lienzo se gestionan con react-grid-layout, lo que permite arrastrarlos y redimensionarlos libremente dentro de una cuadrícula responsiva, facilitando la organización del contenido.
+## 🚀 Tecnologías Utilizadas
 
-✏️ Modos de Edición (Layout vs. Contenido):
-La aplicación ofrece dos modos distintos para una experiencia de edición optimizada:
+- **React** 
+- **Next.js** 
+- **Zustand** 
+- **react-grid-layout** 
+- **Tailwind CSS** 
+- **Lucide React** 
+- **TypeScript** 
+- **ESLint + Prettier**
 
-Modo Layout: Permite a los usuarios organizar, mover y redimensionar los elementos en la cuadrícula.
 
-Modo Contenido: Deshabilita la interacción de la cuadrícula y permite a los usuarios editar el contenido real de cada elemento (ej. cambiar el texto de un encabezado, la URL de una imagen).
+## ✨ Características Implementadas
 
-✍️ Edición de Contenido en Línea:
-En el "Modo Contenido", los elementos como texto, encabezados, botones, imágenes y videos se vuelven editables directamente en el lienzo, proporcionando una experiencia WYSIWYG (Lo que ves es lo que obtienes).
+1. ### 🖱️ Arrastrar y Soltar Elementos  
+   - Panel lateral (sidebar) con elementos predefinidos: encabezados, texto, imágenes, botones, videos, galería, etc.  
+   - Permite arrastrar desde el sidebar y soltar en el lienzo principal (canvas).  
 
-🎨 Panel de Estilos (Diseño):
-Se ha creado un panel lateral dedicado para ajustar las propiedades de estilo del elemento seleccionado, incluyendo:
+2. ### 📐 Diseño de Cuadrícula Interactivo  
+   - Utiliza **react-grid-layout** para manejar la posición y tamaño de cada elemento.  
+   - Soporta arrastrar, redimensionar y soltar dentro de una cuadrícula responsiva.  
 
-Colores (fondo, texto).
+3. ### ✏️ Modos de Edición (Layout vs. Contenido)  
+   - **Modo Layout**:  
+     - Organizar, mover y redimensionar elementos en la cuadrícula.  
+     - Ideal para estructurar la página sin editar el contenido.  
+   - **Modo Contenido**:  
+     - Deshabilita la interacción de la cuadrícula y permite editar texto, imágenes y otros contenidos directamente en el canvas.  
+     - Experiencia WYSIWYG (Lo que ves es lo que obtienes).  
 
-Tipografía (tamaño de fuente, alineación).
+4. ### ✍️ Edición de Contenido en Línea  
+   - Todos los elementos (texto, encabezados, botones, imágenes, videos) son editables directamente en el lienzo cuando estás en **Modo Contenido**.  
+   - Cambia texto, URLs de imagen, enlaces de video y más sin salir del canvas.
 
-Espaciado (padding).
+5. ### 🎨 Panel de Estilos (Style Panel)  
+   - Panel lateral dedicado para ajustar propiedades de estilo del elemento seleccionado.  
+   - Propiedades disponibles:
+     - **Colores**: fondo, texto.  
+     - **Tipografía**: tamaño de fuente, alineación, familia de fuentes (configurable).  
+     - **Espaciado**: padding, margen (próximamente).  
+     - **Bordes**: ancho, color y radio.  
 
-Bordes (ancho, radio).
+6. ### ⚙️ Panel de Configuración del Sitio  
+   - Sub-sidebar para ajustes globales que afectan a todo el sitio:
+     - **Información general**: nombre del sitio, favicon, logo.  
+     - **SEO**: título, meta descripción, palabras clave.  
+     - **Scripts personalizados**: insertar código en `<head>` o antes de `</body>`.  
 
-⚙️ Panel de Configuración del Sitio:
-Un sub-sidebar diseñado para ajustes globales que afectan a todo el sitio web, como:
+7. ### 📦 Gestión de Estado Centralizada  
+   - **Zustand** maneja el estado global de:
+     - `canvasElements`: estructura y datos de cada elemento en el canvas.  
+     - `currentLayout`: posiciones y tamaños para react-grid-layout.  
+     - `isEditMode`: determina si estamos en modo “Layout” o “Contenido”.  
+     - `selectedElementId`: ID del elemento actualmente seleccionado.  
 
-Información general (nombre del sitio, favicon).
+8. ### 🧩 Componentes Reutilizables y Modulares  
+   - **FormField**, **Checkbox**, **AuthLayout**, **SectionPanel**, **StylePanel**, **SiteSettingsPanel**, **ItemRenderers**, etc.  
+   - Fomentan la consistencia visual y facilitan el mantenimiento a largo plazo.  
 
-Configuración SEO (título, meta descripción).
+---
 
-Inserción de código personalizado (<head>, </body>).
+## 📋 Tareas Pendientes (Roadmap)
 
-📦 Gestión de Estado Centralizada:
-Se utiliza Zustand para manejar el estado global de los elementos del canvas y sus configuraciones, asegurando una sincronización eficiente y un rendimiento óptimo.
+Por el momento, las siguientes funcionalidades están planeadas o en desarrollo. ¡Contribuciones y feedback son muy bienvenidos! 🙌
 
-🧩 Componentes Reutilizables:
-La arquitectura se basa en componentes UI modulares (FormField, Checkbox, AuthLayout, SectionPanel, StylePanel, SiteSettingsPanel, ItemRenderers) para promover la reutilización del código, la consistencia visual y facilitar el mantenimiento.
+### 1. Eliminar Elementos del Canvas
+- [ ] Agregar un botón o icono de “papelera” al seleccionar un elemento (Modo Layout o Contenido).  
+- [ ] Implementar la lógica en `useCanvasStore` para remover un elemento por su ID.  
+- [ ] Asegurar que el elemento se elimine también de `currentLayout` en `CanvasArea`.
 
-🚧 Tareas Pendientes
-Para que Creactiva sea una herramienta completa y robusta, las siguientes tareas deben ser abordadas:
+### 2. Selección de Elementos
+- [ ] Implementar la lógica para seleccionar un elemento en el canvas (p. ej. al hacer clic sobre él).  
+- [ ] Al seleccionar, el `StylePanel` debe abrirse mostrando las propiedades de estilo del elemento.  
+- [ ] Crear un estado global `selectedElementId` en `useCanvasStore` y mantenerlo sincronizado.
 
-Eliminar Elementos del Canvas:
+### 3. Conexión del Panel de Estilos
+- [ ] Conectar los inputs del `StylePanel` a la acción `updateCanvasElement` en `useCanvasStore` para aplicar estilos en tiempo real.  
+- [ ] Asegurar que los valores de los inputs reflejen el estilo actual del elemento seleccionado.
 
-[ ] Agregar un botón o una opción para eliminar un único elemento del canvas. Esto podría ser un icono de "papelera" que aparece al seleccionar un elemento o al pasar el ratón sobre él en "Modo Layout" o "Modo Contenido".
+### 4. Lógica del Panel de Configuración del Sitio
+- [ ] Implementar la lógica para guardar y cargar configuraciones globales (nombre del sitio, favicon, SEO, scripts).  
+- [ ] Validar formularios y mostrar feedback de errores (por ejemplo, URL inválida, campos obligatorios).
 
-[ ] Implementar la lógica en useCanvasStore para remover un elemento por su ID.
+### 5. Persistencia de Datos
+- [ ] Integrar un sistema de persistencia (por ejemplo, Firestore, Supabase o `localStorage`) para:
+  - Guardar `currentLayout` y `canvasElements`.  
+  - Restaurar el diseño del usuario al recargar la página.  
+- [ ] Manejar versiones o “snapshots” del proyecto para permitir “deshacer/rehacer”.
 
-[ ] Asegurarse de que el elemento también se elimine del currentLayout en CanvasArea.
+### 6. Más Tipos de Elementos
+- [ ] Ampliar `SectionPanel` con nuevos componentes:
+  - Galerías avanzadas (carruseles de imágenes, sliders).  
+  - Formularios de contacto (inputs, selects, checkbox, botones de envío).  
+  - Mapas interactivos (Google Maps, OpenStreetMap).  
+  - Iconos e ilustraciones SVG personalizables.  
+- [ ] Desarrollar vistas de contenido editable y estilos configurables para cada tipo.
 
-Selección de Elementos:
+### 7. Mejoras de UI/UX
+- [ ] Implementar “Deshacer/Rehacer” para las acciones del editor (ctrl+Z, ctrl+Y).  
+- [ ] Añadir herramientas de alineación y distribución (alinear a la izquierda, centrar, justificar).  
+- [ ] Mejorar el feedback visual al arrastrar y redimensionar (guías, sombras, líneas de ayuda).  
+- [ ] Animaciones suaves con Framer Motion o CSS transitions para una experiencia más pulida.
 
-[ ] Implementar la lógica para seleccionar un elemento en el canvas (ej. al hacer clic sobre él).
+### 8. Validación de Formularios
+- [ ] Implementar validación robusta en formularios de registro e inicio de sesión.  
+- [ ] Mostrar mensajes de error, advertencia y éxito (toasts o banners).
 
-[ ] Al seleccionar un elemento, el StylePanel debería abrirse y mostrar las propiedades de estilo del elemento seleccionado.
-
-[ ] Desarrollar un estado global para el elemento seleccionado (ej. selectedElementId en useCanvasStore).
-
-Conectar el Panel de Estilos:
-
-[ ] Conectar los inputs del StylePanel a la acción updateCanvasElement en useCanvasStore para que los cambios de estilo se apliquen al elemento seleccionado en tiempo real.
-
-[ ] Asegurarse de que los valores de los inputs en el StylePanel reflejen el estilo actual del elemento seleccionado.
-
-Lógica del Panel de Configuración del Sitio:
-
-[ ] Implementar la lógica para guardar y cargar las configuraciones globales del sitio (nombre del sitio, favicon, SEO, scripts).
-
-Persistencia de Datos:
-
-[ ] Implementar un sistema de persistencia (ej. Firestore, localStorage) para guardar el currentLayout y los canvasElements (incluyendo sus data y config) para que los diseños de los usuarios no se pierdan al recargar la página.
-
-Más Tipos de Elementos:
-
-[ ] Añadir más tipos de componentes al SectionPanel (ej. galerías de imágenes avanzadas, formularios, mapas, iconos, etc.).
-
-[ ] Desarrollar sus respectivas vistas de contenido editable y opciones de estilo.
-
-Mejoras de UI/UX:
-
-[ ] Implementar un sistema de "deshacer/rehacer" para las acciones del editor.
-
-[ ] Añadir herramientas de alineación y distribución para los elementos.
-
-[ ] Mejorar el feedback visual durante el arrastre y redimensionamiento.
-
-Validación de Formularios:
-
-[ ] Implementar validación más robusta para los campos de registro e inicio de sesión.
-
-Funcionalidad de Guardar/Publicar:
-
-[ ] Desarrollar la capacidad de guardar el sitio web en un formato exportable o publicarlo.
+### 9. Funcionalidad de Guardar y Publicar
+- [ ] Permitir exportar el sitio web en formato estático (`.zip`, HTML/CSS/JS).  
+- [ ] Integrar un flujo de “publicación” automático (por ejemplo, despliegue a Netlify, Vercel o GitHub Pages).  
+- [ ] Mostrar vista previa del sitio final en un subdominio temporal.
