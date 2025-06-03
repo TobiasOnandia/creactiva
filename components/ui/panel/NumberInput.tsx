@@ -22,7 +22,6 @@ export const NumberInput = ({
   label,
   id,
   defaultValue,
-  min,
   max,
 }: NumberInputProps) => {
   const updateElementConfig = useCanvasStore((state) => state.updateElementConfig);
@@ -37,11 +36,13 @@ export const NumberInput = ({
 
   const configKey = INPUT_TO_CONFIG_KEY[id];
 
+
   const currentValue =
     configKey && selectedElement?.config
-      ? selectedElement.config[configKey] ?? defaultValue
+      ? selectedElement.config[configKey]
       : defaultValue;
 
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isStylePanelOpen.id) return;
     if (!configKey) return; 
@@ -59,7 +60,7 @@ export const NumberInput = ({
         type="number"
         id={id}
         value={currentValue}
-        min={min}
+        min={0}
         max={max}
         onChange={handleChange}
         className="w-20 px-2 py-1 bg-neutral-800/50 border border-neutral-700 rounded-md text-neutral-300 text-xs focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"

@@ -17,6 +17,7 @@ export const ColorInput = ({
     (element) => element.id === isStylePanelOpen.id
   );
 
+
   const currentValue = selectedElement?.config?.[
     id === "bgColor" ? "backgroundColor" : "color"
   ] || defaultValue;

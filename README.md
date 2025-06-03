@@ -70,18 +70,18 @@ Creactiva es un editor visual de sitios web de arrastrar y soltar (drag & drop),
 Por el momento, las siguientes funcionalidades están planeadas o en desarrollo. ¡Contribuciones y feedback son muy bienvenidos! 🙌
 
 ### 1. Eliminar Elementos del Canvas
-- [ ] Agregar un botón o icono de “papelera” al seleccionar un elemento (Modo Layout o Contenido).  
-- [ ] Implementar la lógica en `useCanvasStore` para remover un elemento por su ID.  
-- [ ] Asegurar que el elemento se elimine también de `currentLayout` en `CanvasArea`.
+- [x] Agregar un botón o icono de “papelera” al seleccionar un elemento (Modo Layout o Contenido).  
+- [x] Implementar la lógica en `useCanvasStore` para remover un elemento por su ID.  
+- [x] Asegurar que el elemento se elimine también de `currentLayout` en `CanvasArea`.
 
 ### 2. Selección de Elementos
-- [ ] Implementar la lógica para seleccionar un elemento en el canvas (p. ej. al hacer clic sobre él).  
-- [ ] Al seleccionar, el `StylePanel` debe abrirse mostrando las propiedades de estilo del elemento.  
-- [ ] Crear un estado global `selectedElementId` en `useCanvasStore` y mantenerlo sincronizado.
+- [x] Implementar la lógica para seleccionar un elemento en el canvas (p. ej. al hacer clic sobre él).  
+- [x] Al seleccionar, el `StylePanel` debe abrirse mostrando las propiedades de estilo del elemento.  
+- [x] Crear un estado global `selectedElementId` en `useCanvasStore` y mantenerlo sincronizado.
 
 ### 3. Conexión del Panel de Estilos
-- [ ] Conectar los inputs del `StylePanel` a la acción `updateCanvasElement` en `useCanvasStore` para aplicar estilos en tiempo real.  
-- [ ] Asegurar que los valores de los inputs reflejen el estilo actual del elemento seleccionado.
+- [x] Conectar los inputs del `StylePanel` a la acción `updateCanvasElement` en `useCanvasStore` para aplicar estilos en tiempo real.  
+- [x] Asegurar que los valores de los inputs reflejen el estilo actual del elemento seleccionado.
 
 ### 4. Lógica del Panel de Configuración del Sitio
 - [ ] Implementar la lógica para guardar y cargar configuraciones globales (nombre del sitio, favicon, SEO, scripts).  
