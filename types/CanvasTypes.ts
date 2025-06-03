@@ -2,10 +2,10 @@
 export interface ConfigStyle {
     backgroundColor: string;
     color: string;
-    fontSize: string;
-    padding: string;
-    border: string;
-    borderRadius: string;
+    fontSize: number;
+    padding: number;
+    border: number;
+    borderRadius: number;
     content: string;
 }
 

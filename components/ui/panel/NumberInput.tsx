@@ -11,7 +11,6 @@ interface NumberInputProps {
 }
 
 const INPUT_TO_CONFIG_KEY: Record<string, keyof ConfigStyle> = {
-  title: "content",
   fontSize: "fontSize",
   padding: "padding",
   borderWidth: "border",
@@ -43,6 +42,8 @@ export const NumberInput = ({
       : defaultValue;
 
   
+  const defaultValueNumber = isNaN(currentValue as number) ? defaultValue : currentValue;
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isStylePanelOpen.id) return;
     if (!configKey) return; 
@@ -59,8 +60,8 @@ export const NumberInput = ({
       <input
         type="number"
         id={id}
-        value={currentValue}
-        min={0}
+        value={defaultValueNumber}
+        min={1}
         max={max}
         onChange={handleChange}
         className="w-20 px-2 py-1 bg-neutral-800/50 border border-neutral-700 rounded-md text-neutral-300 text-xs focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
