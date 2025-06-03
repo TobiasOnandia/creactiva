@@ -11,6 +11,15 @@ export const StylePanel = () => {
   const isStylePanelOpen = useCanvasStore((state) => state.isStylePanelOpen);
   const deleteElement = useCanvasStore((state) => state.deleteElement);
   const restoreElement = useCanvasStore((state) => state.restoreElement);
+  const updateElementConfig = useCanvasStore((state) => state.updateElementConfig);
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    updateElementConfig(isStylePanelOpen.id, { content: value });
+  };
+  
+  
   return (
     <aside 
       className={`${isStylePanelOpen.isOpen ? "block" : "hidden"} h-screen w-96 bg-neutral-900/90 backdrop-blur-lg border-l border-white/10 shadow-2xl shadow-black/50 p-6 space-y-6 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full`}
@@ -53,6 +62,7 @@ export const StylePanel = () => {
                   <input
                     type="text"
                     id={field.id as string}
+                    onChange={handleChange}
                     defaultValue={field.defaultValue as string}
                     className="w-full px-3 py-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
                   />

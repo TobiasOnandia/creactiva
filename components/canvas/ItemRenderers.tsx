@@ -16,7 +16,7 @@ export const ItemRenderers: Record<
         style={config}
         className="w-full h-full flex items-center "
       >
-        <h3 className=" font-semibold truncate">Encabezado</h3>
+        <h3 className=" font-semibold truncate">{config.content}</h3>
       </header>
     );
   },
