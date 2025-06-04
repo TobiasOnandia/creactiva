@@ -11,7 +11,6 @@ import { CanvasElement } from "@/types/CanvasTypes";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-
 const DEVICE_CONFIG = {
   mobile: {
     maxWidth: "max-w-sm",
@@ -51,10 +50,10 @@ export function CanvasArea() {
       config: {
         backgroundColor: "#ffffff",
         color: "#000000",
-        fontSize: "16px",
-        padding: "8px",
+        fontSize: 16,
+        padding: 8,
         border: "1px solid #cccccc",
-        borderRadius: "4px",
+        borderRadius: 4,
         content: "Nuevo elemento"
       }
     };

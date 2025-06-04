@@ -210,7 +210,6 @@ export const ItemRenderers: Record<
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
         style={config}
         className="w-full h-full flex items-center justify-center p-2"
       >
@@ -223,4 +222,64 @@ export const ItemRenderers: Record<
       </div>
     );
   },
+  landing: ({config, id}) => {
+    return (
+       <div className="space-y-1.5">
+        <div className="h-3 bg-cyan-500/30 rounded-full" />
+        <div className="h-8 bg-purple-500/30 rounded-lg" />
+        <div className="h-20 bg-rose-500/30 rounded-lg" />
+        <div className="h-24 bg-emerald-500/30 rounded-lg" />
+        <div className="h-3 bg-cyan-500/30 rounded-full" />
+      </div>
+    )
+  },
+  dashboard: ({config, id}) => {
+    return (
+        <div className="flex gap-1.5 h-28">
+        <div className="w-1/4 bg-amber-500/30 rounded-lg" />
+        <div className="flex-1 space-y-1.5">
+          <div className="h-4 bg-blue-500/30 rounded-full" />
+          <div className="h-22 bg-indigo-500/30 rounded-lg" />
+        </div>
+      </div>
+    )
+  },
+  blog: ({config, id}) => {
+    return (
+       <div className="space-y-1.5 h-24">
+        <div className="h-3 bg-cyan-500/30 rounded-full" />
+        <div className="flex gap-1.5 flex-1">
+          <div className="w-3/4 bg-purple-500/30 rounded-lg" />
+          <div className="w-1/4 bg-emerald-500/30 rounded-lg" />
+        </div>
+        <div className="h-3 bg-cyan-500/30 rounded-full" />
+      </div>
+    )
+  },
+  portfolio: ({config, id}) => {
+    return (
+       <div className="space-y-1.5 h-24">
+        <div className="h-12 bg-rose-500/30 rounded-lg" />
+        <div className="grid grid-cols-2 gap-1.5">
+          <div className="h-6 bg-blue-500/30 rounded" />
+          <div className="h-6 bg-blue-500/30 rounded" />
+        </div>
+        <div className="h-6 bg-amber-500/30 rounded-lg" />
+      </div>
+    )
+  }
+  ,
+  ecommerce: ({config, id}) => {
+    return (
+      <div className="space-y-1.5 h-24">
+        <div className="h-6 bg-purple-500/30 rounded-lg" />
+        <div className="h-4 bg-cyan-500/30 rounded-full" />
+        <div className="grid grid-cols-3 gap-1.5">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-6 bg-emerald-500/30 rounded" />
+          ))}
+        </div>
+      </div>
+    )
+  }
 };
