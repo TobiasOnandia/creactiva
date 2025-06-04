@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/AuthProvider";
 import { createClient } from "@/utils/supabase/server";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+import { Toaster } from "sonner";
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
@@ -28,7 +29,16 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable} bg-neutral-900 antialiased `}>
-        <AuthProvider auth={user}>{children}</AuthProvider>
+        <AuthProvider auth={user}>
+          {children}
+          <div id="portal"/>
+           <Toaster
+              position="top-right"
+              theme="dark"
+              richColors
+              closeButton
+            />
+        </AuthProvider>
       </body>
     </html>
   );

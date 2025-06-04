@@ -4,6 +4,7 @@ import { ClearButton } from "@/components/ui/buttons/ClearButton";
 import { PublishButton } from "@/components/ui/buttons/PublishButton";
 import { DeviceViewSwitcher } from "@/components/ui/DeviceViewSwitcher";
 import { ModeToggleButton } from "@/components/ui/buttons/ModeToggleButton";
+import { SaveButton } from "@/components/ui/buttons/SaveButton";
 
 export const Header = () => {
   return (
@@ -15,16 +16,13 @@ export const Header = () => {
         <h1 className="text-2xl font-medium bg-[linear-gradient(97deg,_#7DFFB2_-12.5%,_#72BAE8_50%,_#C792EA_112.5%)] bg-clip-text text-transparent tracking-tight">
           creactiva
         </h1>
-        <span className="hidden md:inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full text-xs font-medium border border-emerald-500/20">
-          <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-          Guardado
-        </span>
       </Link>
 
       <DeviceViewSwitcher />
 
       <nav className="flex items-center gap-2 sm:gap-3">
         <ClearButton />
+        <SaveButton />
         <PublishButton />
         <ModeToggleButton />
 
