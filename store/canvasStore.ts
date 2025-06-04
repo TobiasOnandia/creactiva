@@ -11,6 +11,7 @@ export interface CanvasStore {
     isOpen: boolean;
   };
   addCanvasElement: (element: CanvasElement) => void;
+  addMultipleElements: (elements: CanvasElement[]) => void;
   toggleEditMode: () => void;
   setActiveDevice: (device: "mobile" | "tablet" | "desktop") => void;
   clearCanvas: () => void;
@@ -33,6 +34,11 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
   addCanvasElement: (element: CanvasElement) => {
     set((state) => ({
       canvasElements: [...state.canvasElements, element],
+    }));
+  },
+  addMultipleElements: (elements: CanvasElement[]) => {
+    set((state) => ({
+      canvasElements: [...state.canvasElements, ...elements],
     }));
   },
   updateElementConfig: (id: string, newConfig: Partial<CanvasElement["config"]>) => {

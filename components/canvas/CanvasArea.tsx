@@ -8,6 +8,7 @@ import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import { useCanvasStore } from "@/store/canvasStore";
 import { CanvasElement } from "@/types/CanvasTypes";
+import { templateConfigs } from "@/config/templateConfigs";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -27,6 +28,7 @@ export function CanvasArea() {
   const [currentLayout, setCurrentLayout] = useState<Layout[]>([]);
   const canvasElements = useCanvasStore((state) => state.canvasElements);
   const addCanvasElement = useCanvasStore((state) => state.addCanvasElement);
+  const addMultipleElements = useCanvasStore((state) => state.addMultipleElements);
   const isEditMode = useCanvasStore((state) => state.isEditMode);
   const activeDevice = useCanvasStore((state) => state.activeDevice);
 
@@ -40,6 +42,26 @@ export function CanvasArea() {
 
     if (!droppedElementType) {
       console.error("No se pudo obtener el tipo del elemento arrastrado");
+      return;
+    }
+
+    const templateConfig = templateConfigs[droppedElementType];
+    if (templateConfig) {
+      const elementsWithNewIds = templateConfig.elements.map(element => ({
+        ...element,
+        id: crypto.randomUUID()
+      }));
+
+      const layoutsWithNewIds = templateConfig.layout.map((layout, index) => ({
+        ...layout,
+        i: elementsWithNewIds[index].id,
+        x: item.x,
+        y: item.y + index * 2
+      }));
+
+      addMultipleElements(elementsWithNewIds);
+      
+      setCurrentLayout(prev => [...prev, ...layoutsWithNewIds]);
       return;
     }
 

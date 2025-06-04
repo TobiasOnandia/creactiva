@@ -1,11 +1,11 @@
 
 export interface ConfigStyle {
-    backgroundColor: string;
-    color: string;
-    fontSize: number;
-    padding: number;
-    border: number;
-    borderRadius: number;
+    backgroundColor?: string;
+    color?: string;
+    fontSize?: number;
+    padding?: number;
+    border?: string;
+    borderRadius?: number;
     boxShadow?: string;
     marginTop?: number;
     marginBottom?: number;
@@ -44,7 +44,7 @@ export interface ConfigStyle {
     strokeWidth?: string;
     fill?: string;
     stroke?: string;
-    content: string;
+    content?: string;
 }
 
 
@@ -52,4 +52,5 @@ export interface CanvasElement {
   id: string;
   type: string;
   config: ConfigStyle;
+  data?: unknown
 }

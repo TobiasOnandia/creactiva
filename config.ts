@@ -18,6 +18,7 @@ import {
   TextIcon,
   VideoIcon,
 } from "lucide-react";
+import { CanvasElement, ConfigStyle } from "./types/CanvasTypes";
 
 export const mainNavItems = [
   { id: "pages", label: "Páginas", icon: StickyNote },
@@ -122,3 +123,5 @@ export const sections = [
 ];
 
 export const categories = ["Landing", "Dashboard", "Blog", "Portfolio"];
+
+

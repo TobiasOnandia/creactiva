@@ -5,7 +5,7 @@ import { ImageIcon, StarIcon, VideoIcon } from "lucide-react";
 
 export const ItemRenderers: Record<
   string,
-  React.FC<{ config: ConfigStyle; id: string }>
+  React.FC<{ config:  React.CSSProperties; id: string }>
 > = {
   header: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
@@ -228,7 +228,7 @@ export const ItemRenderers: Record<
         <div className="h-3 bg-cyan-500/30 rounded-full" />
         <div className="h-8 bg-purple-500/30 rounded-lg" />
         <div className="h-20 bg-rose-500/30 rounded-lg" />
-        <div className="h-24 bg-emerald-500/30 rounded-lg" />
+        <div className=" bg-emerald-500/30 rounded-lg" />
         <div className="h-3 bg-cyan-500/30 rounded-full" />
       </div>
     )
@@ -246,7 +246,7 @@ export const ItemRenderers: Record<
   },
   blog: ({config, id}) => {
     return (
-       <div className="space-y-1.5 h-24">
+       <div className="space-y-1.5 ">
         <div className="h-3 bg-cyan-500/30 rounded-full" />
         <div className="flex gap-1.5 flex-1">
           <div className="w-3/4 bg-purple-500/30 rounded-lg" />
@@ -258,7 +258,7 @@ export const ItemRenderers: Record<
   },
   portfolio: ({config, id}) => {
     return (
-       <div className="space-y-1.5 h-24">
+       <div className="space-y-1.5 ">
         <div className="h-12 bg-rose-500/30 rounded-lg" />
         <div className="grid grid-cols-2 gap-1.5">
           <div className="h-6 bg-blue-500/30 rounded" />
@@ -271,7 +271,7 @@ export const ItemRenderers: Record<
   ,
   ecommerce: ({config, id}) => {
     return (
-      <div className="space-y-1.5 h-24">
+      <div className="space-y-1.5 ">
         <div className="h-6 bg-purple-500/30 rounded-lg" />
         <div className="h-4 bg-cyan-500/30 rounded-full" />
         <div className="grid grid-cols-3 gap-1.5">
