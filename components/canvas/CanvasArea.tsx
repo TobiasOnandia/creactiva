@@ -70,13 +70,23 @@ export function CanvasArea() {
       id: newCanvasElementId,
       type: droppedElementType,
       config: {
-        backgroundColor: "#ffffff",
-        color: "#000000",
-        fontSize: 16,
-        padding: 8,
-        border: "1px solid #cccccc",
-        borderRadius: 4,
-        content: "Nuevo elemento"
+        backgroundColor: droppedElementType === "button" ? "#3b82f6" : "transparent",
+        color: droppedElementType === "button" ? "#ffffff" : "#f8fafc",
+        fontSize: droppedElementType === "header" ? 24 : 16,
+        padding: 16,
+        paddingX: droppedElementType === "button" ? 24 : 16,
+        paddingY: droppedElementType === "button" ? 12 : 16,
+        borderRadius: 8,
+        fontWeight: droppedElementType === "header" ? "bold" : "normal",
+        lineHeight: 1.5,
+        letterSpacing: 0.025,
+        boxShadow: droppedElementType === "button" ? "0 1px 3px 0 rgba(0, 0, 0, 0.1)" : "none",
+        content: droppedElementType === "header" ? "Encabezado" : 
+                droppedElementType === "text" ? "Texto de ejemplo" :
+                droppedElementType === "button" ? "Botón" :
+                droppedElementType === "paragraph" ? "Párrafo de ejemplo con contenido más extenso para mostrar el diseño." :
+                "Nuevo elemento",
+        textAlign: droppedElementType === "header" || droppedElementType === "button" ? "center" : "left"
       }
     };
 

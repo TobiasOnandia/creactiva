@@ -1,11 +1,10 @@
 "use client";
 import { useCanvasStore } from "@/store/canvasStore";
-import { ConfigStyle } from "@/types/CanvasTypes";
 import { ImageIcon, StarIcon, VideoIcon } from "lucide-react";
 
 export const ItemRenderers: Record<
   string,
-  React.FC<{ config:  React.CSSProperties; id: string }>
+  React.FC<{ config: React.CSSProperties; id: string }>
 > = {
   header: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
@@ -14,9 +13,9 @@ export const ItemRenderers: Record<
       <header
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
         style={config}
-        className="w-full h-full flex items-center "
+        className="w-full h-full flex items-center justify-center hover:opacity-90 transition-opacity"
       >
-        <h3 className=" font-semibold truncate">{config.content}</h3>
+        <h1 className="font-semibold tracking-tight">{config.content}</h1>
       </header>
     );
   },
@@ -27,13 +26,10 @@ export const ItemRenderers: Record<
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
         style={config}
-        className="w-full h-full flex flex-col justify-center space-y-1 px-2 py-1"
+        className="w-full h-full flex flex-col justify-center hover:opacity-90 transition-opacity"
       >
-        <div className="w-11/12 h-2 bg-neutral-600 rounded-full"></div>
-        <div className="w-full h-2 bg-neutral-600 rounded-full"></div>
-        <div className="w-10/12 h-2 bg-neutral-600 rounded-full"></div>
+        <p>{config.content}</p>
       </div>
     );
   },
@@ -45,11 +41,9 @@ export const ItemRenderers: Record<
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
         style={config}
-        className="w-full h-full flex flex-col justify-center space-y-1 px-2 py-1"
+        className="w-full h-full flex flex-col justify-center hover:opacity-90 transition-opacity"
       >
-        <p className="">{config.content}</p>
-        <p className=""></p>
-        <p className=""></p>
+        <p>{config.content}</p>
       </div>
     );
   },
@@ -61,9 +55,9 @@ export const ItemRenderers: Record<
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
         style={config}
-        className="w-full h-full bg-neutral-700 flex flex-col items-center justify-center text-neutral-400 text-xs rounded"
+        className="w-full h-full bg-neutral-800/50 flex flex-col items-center justify-center text-neutral-400 text-xs rounded-lg border border-neutral-700/50 hover:border-cyan-500/30 transition-colors"
       >
-        <ImageIcon className="w-6 h-6 mb-1" />
+        <ImageIcon className="w-8 h-8 mb-2 text-cyan-500/70" />
         <span>Imagen</span>
       </div>
     );
@@ -75,15 +69,14 @@ export const ItemRenderers: Record<
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
         style={config}
-        className="w-full h-full flex items-center justify-center p-2"
+        className="w-full h-full flex items-center justify-center"
       >
         <button
-          className={`px-4 py-2 rounded text-white text-sm font-medium`}
-          style={{ pointerEvents: "none" }}
+          className="px-6 py-2.5 rounded-lg text-white text-sm font-medium shadow-lg shadow-blue-500/20 hover:opacity-90 transition-opacity"
+          style={{ pointerEvents: "none", ...config }}
         >
-          Botón
+          {config.content}
         </button>
       </div>
     );
@@ -95,7 +88,6 @@ export const ItemRenderers: Record<
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
         style={config}
         className="w-full h-full flex items-center px-2"
       >
@@ -110,7 +102,6 @@ export const ItemRenderers: Record<
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
         style={config}
         className="w-full h-full flex items-center justify-center"
       >
@@ -125,7 +116,6 @@ export const ItemRenderers: Record<
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
         style={config}
         className="w-full h-full bg-neutral-700 flex flex-col items-center justify-center text-neutral-400 text-xs rounded"
       >
@@ -141,7 +131,6 @@ export const ItemRenderers: Record<
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
         style={config}
         className="w-full h-full bg-neutral-700 grid grid-cols-2 grid-rows-2 gap-1 p-1 rounded"
       >
@@ -159,7 +148,6 @@ export const ItemRenderers: Record<
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
         style={config}
         className="w-full h-full bg-neutral-700 flex items-center justify-between px-2 rounded"
       >
@@ -176,7 +164,6 @@ export const ItemRenderers: Record<
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
         style={config}
         className="w-full h-full flex items-center px-2  py-1"
       >
@@ -194,7 +181,6 @@ export const ItemRenderers: Record<
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
-
         style={config}
         className="w-full h-full flex items-center px-2 py-1"
       >
@@ -222,64 +208,4 @@ export const ItemRenderers: Record<
       </div>
     );
   },
-  landing: ({config, id}) => {
-    return (
-       <div className="space-y-1.5">
-        <div className="h-3 bg-cyan-500/30 rounded-full" />
-        <div className="h-8 bg-purple-500/30 rounded-lg" />
-        <div className="h-20 bg-rose-500/30 rounded-lg" />
-        <div className=" bg-emerald-500/30 rounded-lg" />
-        <div className="h-3 bg-cyan-500/30 rounded-full" />
-      </div>
-    )
-  },
-  dashboard: ({config, id}) => {
-    return (
-        <div className="flex gap-1.5 h-28">
-        <div className="w-1/4 bg-amber-500/30 rounded-lg" />
-        <div className="flex-1 space-y-1.5">
-          <div className="h-4 bg-blue-500/30 rounded-full" />
-          <div className="h-22 bg-indigo-500/30 rounded-lg" />
-        </div>
-      </div>
-    )
-  },
-  blog: ({config, id}) => {
-    return (
-       <div className="space-y-1.5 ">
-        <div className="h-3 bg-cyan-500/30 rounded-full" />
-        <div className="flex gap-1.5 flex-1">
-          <div className="w-3/4 bg-purple-500/30 rounded-lg" />
-          <div className="w-1/4 bg-emerald-500/30 rounded-lg" />
-        </div>
-        <div className="h-3 bg-cyan-500/30 rounded-full" />
-      </div>
-    )
-  },
-  portfolio: ({config, id}) => {
-    return (
-       <div className="space-y-1.5 ">
-        <div className="h-12 bg-rose-500/30 rounded-lg" />
-        <div className="grid grid-cols-2 gap-1.5">
-          <div className="h-6 bg-blue-500/30 rounded" />
-          <div className="h-6 bg-blue-500/30 rounded" />
-        </div>
-        <div className="h-6 bg-amber-500/30 rounded-lg" />
-      </div>
-    )
-  }
-  ,
-  ecommerce: ({config, id}) => {
-    return (
-      <div className="space-y-1.5 ">
-        <div className="h-6 bg-purple-500/30 rounded-lg" />
-        <div className="h-4 bg-cyan-500/30 rounded-full" />
-        <div className="grid grid-cols-3 gap-1.5">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-6 bg-emerald-500/30 rounded" />
-          ))}
-        </div>
-      </div>
-    )
-  }
 };
