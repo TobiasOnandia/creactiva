@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/context/AuthProvider";
-import { createClient } from "@/utils/supabase/server";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import { Toaster } from "sonner";
@@ -21,15 +19,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   return (
     <html lang="en">
       <body className={`${montserrat.variable} bg-neutral-900 antialiased `}>
-        <AuthProvider auth={user}>
           {children}
           <div id="portal"/>
            <Toaster
@@ -38,7 +30,6 @@ export default async function RootLayout({
               richColors
               closeButton
             />
-        </AuthProvider>
       </body>
     </html>
   );

@@ -34,6 +34,7 @@ export interface CanvasStore {
   deleteElement: (id: string) => void;
   restoreDefaultStyles: () => void;
   restoreElement: (id: string) => void;
+  setSections: (sections: Section[]) => void;
 }
 
 export const useCanvasStore = create<CanvasStore>((set) => ({
@@ -54,17 +55,17 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
   activeDevice: "desktop",
   isEditMode: false,
 
-  addSection: (section) => 
+  addSection: (section) =>
     set((state) => ({
       sections: [...state.sections, section]
     })),
 
-  removeSection: (id) => 
+  removeSection: (id) =>
     set((state) => ({
       sections: state.sections.filter(section => section.id !== id)
     })),
 
-  setActiveSection: (id) => 
+  setActiveSection: (id) =>
     set((state) => {
       const section = state.sections.find(s => s.id === id);
       return {
@@ -82,16 +83,22 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
 
   addElementToSection: (element, sectionId) =>
     set((state) => {
+      // Crear un elemento con ID temporal si no tiene uno
+      const elementWithId = {
+        ...element,
+        id: element.id || `temp_id_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      };
+
       const updatedSections = state.sections.map(section =>
         section.id === sectionId
-          ? { ...section, elements: [...section.elements, element] }
+          ? { ...section, elements: [...section.elements, elementWithId] }
           : section
       );
-      
+
       return {
         sections: updatedSections,
         canvasElements: sectionId === state.activeSectionId
-          ? [...state.canvasElements, element]
+          ? [...state.canvasElements, elementWithId]
           : state.canvasElements
       };
     }),
@@ -132,12 +139,18 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
     }))
   })),
   restoreElement: (id: string) =>
-  set((state) => {
-    const elementToRestore = state.deletedElements.find((el) => el.id === id);
-    if (!elementToRestore) return {};
-    return {
-      canvasElements: [...state.canvasElements, elementToRestore],
-      deletedElements: state.deletedElements.filter((el) => el.id !== id),
-    };
-  }),
+    set((state) => {
+      const elementToRestore = state.deletedElements.find((el) => el.id === id);
+      if (!elementToRestore) return {};
+      return {
+        canvasElements: [...state.canvasElements, elementToRestore],
+        deletedElements: state.deletedElements.filter((el) => el.id !== id),
+      };
+    }),
+  setSections: (sections: Section[]) =>
+    set((state) => ({
+      sections,
+      // Actualizar canvasElements si hay una sección activa
+      canvasElements: sections.find(s => s.id === state.activeSectionId)?.elements || []
+    })),
 }));

@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/context/AuthProvider";
+import { useAuth } from "@/hooks/useAuth";
 import { supabaseClient } from "@/utils/supabase/client";
 import { LogIn, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
@@ -17,10 +17,10 @@ export const UserMenu = () => {
       <article className="invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute top-full right-0 mt-2 w-48 bg-neutral-900 border border-neutral-700 rounded-lg shadow-xl py-2 transition-all duration-200">
         <div className="px-3 py-2 border-b border-neutral-700">
           <p className="text-sm font-medium text-neutral-200">
-            {auth?.user_metadata.name}
+            {auth?.user?.user_metadata.username}
           </p>
           <p className="text-xs text-neutral-400">
-            {auth?.user_metadata.email}
+            {auth?.user?.user_metadata.email}
           </p>
         </div>
         <Link

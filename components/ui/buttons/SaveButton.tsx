@@ -20,6 +20,7 @@ export const SaveButton = () => {
             ...section,
             // Aseguramos que los datos son serializables
             elements: section.elements.map(element => ({
+              id: element.id && !element.id.startsWith('temp_id') ? element.id : undefined,
               type: element.type,
               config: element.config
             }))
