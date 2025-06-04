@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BackgroundCanvas } from "@/components/background/BackgroundCanvas";
 import { CanvasItemContent } from "@/components/content/CanvasItemContent";
 import { Responsive, Layout, WidthProvider } from "react-grid-layout";
@@ -26,14 +26,19 @@ const DEVICE_CONFIG = {
 
 export function CanvasArea() {
   const [currentLayout, setCurrentLayout] = useState<Layout[]>([]);
+
   const canvasElements = useCanvasStore((state) => state.canvasElements);
-  const addCanvasElement = useCanvasStore((state) => state.addCanvasElement);
-  const addMultipleElements = useCanvasStore((state) => state.addMultipleElements);
-  const isEditMode = useCanvasStore((state) => state.isEditMode);
+  const activeSectionId = useCanvasStore((state) => state.activeSectionId);
+  const sections = useCanvasStore((state) => state.sections);
+  const addElementToSection = useCanvasStore((state) => state.addElementToSection);
+  const updateSectionLayout = useCanvasStore((state) => state.updateSectionLayout);
   const activeDevice = useCanvasStore((state) => state.activeDevice);
+  const isEditMode = useCanvasStore((state) => state.isEditMode);
+
 
   const handleLayoutChange = (newLayout: Layout[]) => {
     setCurrentLayout(newLayout);
+    updateSectionLayout(activeSectionId, newLayout);
   };
 
   const handleDrop = (layout: Layout[], item: Layout, e: Event) => {
@@ -59,7 +64,9 @@ export function CanvasArea() {
         y: item.y + index * 2
       }));
 
-      addMultipleElements(elementsWithNewIds);
+      elementsWithNewIds.forEach(element => {
+        addElementToSection(element, activeSectionId);
+      });
       
       setCurrentLayout(prev => [...prev, ...layoutsWithNewIds]);
       return;
@@ -102,58 +109,56 @@ export function CanvasArea() {
       isDraggable: true,
     };
     
-    addCanvasElement(newCanvasElement);
-    setCurrentLayout((prev) => [...prev, newLayoutItem]);
+    addElementToSection(newCanvasElement, activeSectionId);
+    setCurrentLayout(prev => [...prev, newLayoutItem]);
   };
+
+  // Obtener la sección activa para mostrar su nombre
+  const activeSection = sections.find(s => s.id === activeSectionId);
 
   return (
     <main className="relative w-full h-screen bg-gradient-to-br from-neutral-950 to-neutral-900/80 overflow-hidden">
       <BackgroundCanvas />
       <section className="absolute inset-0 p-8 flex items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full">
-        <article
-          className={`relative z-50  flex-grow   bg-neutral-900/80 backdrop-blur-sm  h-full border-2 border-dashed border-neutral-800 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full ${DEVICE_CONFIG[activeDevice].maxWidth} p-6 flex flex-col`}
-          onDragOver={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-          onDrop={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            e.currentTarget.classList.remove('border-cyan-500');
-            e.currentTarget.classList.add('border-neutral-800');
-          }}
-        >
-            <ResponsiveGridLayout
-              className="layout h-full"
-              layouts={{
-                lg: currentLayout,
-                md: currentLayout,
-                sm: currentLayout,
-                xs: currentLayout,
-                xxs: currentLayout,
-              }}
-              breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-              cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-              rowHeight={90}
-              onLayoutChange={handleLayoutChange}
-              isDraggable={true}
-              isDroppable={true}
-              autoSize={true}
-              droppingItem={{ i: "dropping-item", w: 2, h: 2 }}
-              onDrop={handleDrop}
-              isResizable={true}
-              compactType={null}
-              preventCollision={true}
-              style={{ minHeight: '100%' }}
-              useCSSTransforms={true}
-              draggableCancel=".no-drag"
-            >
-              {canvasElements.map((item) => (
-                <div key={item.id} className={`grid-item h-full ${isEditMode ? 'no-drag'  : '' }`}>
-                  <CanvasItemContent id={item.id} type={item.type} config={item.config } />
-                </div>
-              ))}
-            </ResponsiveGridLayout>
+        <article className={`relative z-50 flex-grow bg-neutral-900/80 backdrop-blur-sm h-full border-2 border-dashed border-neutral-800 rounded-xl shadow-2xl shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 group w-full ${DEVICE_CONFIG[activeDevice].maxWidth} p-6 flex flex-col`}>
+          {/* Encabezado de la sección */}
+          <div className="absolute top-0 left-0 right-0 p-4 text-center">
+            <h2 className="text-sm font-medium text-neutral-400">
+              {activeSection?.name || "Sin sección seleccionada"}
+            </h2>
+          </div>
+
+          <ResponsiveGridLayout
+            className="layout h-full"
+            layouts={{
+              lg: currentLayout,
+              md: currentLayout,
+              sm: currentLayout,
+              xs: currentLayout,
+              xxs: currentLayout,
+            }}
+            breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+            cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+            rowHeight={90}
+            onLayoutChange={handleLayoutChange}
+            isDraggable={true}
+            isDroppable={true}
+            autoSize={true}
+            droppingItem={{ i: "dropping-item", w: 2, h: 2 }}
+            onDrop={handleDrop}
+            isResizable={true}
+            compactType={null}
+            preventCollision={true}
+            style={{ minHeight: '100%' }}
+            useCSSTransforms={true}
+            draggableCancel=".no-drag"
+          >
+            {canvasElements.map((item) => (
+              <div key={item.id} className={`grid-item h-full ${isEditMode ? 'no-drag'  : '' }`}>
+                <CanvasItemContent id={item.id} type={item.type} config={item.config } />
+              </div>
+            ))}
+          </ResponsiveGridLayout>
         </article>
       </section>
     </main>
