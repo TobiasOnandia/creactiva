@@ -4,10 +4,22 @@ import { PlusIcon } from "lucide-react";
 type Template = (typeof templates)[0];
 
 
-export const TemplateCard = ({ title, description, structure }: Template) => (
+export const TemplateCard = ({ title, description, structure, type }: Template) => {
+  const handleDragStart = (e: React.DragEvent<HTMLElement>) => {
+    const elementType = e.currentTarget.id;
+    console.log(elementType)
+
+    e.dataTransfer.setData("text/plain", elementType);
+    e.dataTransfer.effectAllowed = "move";
+    console.log(`Iniciando arrastre para tipo: ${elementType}`); 
+  };
+
+  return(
   <li
     className="group relative p-4 rounded-xl bg-neutral-800/50 border border-white/10 hover:border-cyan-500/30 transition-all duration-300 cursor-pointer overflow-hidden"
-    onClick={() => console.log(`Selected template: ${title}`)}
+    draggable
+    id={type}
+    onDragStart={(e) => handleDragStart(e)}
   >
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(114,186,232,0.05)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -37,4 +49,4 @@ export const TemplateCard = ({ title, description, structure }: Template) => (
 
     <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-cyan-500/20 transition-colors pointer-events-none" />
   </li>
-);
+)};
