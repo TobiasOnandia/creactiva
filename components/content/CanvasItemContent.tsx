@@ -15,7 +15,12 @@ type CanvasItemType =
   | "carousel"
   | "select"
   | "checkbox"
-  | "submit";
+  | "submit"
+  | "landing"
+  | "dashboard"
+  | "blog"
+  | "portfolio"
+  | "ecommerce";
 
 interface CanvasItemContentProps {
   type: CanvasItemType | string;
@@ -24,10 +29,13 @@ interface CanvasItemContentProps {
 }
 
 export const CanvasItemContent = ({ id,  type, config }: CanvasItemContentProps) => {
+  console.log(type)
+
   const Renderer = ItemRenderers[type];
   if (Renderer) {
     return <Renderer config={config} id={id} />;
   }
+
 
   return (
     <p className="text-sm text-neutral-300 text-center w-full h-full flex items-center justify-center p-2 border border-dashed border-neutral-600 rounded">
