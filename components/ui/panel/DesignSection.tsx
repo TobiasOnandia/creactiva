@@ -8,19 +8,6 @@ export const DesignSection = ({
   <Section title="Diseño" dotColor="bg-cyan-500">
     <div className="space-y-4">
       <NumberInput
-        label="Ancho"
-        id="width"
-        defaultValue={parseInt(String(config.width || 200), 10)}
-        min={0}
-      />
-      <NumberInput
-        label="Altura"
-        id="height"
-        defaultValue={parseInt(String(config.height || 100), 10)}
-        min={0}
-      />
-
-      <NumberInput
         label="Margen superior"
         id="marginTop"
         defaultValue={parseInt(String(config.marginTop || 0), 10)}

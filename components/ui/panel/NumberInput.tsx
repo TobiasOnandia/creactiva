@@ -13,8 +13,18 @@ interface NumberInputProps {
 const INPUT_TO_CONFIG_KEY: Record<string, keyof ConfigStyle> = {
   fontSize: "fontSize",
   padding: "padding",
-  borderWidth: "border",
+  border: "border",
   borderRadius: "borderRadius",
+  marginTop: "marginTop",
+  marginBottom: "marginBottom",
+  paddingX: "paddingX",
+  paddingY: "paddingY",
+  borderWidth: "borderWidth",
+  lineHeight: "lineHeight",
+  letterSpacing: "letterSpacing",
+  columns: "columns",
+  spacing: "spacing",
+  rows: "rows",
 } as const;
 
 export const NumberInput = ({
