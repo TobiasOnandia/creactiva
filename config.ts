@@ -16,9 +16,7 @@ import {
   SquareStackIcon,
   StickyNote,
   TextIcon,
-  VideoIcon,
 } from "lucide-react";
-import { CanvasElement, ConfigStyle } from "./types/CanvasTypes";
 
 export const mainNavItems = [
   { id: "pages", label: "Páginas", icon: StickyNote },
@@ -75,12 +73,6 @@ export const sections = [
         icon: ImageIcon,
         label: "Imagen",
         colorClass: "bg-rose-500/10",
-      },
-      {
-        type: "video",
-        icon: VideoIcon,
-        label: "Video",
-        colorClass: "bg-indigo-500/10",
       },
       {
         type: "gallery",

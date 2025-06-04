@@ -1,6 +1,4 @@
 import { ItemRenderers } from "@/components/canvas/ItemRenderers";
-import { useCanvasStore } from "@/store/canvasStore";
-import { ConfigStyle } from "@/types/CanvasTypes";
 
 type CanvasItemType =
   | "header"
@@ -10,21 +8,14 @@ type CanvasItemType =
   | "button"
   | "divider"
   | "star"
-  | "video"
   | "gallery"
   | "carousel"
   | "select"
   | "checkbox"
-  | "submit"
-  | "landing"
-  | "dashboard"
-  | "blog"
-  | "portfolio"
-  | "ecommerce";
-
+  | "submit";
 interface CanvasItemContentProps {
   type: CanvasItemType | string;
-  config: ConfigStyle;
+  config: React.CSSProperties;
   id:string
 }
 

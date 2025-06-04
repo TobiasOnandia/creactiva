@@ -254,9 +254,8 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         type: "gallery",
         config: {
           columns: 3,
-          spacing: 16,
-          images: ["https://ejemplo.com/img1.jpg, https://ejemplo.com/img2.jpg"]
-        }
+          gap: 16,
+        },
       },
       {
         id: "contact",
@@ -325,8 +324,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         type: "gallery",
         config: {
           columns: 4,
-          spacing: 24,
-          images: ["https://ejemplo.com/product1.jpg, https://ejemplo.com/product2.jpg"]
+          gap: 24,
         }
       },
       {

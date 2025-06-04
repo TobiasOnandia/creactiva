@@ -1,6 +1,6 @@
 "use client";
 import { useCanvasStore } from "@/store/canvasStore";
-import { ImageIcon, StarIcon, VideoIcon } from "lucide-react";
+import { ImageIcon, StarIcon } from "lucide-react";
 
 export const ItemRenderers: Record<
   string,
@@ -106,21 +106,6 @@ export const ItemRenderers: Record<
         className="w-full h-full flex items-center justify-center"
       >
         <StarIcon className="w-6 h-6 text-yellow-500" />
-      </div>
-    );
-  },
-  video: ({ config, id }) => {
-    const openStylePanel = useCanvasStore((state) => state.openStylePanel);
-    const isEditMode = useCanvasStore((state) => state.isEditMode);
-
-    return (
-      <div
-        onClick={isEditMode ? () => openStylePanel(id) : undefined}
-        style={config}
-        className="w-full h-full bg-neutral-700 flex flex-col items-center justify-center text-neutral-400 text-xs rounded"
-      >
-        <VideoIcon className="w-6 h-6 mb-1" />
-        <span>Video</span>
       </div>
     );
   },

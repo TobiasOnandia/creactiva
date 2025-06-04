@@ -6,10 +6,9 @@ import {
   Undo2,
 } from "lucide-react";
 import { useCanvasStore } from "@/store/canvasStore";
-import { ConfigStyle, CanvasElement } from "@/types/CanvasTypes";
+import {  CanvasElement } from "@/types/CanvasTypes";
 import { TextControls } from "@/components/ui/controllers/TextControllers";
 import { ImageControls } from "@/components/ui/controllers/ImageControls";
-import { VideoControls } from "@/components/ui/controllers/VideoControls";
 import { DividerControls } from "@/components/ui/controllers/DividerControls";
 import { StarControls } from "@/components/ui/controllers/StarControls";
 import { GalleryControls } from "@/components/ui/controllers/GalleryControls";
@@ -20,7 +19,7 @@ import { AppearanceSection } from "@/components/ui/panel/AppearanceSection";
 
 
 export type SpecificProps = {
-  config: ConfigStyle;
+  config: React.CSSProperties;
   onChange: (key: string, value: any) => void;
 };
 
@@ -33,7 +32,6 @@ const SPECIFIC_CONTROLS: Record<
   text: TextControls,
   paragraph: TextControls,
   image: ImageControls,
-  video: VideoControls,
   gallery: (props: SpecificProps) => <GalleryControls {...props} isCarousel={false} />,
   carousel: (props: SpecificProps) => <GalleryControls {...props} isCarousel={true} />,
   select: (props: SpecificProps) => <OptionControls {...props} isCheckbox={false} />,
@@ -58,7 +56,7 @@ export const StylePanel = () => {
     [canvasElements, isStylePanelOpen.id]
   );
   const elementType = selectedElement?.type;
-  const config = selectedElement?.config || ({} as ConfigStyle);
+  const config = selectedElement?.config || {};
 
   const handleChange = (key: string, value: any) => {
     if (!isStylePanelOpen.id) return;
