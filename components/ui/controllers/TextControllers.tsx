@@ -9,7 +9,6 @@ export const TextControls = ({ config, onChange }: SpecificProps) => {
 
   return (
     <Section title="Texto" dotColor="bg-purple-500">
-      <div className="space-y-4">
         <label className="text-sm text-neutral-400 mb-1 block">
           Contenido
           <textarea
@@ -32,10 +31,8 @@ export const TextControls = ({ config, onChange }: SpecificProps) => {
           min={0.8}
         />
 
-        {/* Alineación */}
-        <div className="flex items-center justify-between">
           <label className="text-sm text-neutral-400">Alineación</label>
-          <div className="flex bg-neutral-800/50 border border-white/10 rounded-xl p-1">
+          <div className="flex bg-neutral-800/50 border w-fit border-white/10 rounded-xl p-1">
             {[
               { value: "left", icon: <AlignLeft className="w-4 h-4" /> },
               { value: "center", icon: <AlignCenter className="w-4 h-4" /> },
@@ -45,7 +42,7 @@ export const TextControls = ({ config, onChange }: SpecificProps) => {
               <button
                 key={align.value}
                 onClick={() => handleAlign(align.value)}
-                className={`p-2 rounded-lg ${config.textAlign === align.value
+                className={`p-2 rounded-lg  ${config.textAlign === align.value
                   ? "bg-cyan-500/10 text-cyan-400"
                   : "text-neutral-400 hover:text-neutral-200"
                   }`}
@@ -54,13 +51,11 @@ export const TextControls = ({ config, onChange }: SpecificProps) => {
               </button>
             ))}
           </div>
-        </div>
         <ColorInput
           label="Color de texto"
-          id="color"
+          id="textColor"
           defaultValue={config.color || "#ffffff"}
         />
-      </div>
     </Section>
   );
 };
