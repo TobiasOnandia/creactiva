@@ -5,6 +5,7 @@ import { TemplateCard } from "@/components/ui/templates/TemplatesCard";
 export const templates = [
   {
     title: "Landing Clásica",
+    type:"landing",
     description: "Header + Hero + Contenido + Footer",
     structure: (
       <div className="space-y-1.5">
@@ -18,6 +19,7 @@ export const templates = [
   },
   {
     title: "Dashboard",
+    type:"dashboard",
     description: "Sidebar + Header + Contenido",
     structure: (
       <div className="flex gap-1.5 h-28">
@@ -31,6 +33,7 @@ export const templates = [
   },
   {
     title: "Blog Moderno",
+    type:"blog",
     description: "Header + Contenido + Sidebar + Footer",
     structure: (
       <div className="space-y-1.5 h-24">
@@ -45,6 +48,7 @@ export const templates = [
   },
   {
     title: "Portafolio",
+    type:"portfolio",
     description: "Hero Fullscreen + Grid + Contacto",
     structure: (
       <div className="space-y-1.5 h-24">
@@ -59,6 +63,7 @@ export const templates = [
   },
   {
     title: "Tienda Online",
+    type:"ecommerce",
     description: "Navbar complejo + Product Grid + Carrito",
     structure: (
       <div className="space-y-1.5 h-24">
