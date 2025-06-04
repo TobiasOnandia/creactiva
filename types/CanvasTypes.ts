@@ -11,8 +11,6 @@ export interface ConfigStyle {
     marginBottom?: number;
     paddingX?: number;
     paddingY?: number;
-    width?: number;
-    height?: number;
     borderColor?: string;
     borderWidth?: number;
     fontFamily?: string;
