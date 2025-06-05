@@ -1,4 +1,4 @@
-import { CanvasElement } from "@/types/CanvasTypes";
+import { CanvasElement } from "@/types/canvas/CanvasTypes";
 
 export type TemplateConfig = {
   elements: CanvasElement[];

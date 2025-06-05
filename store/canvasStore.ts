@@ -1,13 +1,14 @@
 import { create } from "zustand";
-import { CanvasElement } from "@/types/CanvasTypes";
+import { CanvasElement } from "@/types/canvas/CanvasTypes";
+import { LayoutsTypes } from "@/types/database/databaseTypes";
 
 export interface Section {
   id: string;
   name: string;
   slug: string;
   elements: CanvasElement[];
-  layout: any[];
-  isHome?: boolean;
+  layout: LayoutsTypes[];
+  is_home?: boolean;
 }
 
 export interface CanvasStore {
@@ -45,7 +46,7 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
       slug: "inicio",
       elements: [],
       layout: [],
-      isHome: true
+      is_home: true
     }
   ],
   activeSectionId: "home",

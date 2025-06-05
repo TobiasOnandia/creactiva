@@ -6,7 +6,7 @@ import {
   Undo2,
 } from "lucide-react";
 import { useCanvasStore } from "@/store/canvasStore";
-import {  CanvasElement } from "@/types/CanvasTypes";
+import {  CanvasElement } from "@/types/canvas/CanvasTypes";
 import { TextControls } from "@/components/ui/controllers/TextControllers";
 import { ImageControls } from "@/components/ui/controllers/ImageControls";
 import { DividerControls } from "@/components/ui/controllers/DividerControls";

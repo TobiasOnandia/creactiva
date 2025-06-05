@@ -1,5 +1,5 @@
 import { useCanvasStore } from "@/store/canvasStore";
-import { ConfigStyle } from "@/types/CanvasTypes";
+import { ConfigStyle } from "@/types/canvas/CanvasTypes";
 
 const COLOR_INPUT_TO_CONFIG_KEY: Record<string, keyof ConfigStyle> = {
   backgroundColor: "backgroundColor",

@@ -9,23 +9,19 @@ import { toast } from 'sonner';
 
 export const SaveButton = () => {
   const [isSaving, setIsSaving] = useState(false);
-  const sections = useCanvasStore((state) => state.sections);
-
+  const currentSections = useCanvasStore((state) => state.sections);
+  const setSections = useCanvasStore((state) => state.setSections)
 
   const handleSave = async () => {
     const promise = new Promise(async (resolve, reject) => {
       try {
         setIsSaving(true);
         
-        // Asegurarnos de que tenemos los datos más recientes del store
-        const currentSections = useCanvasStore.getState().sections;
-        
         const result = await saveSite({
           sections: currentSections.map(section => ({
             ...section,
             elements: section.elements.map(element => ({
               ...element,
-              // Preservar todo excepto IDs temporales
               id: element.id && !element.id.startsWith('temp_id') ? element.id : undefined
             }))
           }))
@@ -34,7 +30,7 @@ export const SaveButton = () => {
       if (result.success) {
           const loadResult = await loadSite();
           if (loadResult.success && loadResult.sections) {
-            useCanvasStore.getState().setSections(loadResult.sections);
+            setSections(loadResult.sections);
           }
           resolve('Cambios guardados correctamente');
         } else {

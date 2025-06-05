@@ -7,7 +7,7 @@ import { Responsive, Layout, WidthProvider } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import { useCanvasStore } from "@/store/canvasStore";
-import { CanvasElement } from "@/types/CanvasTypes";
+import { CanvasElement } from "@/types/canvas/CanvasTypes";
 import { templateConfigs } from "@/config/templateConfigs";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);

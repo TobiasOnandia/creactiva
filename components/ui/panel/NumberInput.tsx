@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useCanvasStore } from "@/store/canvasStore";
-import { ConfigStyle } from "@/types/CanvasTypes";
+import { ConfigStyle } from "@/types/canvas/CanvasTypes";
 
 interface NumberInputProps {
   label: string;

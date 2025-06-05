@@ -1,4 +1,4 @@
-import { ConfigStyle } from "@/types/CanvasTypes";
+import { ConfigStyle } from "@/types/canvas/CanvasTypes";
 import { NumberInput } from "../panel/NumberInput";
 import { Section } from "../panel/Section";
 import { SpecificProps } from "@/components/templates/StylePanel";

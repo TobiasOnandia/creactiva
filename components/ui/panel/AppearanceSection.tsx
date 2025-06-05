@@ -1,4 +1,4 @@
-import { ConfigStyle } from "@/types/CanvasTypes";
+import { ConfigStyle } from "@/types/canvas/CanvasTypes";
 import { ColorInput } from "./ColorInput";
 import { NumberInput } from "./NumberInput";
 import { Section } from "./Section";
