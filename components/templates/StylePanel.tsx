@@ -4,6 +4,7 @@ import {
   Palette,
   Trash2,
   Undo2,
+  X,
 } from "lucide-react";
 import { useCanvasStore } from "@/store/canvasStore";
 import {  CanvasElement } from "@/types/canvas/CanvasTypes";
@@ -50,7 +51,7 @@ export const StylePanel = () => {
   const deleteElement = useCanvasStore((state) => state.deleteElement);
   const restoreElement = useCanvasStore((state) => state.restoreElement);
   const updateElementConfig = useCanvasStore((state) => state.updateElementConfig);
-
+  const openStylePanel = useCanvasStore((state) => state.openStylePanel);
   const selectedElement = useMemo<CanvasElement | undefined>(
     () => canvasElements.find((el) => el.id === isStylePanelOpen.id),
     [canvasElements, isStylePanelOpen.id]
@@ -87,11 +88,11 @@ export const StylePanel = () => {
             <Undo2 className="w-4 h-4" />
           </button>
           <button
-            className="p-2 rounded-lg bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 hover:border-red-500/50 text-red-400 hover:text-red-300 transition-colors"
-            title="Eliminar elemento"
-            onClick={() => deleteElement(isStylePanelOpen.id)}
+            className="p-2 rounded-lg bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 hover:border-red-500/50 text-red-400 cursor-pointer hover:text-red-300 transition-colors"
+            title="Cerrar panel de estilos"
+            onClick={() => openStylePanel('')}
           >
-            <Trash2 className="w-4 h-4" />
+            <X className="w-4 h-4" />
           </button>
         </div>
       </header>

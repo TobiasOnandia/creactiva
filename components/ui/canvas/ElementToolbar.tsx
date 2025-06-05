@@ -20,7 +20,7 @@ export const ElementToolbar = ({
   if (!visible) return null;
 
   return (
-    <div className="absolute -top-10 left-1/2 z-200 -translate-x-1/2 flex items-center gap-1 px-1.5 py-1 rounded-lg bg-neutral-900/95 border border-white/10 backdrop-blur-sm shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+    <nav className="absolute -top-10 left-1/2 z-200 -translate-x-1/2 flex items-center gap-1 px-1.5 py-1 rounded-lg bg-neutral-900/95 border border-white/10 backdrop-blur-sm shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -55,6 +55,6 @@ export const ElementToolbar = ({
       >
         <Trash2 className="w-4 h-4" />
       </button>
-    </div>
+    </nav>
   );
 };
