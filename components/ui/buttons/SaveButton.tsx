@@ -4,30 +4,38 @@ import { useState } from 'react';
 import { Save } from 'lucide-react';
 import { useCanvasStore } from '@/store/canvasStore';
 import { saveSite } from '@/app/actions/saveAction';
+import { loadSite } from '@/app/actions/loadSiteAction';
 import { toast } from 'sonner';
 
 export const SaveButton = () => {
   const [isSaving, setIsSaving] = useState(false);
-  const { sections } = useCanvasStore();
+  const sections = useCanvasStore((state) => state.sections);
+
 
   const handleSave = async () => {
     const promise = new Promise(async (resolve, reject) => {
       try {
         setIsSaving(true);
         
+        // Asegurarnos de que tenemos los datos más recientes del store
+        const currentSections = useCanvasStore.getState().sections;
+        
         const result = await saveSite({
-          sections: sections.map(section => ({
+          sections: currentSections.map(section => ({
             ...section,
-            // Aseguramos que los datos son serializables
             elements: section.elements.map(element => ({
-              id: element.id && !element.id.startsWith('temp_id') ? element.id : undefined,
-              type: element.type,
-              config: element.config
+              ...element,
+              // Preservar todo excepto IDs temporales
+              id: element.id && !element.id.startsWith('temp_id') ? element.id : undefined
             }))
           }))
         });
 
       if (result.success) {
+          const loadResult = await loadSite();
+          if (loadResult.success && loadResult.sections) {
+            useCanvasStore.getState().setSections(loadResult.sections);
+          }
           resolve('Cambios guardados correctamente');
         } else {
           reject(result.error);

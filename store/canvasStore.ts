@@ -68,9 +68,12 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
   setActiveSection: (id) =>
     set((state) => {
       const section = state.sections.find(s => s.id === id);
+      if (!section) return state;
+
       return {
         activeSectionId: id,
-        canvasElements: section?.elements || []
+        canvasElements: [...section.elements], // Crear una nueva referencia del array
+        isStylePanelOpen: { id: "", isOpen: false } // Cerrar el panel de estilos al cambiar de sección
       };
     }),
 
@@ -95,11 +98,14 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
           : section
       );
 
+      // Si la sección actual es la que se está modificando, actualizar canvasElements
+      const updatedCanvasElements = sectionId === state.activeSectionId
+        ? [...state.canvasElements, elementWithId]
+        : state.canvasElements;
+
       return {
         sections: updatedSections,
-        canvasElements: sectionId === state.activeSectionId
-          ? [...state.canvasElements, elementWithId]
-          : state.canvasElements
+        canvasElements: updatedCanvasElements
       };
     }),
 
@@ -108,11 +114,37 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
   clearCanvas: () => set({ canvasElements: [] }),
   openStylePanel: (id: string) => set((state) => ({ isStylePanelOpen: { id, isOpen: !state.isStylePanelOpen.isOpen } })),
   updateElementConfig: (id: string, newConfig: Partial<CanvasElement["config"]>) => {
-    set((state) => ({
-      canvasElements: state.canvasElements.map((element) =>
-        element.id === id ? { ...element, config: { ...element.config, ...newConfig } } : element
-      ),
-    }));
+    set((state) => {
+      // Encontrar la sección que contiene el elemento
+      const sectionIndex = state.sections.findIndex(section =>
+        section.elements.some(el => el.id === id)
+      );
+
+      if (sectionIndex === -1) return state;
+
+      // Crear una copia profunda de las secciones
+      const updatedSections = [...state.sections];
+      const section = { ...updatedSections[sectionIndex] };
+
+      // Actualizar el elemento en la sección
+      section.elements = section.elements.map(element =>
+        element.id === id
+          ? { ...element, config: { ...element.config, ...newConfig } }
+          : element
+      );
+
+      updatedSections[sectionIndex] = section;
+
+      // Si el elemento está en la sección activa, actualizar canvasElements
+      const updatedCanvasElements = state.sections[sectionIndex].id === state.activeSectionId
+        ? section.elements
+        : state.canvasElements;
+
+      return {
+        sections: updatedSections,
+        canvasElements: updatedCanvasElements
+      };
+    });
   },
   deleteElement: (id: string) =>
     set((state) => {
@@ -148,9 +180,15 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
       };
     }),
   setSections: (sections: Section[]) =>
-    set((state) => ({
-      sections,
-      // Actualizar canvasElements si hay una sección activa
-      canvasElements: sections.find(s => s.id === state.activeSectionId)?.elements || []
-    })),
+    set((state) => {
+      const activeSection = sections.find(s => s.id === state.activeSectionId);
+
+      return {
+        sections,
+        // Asegurarnos de crear una nueva referencia del array de elementos
+        canvasElements: activeSection ? [...activeSection.elements] : [],
+        // Restablecer el estado del panel de estilos
+        isStylePanelOpen: { id: "", isOpen: false }
+      };
+    }),
 }));
