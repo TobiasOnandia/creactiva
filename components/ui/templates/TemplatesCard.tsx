@@ -1,18 +1,12 @@
 import { templates } from "@/components/templates/TemplatesPanel";
+import { useDragStart } from "@/hooks/useDragStart";
 import { PlusIcon } from "lucide-react";
 
 type Template = (typeof templates)[0];
 
 
 export const TemplateCard = ({ title, description, structure, type }: Template) => {
-  const handleDragStart = (e: React.DragEvent<HTMLElement>) => {
-    const elementType = e.currentTarget.id;
-    console.log(elementType)
-
-    e.dataTransfer.setData("text/plain", elementType);
-    e.dataTransfer.effectAllowed = "move";
-    console.log(`Iniciando arrastre para tipo: ${elementType}`); 
-  };
+  const { handleDragStart, handleDragEnd } = useDragStart();
 
   return(
   <li
@@ -20,6 +14,8 @@ export const TemplateCard = ({ title, description, structure, type }: Template) 
     draggable
     id={type}
     onDragStart={(e) => handleDragStart(e)}
+    onDragEnd={handleDragEnd}
+
   >
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(114,186,232,0.05)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 

@@ -1,27 +1,9 @@
 "use client";
 
-import { Monitor, Tablet, Smartphone } from "lucide-react";
 import { useCanvasStore } from "@/store/canvasStore";
+import { DEVICE_CONFIG } from "@/config";
 
-type DeviceType = "mobile" | "tablet" | "desktop";
-
-const DEVICE_CONFIG = {
-  mobile: {
-    icon: Smartphone,
-    colorClass: "text-emerald-400",
-    shadowColor: "#7DFFB2",
-  },
-  tablet: {
-    icon: Tablet,
-    colorClass: "text-cyan-400",
-    shadowColor: "#72BAE8",
-  },
-  desktop: {
-    icon: Monitor,
-    colorClass: "text-purple-400",
-    shadowColor: "#C792EA",
-  },
-};
+type DeviceType = keyof typeof DEVICE_CONFIG;
 
 export const DeviceViewSwitcher = () => {
   const activeDevice = useCanvasStore((state) => state.activeDevice);

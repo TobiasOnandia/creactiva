@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useCanvasStore } from "@/store/canvasStore";
-import { ConfigStyle } from "@/types/canvas/CanvasTypes";
+import { CanvasElement } from "@/types/canvas/CanvasTypes";
 
 interface NumberInputProps {
   label: string;
@@ -10,21 +10,21 @@ interface NumberInputProps {
   max?: number;
 }
 
-const INPUT_TO_CONFIG_KEY: Record<string, keyof ConfigStyle> = {
+const INPUT_TO_CONFIG_KEY: Record<string, keyof CanvasElement['config']> = {
   fontSize: "fontSize",
   padding: "padding",
   border: "border",
   borderRadius: "borderRadius",
   marginTop: "marginTop",
   marginBottom: "marginBottom",
-  paddingX: "paddingX",
-  paddingY: "paddingY",
+  paddingInline: "paddingInline",
+  paddingBlock: "paddingBlock",
   borderWidth: "borderWidth",
   lineHeight: "lineHeight",
   letterSpacing: "letterSpacing",
   columns: "columns",
-  spacing: "spacing",
-  rows: "rows",
+  gap: "gap",
+  rows: "gridRow",
 } as const;
 
 export const NumberInput = ({

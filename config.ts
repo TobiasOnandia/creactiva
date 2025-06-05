@@ -9,12 +9,15 @@ import {
   LayoutTemplate,
   ListIcon,
   MinusIcon,
+  Monitor,
   Pilcrow,
   SendIcon,
   SettingsIcon,
   SlidersVerticalIcon,
+  Smartphone,
   SquareStackIcon,
   StickyNote,
+  Tablet,
   TextIcon,
 } from "lucide-react";
 import { CanvasElement, DeviceConfig } from "./types/canvas/CanvasTypes";
@@ -118,11 +121,30 @@ export const sections = [
 export const categories = ["Landing", "Dashboard", "Blog", "Portfolio"];
 
 
-export const DEVICE_CONFIG: Record<string, DeviceConfig> = {
-  mobile: { maxWidth: "max-w-sm" },
-  tablet: { maxWidth: "max-w-3xl" },
-  desktop: { maxWidth: "max-w-7xl" },
+
+export type DeviceType = "mobile" | "tablet" | "desktop";
+
+export const DEVICE_CONFIG = {
+  mobile: {
+    icon: Smartphone,
+    colorClass: "text-emerald-400",
+    shadowColor: "#7DFFB2",
+    maxWidth: "max-w-xs",
+  },
+  tablet: {
+    icon: Tablet,
+    colorClass: "text-cyan-400",
+    shadowColor: "#72BAE8",
+    maxWidth: "max-w-3xl"
+  },
+  desktop: {
+    icon: Monitor,
+    colorClass: "text-purple-400",
+    shadowColor: "#C792EA",
+    maxWidth: "max-w-7xl"
+  },
 };
+
 
 export const GRID_CONFIG = {
   breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },

@@ -8,7 +8,7 @@ export const StarControls = ({ config, onChange }: SpecificProps) => (
     <NumberInput
       label="Tamaño"
       id="size"
-      defaultValue={parseInt(String(config.size || 24), 10)}
+      defaultValue={parseInt(String(config.fontSize || 24), 10)}
       min={8}
     />
     <NumberInput
@@ -33,7 +33,7 @@ export const StarControls = ({ config, onChange }: SpecificProps) => (
     <input
       type="checkbox"
       id="filled"
-      checked={!!config.filled}
+      checked={!!config.fill}
       onChange={(e) => onChange("filled", e.target.checked)}
       className="h-4 w-4 text-cyan-500 focus:ring-cyan-500 border-white/10 rounded bg-neutral-800/50"
     />

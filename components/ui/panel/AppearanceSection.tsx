@@ -1,4 +1,4 @@
-import { ConfigStyle } from "@/types/canvas/CanvasTypes";
+import { CanvasElement } from "@/types/canvas/CanvasTypes";
 import { ColorInput } from "./ColorInput";
 import { NumberInput } from "./NumberInput";
 import { Section } from "./Section";
@@ -6,7 +6,7 @@ import { Section } from "./Section";
 export const AppearanceSection = ({
   config,
   onChange,
-}: { config: ConfigStyle; onChange: (key: string, value: any) => void }) => (
+}: { config: CanvasElement['config']; onChange: (key: string, value: any) => void }) => (
   <Section title="Apariencia" dotColor="bg-purple-500">
     <div className="space-y-4">
       <ColorInput

@@ -81,7 +81,7 @@ export function PagesPanel() {
               onClick={() => setActiveSection(section.id)}
             >
               <GripVertical className="w-4 h-4 text-neutral-500 cursor-move" />
-              {section.isHome && (
+              {section.is_home && (
                 <HomeIcon className="w-4 h-4 text-amber-400" />
               )}
               <h6 className="flex items-center gap-2 flex-1 min-w-0">
@@ -90,7 +90,7 @@ export function PagesPanel() {
                 </span>
               </h6>
               
-              {!section.isHome && (
+              {!section.is_home && (
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();

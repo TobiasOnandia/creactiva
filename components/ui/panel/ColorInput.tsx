@@ -1,7 +1,7 @@
 import { useCanvasStore } from "@/store/canvasStore";
-import { ConfigStyle } from "@/types/canvas/CanvasTypes";
+import { CanvasElement } from "@/types/canvas/CanvasTypes";
 
-const COLOR_INPUT_TO_CONFIG_KEY: Record<string, keyof ConfigStyle> = {
+const COLOR_INPUT_TO_CONFIG_KEY: Record<string, keyof CanvasElement['config']> = {
   backgroundColor: "backgroundColor",
   textColor: "color",
   borderColor: "borderColor",

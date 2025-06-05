@@ -8,6 +8,9 @@ export interface CanvasElement {
 }
 export interface DeviceConfig {
   maxWidth: string;
+  icon: React.ReactNode;
+  colorClass: string,
+  shadowColor: string,
 }
 
 export interface LayoutItem extends GridLayout {

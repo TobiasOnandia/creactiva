@@ -8,41 +8,14 @@ import "react-resizable/css/styles.css";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useCanvasLayout } from "@/hooks/useCanvasLayout";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
-import { DEVICE_CONFIG, GRID_CONFIG } from "@/config";
+import {  GRID_CONFIG } from "@/config";
+import { GridContainer } from "@/components/ui/canvas/GridContainer";
+import { SectionHeader } from "@/components/ui/canvas/SectionHeader";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-// Componente para el header de la sección
-const SectionHeader = ({ sectionName }: { sectionName?: string }) => (
-  <div className="absolute top-0 left-0 right-0 p-4 text-center">
-    <h2 className="text-sm font-medium text-neutral-400">
-      {sectionName || "Sin sección seleccionada"}
-    </h2>
-  </div>
-);
-
-const GridContainer = ({ 
-  children, 
-  activeDevice, 
-  isEditMode 
-}: { 
-  children: React.ReactNode;
-  activeDevice: string;
-  isEditMode: boolean;
-}) => (
-  <article className={`
-    relative z-50 flex-grow bg-neutral-900/80 backdrop-blur-sm h-full 
-    border-2 border-dashed border-neutral-800 rounded-xl shadow-2xl 
-    shadow-black/40 transition-all duration-300 hover:border-cyan-500/30 
-    group w-full ${DEVICE_CONFIG[activeDevice].maxWidth} p-6 flex flex-col
-    ${isEditMode ? 'edit-mode' : ''}
-  `}>
-    {children}
-  </article>
-);
 
 export function CanvasArea() {
-  // Store hooks
   const canvasElements = useCanvasStore((state) => state.canvasElements);
   const activeSectionId = useCanvasStore((state) => state.activeSectionId);
   const sections = useCanvasStore((state) => state.sections);
@@ -51,10 +24,8 @@ export function CanvasArea() {
   const activeDevice = useCanvasStore((state) => state.activeDevice);
   const isEditMode = useCanvasStore((state) => state.isEditMode);
 
-  // Computed values
   const activeSection = sections.find(s => s.id === activeSectionId);
 
-  // Custom hooks
   const { currentLayout, setCurrentLayout, handleLayoutChange } = useCanvasLayout(
     activeSectionId,
     activeSection,

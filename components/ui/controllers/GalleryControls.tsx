@@ -1,4 +1,4 @@
-import { ConfigStyle } from "@/types/canvas/CanvasTypes";
+import { CanvasElement } from "@/types/canvas/CanvasTypes";
 import { NumberInput } from "../panel/NumberInput";
 import { Section } from "../panel/Section";
 import { SpecificProps } from "@/components/templates/StylePanel";
@@ -18,15 +18,14 @@ export const GalleryControls = ({
     />
     <NumberInput
       label="Espaciado"
-      id="spacing"
-      defaultValue={parseInt(String(config.spacing || 10), 10)}
+      id="gap"
+      defaultValue={parseInt(String(config.gap || 10), 10)}
       min={0}
     />
     <label className="text-sm text-neutral-400 mb-1 block">
       URL de las imágenes (separadas por coma)
     </label>
     <textarea
-      value={config.images || ""}
       onChange={(e) => onChange("images", e.target.value)}
       className="w-full px-3 py-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all min-h-[100px]"
       placeholder="https://ejemplo.com/img1.jpg, https://ejemplo.com/img2.jpg"
@@ -40,7 +39,7 @@ export const GalleryControls = ({
               <input
                 type="checkbox"
                 id={opt}
-                checked={!!config[opt as keyof ConfigStyle]}
+                checked={!!config[opt as keyof CanvasElement['config']]}
                 onChange={(e) => onChange(opt, e.target.checked)}
                 className="h-4 w-4 text-cyan-500 focus:ring-cyan-500 border-white/10 rounded bg-neutral-800/50"
               />

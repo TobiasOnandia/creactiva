@@ -1,10 +1,11 @@
-import { ConfigStyle } from "@/types/canvas/CanvasTypes";
+
+import { CanvasElement } from "@/types/canvas/CanvasTypes";
 import { NumberInput } from "./NumberInput";
 import { Section } from "./Section";
 
 export const DesignSection = ({
   config,
-}: { config: ConfigStyle; onChange: (key: string, value: any) => void }) => (
+}: { config: CanvasElement['config']; onChange: (key: string, value: any) => void }) => (
   <Section title="Diseño" dotColor="bg-cyan-500">
     <div className="space-y-4">
       <NumberInput
@@ -22,14 +23,14 @@ export const DesignSection = ({
 
       <NumberInput
         label="Relleno horizontal"
-        id="paddingX"
-        defaultValue={parseInt(String(config.paddingX || 0), 10)}
+        id="paddingInline"
+        defaultValue={parseInt(String(config.paddingInline || 0), 10)}
         min={0}
       />
       <NumberInput
         label="Relleno vertical"
-        id="paddingY"
-        defaultValue={parseInt(String(config.paddingY || 0), 10)}
+        id="paddingBlock"
+        defaultValue={parseInt(String(config.paddingBlock || 0), 10)}
         min={0}
       />
     </div>
