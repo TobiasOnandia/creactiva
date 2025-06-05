@@ -27,13 +27,11 @@ export interface CanvasStore {
   setActiveSection: (id: string) => void;
   updateSectionLayout: (id: string, layout: GridLayout[]) => void;
   addElementToSection: (element: CanvasElement, sectionId: string) => void;
-  toggleEditMode: () => void;
   setActiveDevice: (device: "mobile" | "tablet" | "desktop") => void;
   clearCanvas: () => void;
   openStylePanel: (id: string) => void;
   updateElementConfig: (id: string, newConfig: Partial<CanvasElement["config"]>) => void;
   deleteElement: (id: string) => void;
-  restoreDefaultStyles: () => void;
   restoreElement: (id: string) => void;
   setSections: (sections: Section[]) => void;
 }
@@ -85,7 +83,6 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
 
   updateSectionLayout: (id, layout) =>
     set((state) => {
-      // Validate and ensure all required layout properties
       const validatedLayout = layout.map(item => ({
         ...item,
         static: item.static || false,
@@ -128,11 +125,6 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
       };
     }),
 
-  toggleEditMode: () =>
-    set((state) => ({
-      isEditMode: !state.isEditMode,
-      isStylePanelOpen: { id: "", isOpen: false }
-    })),
 
   setActiveDevice: (device) =>
     set(() => ({
@@ -200,25 +192,6 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
         sections: updatedSections,
         deletedElements: [...state.deletedElements, elementToDelete],
         isStylePanelOpen: { id: "", isOpen: false }
-      };
-    }),
-
-  restoreDefaultStyles: () =>
-    set((state) => {
-      const updatedElements = state.canvasElements.map(element => ({
-        ...element,
-        config: {}
-      }));
-
-      const updatedSections = state.sections.map(section =>
-        section.id === state.activeSectionId
-          ? { ...section, elements: updatedElements }
-          : section
-      );
-
-      return {
-        canvasElements: updatedElements,
-        sections: updatedSections
       };
     }),
 

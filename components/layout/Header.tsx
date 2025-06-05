@@ -3,7 +3,6 @@ import { UserMenu } from "@/components/auth/UserMenu";
 import { ClearButton } from "@/components/ui/buttons/ClearButton";
 import { PublishButton } from "@/components/ui/buttons/PublishButton";
 import { DeviceViewSwitcher } from "@/components/ui/DeviceViewSwitcher";
-import { ModeToggleButton } from "@/components/ui/buttons/ModeToggleButton";
 import { SaveButton } from "@/components/ui/buttons/SaveButton";
 
 export const Header = () => {
@@ -24,7 +23,6 @@ export const Header = () => {
         <ClearButton />
         <SaveButton />
         <PublishButton />
-        <ModeToggleButton />
 
         <div className="h-6 w-px bg-neutral-700 mx-2" />
 

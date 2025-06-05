@@ -14,7 +14,6 @@ import { SectionHeader } from "@/components/ui/canvas/SectionHeader";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-
 export function CanvasArea() {
   const canvasElements = useCanvasStore((state) => state.canvasElements);
   const activeSectionId = useCanvasStore((state) => state.activeSectionId);
@@ -22,7 +21,6 @@ export function CanvasArea() {
   const addElementToSection = useCanvasStore((state) => state.addElementToSection);
   const updateSectionLayout = useCanvasStore((state) => state.updateSectionLayout);
   const activeDevice = useCanvasStore((state) => state.activeDevice);
-  const isEditMode = useCanvasStore((state) => state.isEditMode);
 
   const activeSection = sections.find(s => s.id === activeSectionId);
 
@@ -46,7 +44,7 @@ export function CanvasArea() {
       <BackgroundCanvas />
       
       <section className="absolute inset-0 p-8 flex items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full">
-        <GridContainer activeDevice={activeDevice} isEditMode={isEditMode}>
+        <GridContainer activeDevice={activeDevice} >
           <SectionHeader sectionName={activeSection?.name} />
 
           <ResponsiveGridLayout
@@ -62,10 +60,9 @@ export function CanvasArea() {
             cols={GRID_CONFIG.cols}
             rowHeight={GRID_CONFIG.rowHeight}
             onLayoutChange={handleLayoutChange}
-            isDraggable={!isEditMode}
-            isResizable={!isEditMode}
-            isDroppable={!isEditMode}
             autoSize={true}
+            draggableCancel=".no-drag"
+            draggableHandle=".drag-handle"
             droppingItem={{ 
               i: "dropping-item", 
               w: GRID_CONFIG.defaultSize.w, 
@@ -78,7 +75,7 @@ export function CanvasArea() {
             useCSSTransforms={true}
           >
             {canvasElements.map((item) => (
-              <div key={item.id} className={`grid-item h-full ${isEditMode ? 'no-drag' : ''}`}>
+              <div key={item.id} className={`grid-item h-full drag-handle`}>
                 <CanvasItemContent id={item.id} type={item.type} config={item.config} />
               </div>
             ))}
