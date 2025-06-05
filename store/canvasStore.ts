@@ -34,6 +34,7 @@ export interface CanvasStore {
   deleteElement: (id: string) => void;
   restoreElement: (id: string) => void;
   setSections: (sections: Section[]) => void;
+  duplicateElement: (id: string) => void;
 }
 
 export const useCanvasStore = create<CanvasStore>((set) => ({
@@ -212,6 +213,31 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
         deletedElements: updatedDeleted,
         canvasElements: updatedElements,
         sections: updatedSections
+      };
+    }),
+
+  duplicateElement: (id) => 
+    set((state) => {
+      const elementToDuplicate = state.canvasElements.find(el => el.id === id);
+      if (!elementToDuplicate) return state;
+
+      const newElement = {
+        ...elementToDuplicate,
+        id: crypto.randomUUID(),
+      };
+
+      const updatedSections = state.sections.map(section =>
+        section.id === state.activeSectionId
+          ? {
+              ...section,
+              elements: [...section.elements, newElement]
+            }
+          : section
+      );
+
+      return {
+        sections: updatedSections,
+        canvasElements: [...state.canvasElements, newElement]
       };
     }),
 }));
