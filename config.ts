@@ -17,6 +17,7 @@ import {
   StickyNote,
   TextIcon,
 } from "lucide-react";
+import { CanvasElement, DeviceConfig } from "./types/canvas/CanvasTypes";
 
 export const mainNavItems = [
   { id: "pages", label: "Páginas", icon: StickyNote },
@@ -117,3 +118,44 @@ export const sections = [
 export const categories = ["Landing", "Dashboard", "Blog", "Portfolio"];
 
 
+export const DEVICE_CONFIG: Record<string, DeviceConfig> = {
+  mobile: { maxWidth: "max-w-sm" },
+  tablet: { maxWidth: "max-w-3xl" },
+  desktop: { maxWidth: "max-w-7xl" },
+};
+
+export const GRID_CONFIG = {
+  breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
+  cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+  rowHeight: 90,
+  defaultSize: { w: 4, h: 2 },
+  minSize: { w: 2, h: 2 },
+} as const;
+
+export const DEFAULT_ELEMENT_CONFIGS = {
+  button: {
+    backgroundColor: "#3b82f6",
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center" as const,
+    content: "Botón",
+    paddingInline: 24,
+    paddingBlock: 12,
+    boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1)",
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center" as const,
+    content: "Encabezado",
+  },
+  text: {
+    content: "Texto de ejemplo",
+    textAlign: "left" as const,
+  },
+  paragraph: {
+    content: "Párrafo de ejemplo con contenido más extenso para mostrar el diseño.",
+    textAlign: "left" as const,
+  },
+} as const;

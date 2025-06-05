@@ -2,10 +2,17 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
-
+import { GridLayout } from '@/types/canvas/LayoutTypes';
 
 export async function saveSite(siteData: {
-  sections: any[];
+  sections: {
+    id: string;
+    name: string;
+    slug: string;
+    elements: any[];
+    layout: GridLayout[];
+    is_home?: boolean;
+  }[];
   name?: string;
   slug?: string;
 }) {
@@ -43,7 +50,7 @@ export async function saveSite(siteData: {
           site_id: site.id,
           name: section.name,
           slug: section.slug,
-          is_home: section.isHome,
+          is_home: section.is_home,
           order_index: siteData.sections.indexOf(section),
           updated_at: new Date().toISOString()
         })
@@ -66,7 +73,7 @@ export async function saveSite(siteData: {
             updated_at: new Date().toISOString()
           };
 
-          // Solo incluir el ID si no es temporal
+          // Only include ID if not temporary
           if (element.id && !element.id.startsWith('temp_id')) {
             elementData.id = element.id;
           }
@@ -77,13 +84,13 @@ export async function saveSite(siteData: {
         const { error: elementsError } = await supabase
           .from('elements')
           .upsert(elementsToUpsert)
-          .select(); // Añadimos select para obtener los IDs actualizados
+          .select();
 
         if (elementsError) throw elementsError;
       }
 
       const currentElementIds = section.elements
-        ?.filter((el: { id: string }) => el.id && el.id !== 'temp_id')
+        ?.filter((el: { id: string }) => el.id && !el.id.startsWith('temp_id'))
         ?.map((el: { id: string }) => el.id) || [];
 
       const elementsToDelete = existingElements
@@ -107,12 +114,25 @@ export async function saveSite(siteData: {
           .eq('device', 'desktop')
           .single();
 
+        // Save layout with all required properties
+        const validatedLayout = section.layout.map(item => ({
+          i: item.i,
+          x: item.x,
+          y: item.y,
+          w: item.w,
+          h: item.h,
+          minH: item.minH || 2,
+          minW: item.minW || 2,
+          static: item.static || false,
+          isDraggable: item.isDraggable !== false,
+        }));
+
         const { error: layoutError } = await supabase
           .from('layouts')
           .upsert({
             id: existingLayout?.id,
             section_id: dbSection.id,
-            layout_data: section.layout,
+            layout_data: validatedLayout,
             device: 'desktop',
             updated_at: new Date().toISOString()
           });
@@ -120,6 +140,7 @@ export async function saveSite(siteData: {
         if (layoutError) throw layoutError;
       }
     }
+    
     revalidatePath('/');
     return { success: true };
   } catch (error) {

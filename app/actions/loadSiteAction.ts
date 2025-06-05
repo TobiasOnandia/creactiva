@@ -1,6 +1,26 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server';
+import { GridLayout } from '@/types/canvas/LayoutTypes';
+
+interface LayoutData {
+  layout_data: GridLayout[];
+}
+
+interface Element {
+  id: string;
+  type: string;
+  config: Record<string, any>;
+}
+
+interface Section {
+  id: string;
+  name: string;
+  slug: string;
+  is_home: boolean;
+  elements: Element[];
+  layouts: LayoutData[];
+}
 
 export async function loadSite() {
   const supabase = await createClient();
@@ -32,19 +52,35 @@ export async function loadSite() {
 
     if (sectionsError) throw sectionsError;
 
-    // 4. Formatear los datos para el canvas
-    const formattedSections = sections?.map(section => ({
-      id: section.id,
-      name: section.name,
-      slug: section.slug,
-      isHome: section.is_home,
-      elements: section.elements?.map((element: any) => ({
-        id: element.id,
-        type: element.type,
-        config: element.config
-      })) || [],
-      layout: section.layouts?.[0]?.layout_data || []
-    })) || [];
+    // 4. Formatear y validar los datos para el canvas
+    const formattedSections = sections?.map((section: Section) => {
+      // Validate and transform layout data
+      const layoutData = section.layouts?.[0]?.layout_data || [];
+      const validatedLayout = layoutData.map((item: GridLayout) => ({
+        i: item.i,
+        x: Number(item.x) || 0,
+        y: Number(item.y) || 0,
+        w: Number(item.w) || 1,
+        h: Number(item.h) || 1,
+        minH: item.minH,
+        minW: item.minW,
+        static: item.static,
+        isDraggable: item.isDraggable
+      }));
+
+      return {
+        id: section.id,
+        name: section.name,
+        slug: section.slug,
+        isHome: section.is_home,
+        elements: section.elements?.map((element: Element) => ({
+          id: element.id,
+          type: element.type,
+          config: element.config
+        })) || [],
+        layout: validatedLayout
+      };
+    }) || [];
 
     return {
       success: true,
@@ -52,7 +88,10 @@ export async function loadSite() {
       sections: formattedSections
     };
   } catch (error) {
-    console.error('Error al cargar el sitio:', error);
-    return { success: false, error };
+    console.error('Error loading site:', error);
+    return {
+      success: false,
+      error: 'Error al cargar el sitio'
+    };
   }
 }

@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { CanvasElement } from "@/types/canvas/CanvasTypes";
-import { LayoutsTypes } from "@/types/database/databaseTypes";
+import { GridLayout } from "@/types/canvas/LayoutTypes";
 
 export interface Section {
   id: string;
   name: string;
   slug: string;
   elements: CanvasElement[];
-  layout: LayoutsTypes[];
+  layout: GridLayout[];
   is_home?: boolean;
 }
 
@@ -25,7 +25,7 @@ export interface CanvasStore {
   addSection: (section: Section) => void;
   removeSection: (id: string) => void;
   setActiveSection: (id: string) => void;
-  updateSectionLayout: (id: string, layout: any[]) => void;
+  updateSectionLayout: (id: string, layout: GridLayout[]) => void;
   addElementToSection: (element: CanvasElement, sectionId: string) => void;
   toggleEditMode: () => void;
   setActiveDevice: (device: "mobile" | "tablet" | "desktop") => void;
@@ -55,6 +55,11 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
   isStylePanelOpen: { id: "", isOpen: false },
   activeDevice: "desktop",
   isEditMode: false,
+  setSections: (sections) => 
+    set((state) => ({
+      sections,
+      canvasElements: sections.find(s => s.id === state.activeSectionId)?.elements || []
+    })),
 
   addSection: (section) =>
     set((state) => ({
@@ -73,123 +78,167 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
 
       return {
         activeSectionId: id,
-        canvasElements: [...section.elements], // Crear una nueva referencia del array
-        isStylePanelOpen: { id: "", isOpen: false } // Cerrar el panel de estilos al cambiar de sección
+        canvasElements: [...section.elements],
+        isStylePanelOpen: { id: "", isOpen: false }
       };
     }),
 
   updateSectionLayout: (id, layout) =>
-    set((state) => ({
-      sections: state.sections.map(section =>
-        section.id === id ? { ...section, layout } : section
-      )
-    })),
+    set((state) => {
+      // Validate and ensure all required layout properties
+      const validatedLayout = layout.map(item => ({
+        ...item,
+        static: item.static || false,
+        isDraggable: item.isDraggable !== false,
+        minH: item.minH || 2,
+        minW: item.minW || 2
+      }));
+
+      return {
+        sections: state.sections.map(section =>
+          section.id === id 
+            ? { ...section, layout: validatedLayout }
+            : section
+        )
+      };
+    }),
 
   addElementToSection: (element, sectionId) =>
     set((state) => {
-      // Crear un elemento con ID temporal si no tiene uno
       const elementWithId = {
         ...element,
-        id: element.id || `temp_id_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        id: element.id || crypto.randomUUID()
       };
 
       const updatedSections = state.sections.map(section =>
         section.id === sectionId
-          ? { ...section, elements: [...section.elements, elementWithId] }
+          ? {
+              ...section,
+              elements: [...section.elements, elementWithId]
+            }
           : section
       );
 
-      // Si la sección actual es la que se está modificando, actualizar canvasElements
-      const updatedCanvasElements = sectionId === state.activeSectionId
-        ? [...state.canvasElements, elementWithId]
-        : state.canvasElements;
-
       return {
         sections: updatedSections,
-        canvasElements: updatedCanvasElements
+        canvasElements: 
+          state.activeSectionId === sectionId
+            ? [...state.canvasElements, elementWithId]
+            : state.canvasElements
       };
     }),
 
-  toggleEditMode: () => set((state) => ({ isEditMode: !state.isEditMode })),
-  setActiveDevice: (device: "mobile" | "tablet" | "desktop") => set({ activeDevice: device }),
-  clearCanvas: () => set({ canvasElements: [] }),
-  openStylePanel: (id: string) => set((state) => ({ isStylePanelOpen: { id, isOpen: !state.isStylePanelOpen.isOpen } })),
-  updateElementConfig: (id: string, newConfig: Partial<CanvasElement["config"]>) => {
+  toggleEditMode: () =>
+    set((state) => ({
+      isEditMode: !state.isEditMode,
+      isStylePanelOpen: { id: "", isOpen: false }
+    })),
+
+  setActiveDevice: (device) =>
+    set(() => ({
+      activeDevice: device
+    })),
+
+  clearCanvas: () =>
     set((state) => {
-      // Encontrar la sección que contiene el elemento
-      const sectionIndex = state.sections.findIndex(section =>
-        section.elements.some(el => el.id === id)
+      const updatedSections = state.sections.map(section =>
+        section.id === state.activeSectionId
+          ? { ...section, elements: [], layout: [] }
+          : section
       );
 
-      if (sectionIndex === -1) return state;
+      return {
+        sections: updatedSections,
+        canvasElements: [],
+        deletedElements: [],
+        isStylePanelOpen: { id: "", isOpen: false }
+      };
+    }),
 
-      // Crear una copia profunda de las secciones
-      const updatedSections = [...state.sections];
-      const section = { ...updatedSections[sectionIndex] };
+  openStylePanel: (id) =>
+    set((state) => ({
+      isStylePanelOpen: {
+        id,
+        isOpen: true
+      }
+    })),
 
-      // Actualizar el elemento en la sección
-      section.elements = section.elements.map(element =>
+  updateElementConfig: (id, newConfig) =>
+    set((state) => {
+      const updatedElements = state.canvasElements.map(element =>
         element.id === id
           ? { ...element, config: { ...element.config, ...newConfig } }
           : element
       );
 
-      updatedSections[sectionIndex] = section;
-
-      // Si el elemento está en la sección activa, actualizar canvasElements
-      const updatedCanvasElements = state.sections[sectionIndex].id === state.activeSectionId
-        ? section.elements
-        : state.canvasElements;
+      const updatedSections = state.sections.map(section =>
+        section.id === state.activeSectionId
+          ? { ...section, elements: updatedElements }
+          : section
+      );
 
       return {
-        sections: updatedSections,
-        canvasElements: updatedCanvasElements
+        canvasElements: updatedElements,
+        sections: updatedSections
       };
-    });
-  },
-  deleteElement: (id: string) =>
+    }),
+
+  deleteElement: (id) =>
     set((state) => {
-      const elementToDelete = state.canvasElements.find((el) => el.id === id);
+      const elementToDelete = state.canvasElements.find(e => e.id === id);
       if (!elementToDelete) return state;
 
-      const updatedSections = state.sections.map(section => ({
-        ...section,
-        elements: section.elements.filter(el => el.id !== id)
+      const updatedElements = state.canvasElements.filter(e => e.id !== id);
+      const updatedSections = state.sections.map(section =>
+        section.id === state.activeSectionId
+          ? { ...section, elements: updatedElements }
+          : section
+      );
+
+      return {
+        canvasElements: updatedElements,
+        sections: updatedSections,
+        deletedElements: [...state.deletedElements, elementToDelete],
+        isStylePanelOpen: { id: "", isOpen: false }
+      };
+    }),
+
+  restoreDefaultStyles: () =>
+    set((state) => {
+      const updatedElements = state.canvasElements.map(element => ({
+        ...element,
+        config: {}
       }));
 
-      return {
-        sections: updatedSections,
-        canvasElements: state.canvasElements.filter((el) => el.id !== id),
-        deletedElements: [...state.deletedElements, elementToDelete],
-      };
-    }),
-  restoreDefaultStyles: () => set((state) => ({
-    canvasElements: state.canvasElements.map((element) => ({
-      ...element,
-      config: {
-        ...element.config,
-      }
-    }))
-  })),
-  restoreElement: (id: string) =>
-    set((state) => {
-      const elementToRestore = state.deletedElements.find((el) => el.id === id);
-      if (!elementToRestore) return {};
-      return {
-        canvasElements: [...state.canvasElements, elementToRestore],
-        deletedElements: state.deletedElements.filter((el) => el.id !== id),
-      };
-    }),
-  setSections: (sections: Section[]) =>
-    set((state) => {
-      const activeSection = sections.find(s => s.id === state.activeSectionId);
+      const updatedSections = state.sections.map(section =>
+        section.id === state.activeSectionId
+          ? { ...section, elements: updatedElements }
+          : section
+      );
 
       return {
-        sections,
-        // Asegurarnos de crear una nueva referencia del array de elementos
-        canvasElements: activeSection ? [...activeSection.elements] : [],
-        // Restablecer el estado del panel de estilos
-        isStylePanelOpen: { id: "", isOpen: false }
+        canvasElements: updatedElements,
+        sections: updatedSections
+      };
+    }),
+
+  restoreElement: (id) =>
+    set((state) => {
+      const elementToRestore = state.deletedElements.find(e => e.id === id);
+      if (!elementToRestore) return state;
+
+      const updatedDeleted = state.deletedElements.filter(e => e.id !== id);
+      const updatedElements = [...state.canvasElements, elementToRestore];
+      const updatedSections = state.sections.map(section =>
+        section.id === state.activeSectionId
+          ? { ...section, elements: updatedElements }
+          : section
+      );
+
+      return {
+        deletedElements: updatedDeleted,
+        canvasElements: updatedElements,
+        sections: updatedSections
       };
     }),
 }));

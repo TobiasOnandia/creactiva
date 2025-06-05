@@ -1,4 +1,4 @@
-import { ItemRenderers } from "@/components/canvas/ItemRenderers";
+import { ItemRenderers } from "@/components/factories/ItemRenderers";
 
 type CanvasItemType =
   | "header"
