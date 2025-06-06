@@ -88,10 +88,10 @@ Por el momento, las siguientes funcionalidades están planeadas o en desarrollo.
 - [ ] Validar formularios y mostrar feedback de errores (por ejemplo, URL inválida, campos obligatorios).
 
 ### 5. Persistencia de Datos
-- [ ] Integrar un sistema de persistencia (por ejemplo, Firestore, Supabase o `localStorage`) para:
+- [x] Integrar un sistema de persistencia con Supabase para:
   - Guardar `currentLayout` y `canvasElements`.  
   - Restaurar el diseño del usuario al recargar la página.  
-- [ ] Manejar versiones o “snapshots” del proyecto para permitir “deshacer/rehacer”.
+- [x] Manejar versiones o “snapshots” del proyecto para permitir “deshacer/rehacer”.
 
 ### 6. Más Tipos de Elementos
 - [ ] Ampliar `SectionPanel` con nuevos componentes:
@@ -103,13 +103,12 @@ Por el momento, las siguientes funcionalidades están planeadas o en desarrollo.
 
 ### 7. Mejoras de UI/UX
 - [ ] Implementar “Deshacer/Rehacer” para las acciones del editor (ctrl+Z, ctrl+Y).  
-- [ ] Añadir herramientas de alineación y distribución (alinear a la izquierda, centrar, justificar).  
-- [ ] Mejorar el feedback visual al arrastrar y redimensionar (guías, sombras, líneas de ayuda).  
-- [ ] Animaciones suaves con Framer Motion o CSS transitions para una experiencia más pulida.
+- [x] Añadir herramientas de alineación y distribución (alinear a la izquierda, centrar, justificar).  
+- [x] Mejorar el feedback visual al arrastrar y redimensionar (guías, sombras, líneas de ayuda).  
 
 ### 8. Validación de Formularios
 - [ ] Implementar validación robusta en formularios de registro e inicio de sesión.  
-- [ ] Mostrar mensajes de error, advertencia y éxito (toasts o banners).
+- [x] Mostrar mensajes de error, advertencia y éxito (toasts o banners).
 
 ### 9. Funcionalidad de Guardar y Publicar
 - [ ] Permitir exportar el sitio web en formato estático (`.zip`, HTML/CSS/JS).  
