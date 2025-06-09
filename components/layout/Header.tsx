@@ -27,6 +27,8 @@ export const Header = () => {
 
         <div className="flex items-center gap-4">
           <PreviewButton />
+          <ClearButton />
+          <PublishButton />
           <SaveButton />
           <UserMenu />
         </div>
