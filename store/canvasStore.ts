@@ -22,6 +22,7 @@ export interface CanvasStore {
     id: string;
     isOpen: boolean;
   };
+  isPreviewMode: boolean;
   addSection: (section: Section) => void;
   removeSection: (id: string) => void;
   setActiveSection: (id: string) => void;
@@ -35,6 +36,7 @@ export interface CanvasStore {
   restoreElement: (id: string) => void;
   setSections: (sections: Section[]) => void;
   duplicateElement: (id: string) => void;
+  togglePreviewMode: () => void;
 }
 
 export const useCanvasStore = create<CanvasStore>((set) => ({
@@ -54,6 +56,7 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
   isStylePanelOpen: { id: "", isOpen: false },
   activeDevice: "desktop",
   isEditMode: false,
+  isPreviewMode: false,
   setSections: (sections) => 
     set((state) => ({
       sections,
@@ -240,4 +243,7 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
         canvasElements: [...state.canvasElements, newElement]
       };
     }),
+
+  togglePreviewMode: () => 
+    set((state) => ({ isPreviewMode: !state.isPreviewMode })),
 }));

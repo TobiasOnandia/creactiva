@@ -12,6 +12,7 @@ import { GRID_CONFIG } from "@/config";
 import { GridContainer } from "@/components/ui/canvas/GridContainer";
 import { SectionHeader } from "@/components/ui/canvas/SectionHeader";
 import { ElementToolbar } from "@/components/ui/canvas/ElementToolbar";
+import { PreviewContent } from "@/components/preview/PreviewContent";
 import { useState } from "react";
 import { GripVertical } from 'lucide-react'; 
 
@@ -21,6 +22,7 @@ export function CanvasArea() {
   const canvasElements = useCanvasStore((state) => state.canvasElements);
   const activeSectionId = useCanvasStore((state) => state.activeSectionId);
   const sections = useCanvasStore((state) => state.sections);
+  const isPreviewMode = useCanvasStore((state) => state.isPreviewMode);
   const addElementToSection = useCanvasStore((state) => state.addElementToSection);
   const updateSectionLayout = useCanvasStore((state) => state.updateSectionLayout);
   const activeDevice = useCanvasStore((state) => state.activeDevice);
@@ -64,16 +66,26 @@ export function CanvasArea() {
     setSelectedElementId(null);
   };
 
+  if (isPreviewMode) {
+    return <PreviewContent />;
+  }
+
   return (
     <main 
-      className="relative w-full h-screen bg-gradient-to-br from-neutral-950 to-neutral-900/80 overflow-hidden"
-      onClick={handleMainClick}
+      className={`relative w-full h-screen overflow-hidden ${
+        isPreviewMode ? 'bg-white' : 'bg-gradient-to-br from-neutral-950 to-neutral-900/80'
+      }`}
     >
-      <BackgroundCanvas />
+      {!isPreviewMode && <BackgroundCanvas />}
       
-      <section className="absolute inset-0 p-8 flex items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full">
+      <section 
+        data-canvas
+        className="absolute inset-0 p-8 flex items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full"
+      >
         <GridContainer activeDevice={activeDevice}>
-          <SectionHeader sectionName={activeSection?.name} />
+          <div data-editor-ui>
+            <SectionHeader sectionName={activeSection?.name} />
+          </div>
 
           <ResponsiveGridLayout
             className="layout h-full"
@@ -106,32 +118,40 @@ export function CanvasArea() {
             useCSSTransforms={true}
           >
             {canvasElements.map((item) => (
-              <div 
-                key={item.id} 
-                className="grid-item h-full relative group"
-                onMouseEnter={() => handleElementHover(item.id)}
-                onMouseLeave={handleElementLeave}
-              >
-                <div className="drag-handle absolute -top-3 -left-3 w-8 h-8 bg-neutral-800 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-grab z-20 flex items-center justify-center border border-neutral-700 shadow-md group-hover:shadow-lg group-hover:bg-neutral-700 group-hover:border-cyan-500/50">
-                  <GripVertical className="w-4 h-4 text-neutral-400 group-hover:text-cyan-400 transition-colors" />
-                </div>
+              <div key={item.id} className="grid-item h-full relative group">
+                {/* Drag handle - solo visible fuera del modo preview */}
+                {!isPreviewMode && (
+                  <div 
+                    data-drag-handle
+                    className="drag-handle absolute -top-2 -left-2 w-6 h-6 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-move z-20 flex items-center justify-center"
+                  >
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                    </svg>
+                  </div>
+                )}
 
-                <ElementToolbar
-                  elementId={item.id}
-                  onEdit={() => openStylePanel(item.id)}
-                  onDuplicate={() => duplicateElement(item.id)}
-                  onDelete={() => deleteElement(item.id)}
-                  visible={hoveredElementId === item.id || selectedElementId === item.id}
-                />
+                {/* Element toolbar - solo visible fuera del modo preview */}
+                {!isPreviewMode && (
+                  <ElementToolbar
+                    elementId={item.id}
+                    onEdit={() => openStylePanel(item.id)}
+                    onDuplicate={() => duplicateElement(item.id)}
+                    onDelete={() => deleteElement(item.id)}
+                    visible={hoveredElementId === item.id || selectedElementId === item.id}
+                  />
+                )}
                 
+                {/* Content */}
                 <div 
-                  className={`no-drag h-full w-full cursor-pointer transition-all rounded
-                    ${selectedElementId === item.id ? 'ring-2 ring-cyan-500 shadow-lg shadow-cyan-500/20' : 'hover:ring-2 hover:ring-cyan-500/30'}
-                    ${selectedElementId && selectedElementId !== item.id ? 'opacity-50' : ''}`}
-                  onClick={(e) => {
-                    openStylePanel(item.id)
-                    handleElementClick(item.id, e)
-                  }}
+                  data-element
+                  className={`no-drag h-full w-full cursor-pointer transition-all rounded ${
+                    !isPreviewMode ? `
+                      ${selectedElementId === item.id ? 'ring-2 ring-cyan-500 shadow-lg shadow-cyan-500/20' : 'hover:ring-2 hover:ring-cyan-500/30'}
+                      ${selectedElementId && selectedElementId !== item.id ? 'opacity-50' : ''}
+                    ` : ''
+                  }`}
+                  onClick={(e) => !isPreviewMode && handleElementClick(item.id, e)}
                 >
                   <CanvasItemContent id={item.id} type={item.type} config={item.config} />
                 </div>

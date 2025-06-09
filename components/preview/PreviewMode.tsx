@@ -1,27 +1,22 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import { useCanvasStore } from '@/store/canvasStore';
-import { CanvasItemContent } from '../canvas/CanvasItemContent';
+import { type ReactNode } from 'react';
 
-export const PreviewMode = () => {
-  const sections = useCanvasStore((state) => state.sections);
-  const searchParams = useSearchParams();
-  const isPreview = searchParams.get('preview') === 'true';
+interface PreviewModeProps {
+  children: ReactNode;
+}
 
-  if (!isPreview) return null;
+export function PreviewMode({ children }: PreviewModeProps) {
+  const isPreviewMode = useCanvasStore((state) => state.isPreviewMode);
 
   return (
-    <div className="min-h-screen w-full bg-white">
-      {sections.map((section) => (
-        <div key={section.id} className="w-full">
-          {section.elements.map((element) => (
-            <div key={element.id} style={element.styles}>
-              <CanvasItemContent element={element} />
-            </div>
-          ))}
-        </div>
-      ))}
+    <div
+      className={`h-full transition-all duration-300 ${
+        isPreviewMode ? 'preview-mode' : ''
+      }`}
+    >
+      {children}
     </div>
   );
-};
+}

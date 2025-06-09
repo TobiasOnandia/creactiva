@@ -1,22 +1,35 @@
 'use client';
-import { EyeIcon } from "lucide-react";
+
+import { Eye, EyeOff } from 'lucide-react';
+import { useCanvasStore } from '@/store/canvasStore';
 
 export const PreviewButton = () => {
-  const handlePreview = () => {
-    // Open the current page in a new tab without the editor interface
-    window.open(window.location.origin + window.location.pathname + '?preview=true', '_blank');
-  };
+  const isPreviewMode = useCanvasStore((state) => state.isPreviewMode);
+  const togglePreviewMode = useCanvasStore((state) => state.togglePreviewMode);
 
   return (
-    <button 
-      onClick={handlePreview}
-      className="relative cursor-pointer overflow-hidden group px-5 py-2 bg-gradient-to-br from-neutral-800 to-neutral-900 border border-neutral-700 rounded-lg font-medium hover:border-neutral-600 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50"
+    <button
+      onClick={togglePreviewMode}
+      className={`
+        flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium
+        transition-all duration-200
+        ${isPreviewMode 
+          ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20' 
+          : 'bg-neutral-800 text-neutral-400 border border-neutral-700 hover:bg-neutral-700'
+        }
+      `}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(200px_at_50%_120%,rgba(114,186,232,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <span className="relative flex items-center gap-2 text-neutral-200 group-hover:text-white">
-        <EyeIcon className="w-4 h-4" />
-        <span className="text-sm tracking-wide">Preview</span>
-      </span>
+      {isPreviewMode ? (
+        <>
+          <EyeOff className="w-4 h-4" />
+          <span>Salir de Preview</span>
+        </>
+      ) : (
+        <>
+          <Eye className="w-4 h-4" />
+          <span>Vista Previa</span>
+        </>
+      )}
     </button>
   );
 };
