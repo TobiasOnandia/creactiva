@@ -4,6 +4,7 @@ import { ClearButton } from "@/components/ui/buttons/ClearButton";
 import { PublishButton } from "@/components/ui/buttons/PublishButton";
 import { DeviceViewSwitcher } from "@/components/ui/DeviceViewSwitcher";
 import { SaveButton } from "@/components/ui/buttons/SaveButton";
+import { PreviewButton } from "@/components/ui/buttons/PreviewButton";
 
 export const Header = () => {
   return (
@@ -22,6 +23,7 @@ export const Header = () => {
       <nav className="flex items-center gap-2 sm:gap-3">
         <ClearButton />
         <SaveButton />
+        <PreviewButton />
         <PublishButton />
 
         <div className="h-6 w-px bg-neutral-700 mx-2" />
