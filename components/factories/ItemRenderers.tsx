@@ -1,10 +1,11 @@
 "use client";
 import { useCanvasStore } from "@/store/canvasStore";
+import { ElementConfig } from "@/types/canvas/CanvasTypes";
 import { ImageIcon, StarIcon } from "lucide-react";
 
 export const ItemRenderers: Record<
   string,
-  React.FC<{ config: React.CSSProperties; id: string }>
+  React.FC<{ config: ElementConfig; id: string }>
 > = {
   header: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
@@ -57,8 +58,17 @@ export const ItemRenderers: Record<
         style={config}
         className="w-full h-full bg-neutral-800/50 flex flex-col items-center justify-center text-neutral-400 text-xs rounded-lg border border-neutral-700/50 hover:border-cyan-500/30 transition-colors"
       >
-        <ImageIcon className="w-8 h-8 mb-2 text-cyan-500/70" />
-        <span>Imagen</span>
+        {
+          config.src ? (
+            <img src={config.src} alt={config.alt} />
+          ) :
+            (
+              <>
+                  <ImageIcon className="w-8 h-8 mb-2 text-cyan-500/70" />
+            <span>Imagen</span>
+              </>
+          )
+        }
       </div>
     );
   },

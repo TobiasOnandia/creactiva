@@ -8,8 +8,6 @@ export interface CanvasElement {
 
 export interface ElementConfig extends React.CSSProperties {
   content?: string;        
-  imgSrc?: string;         
-  altText?: string;        
   src?: string;        
   alt?: string;         
   text?: string;          
