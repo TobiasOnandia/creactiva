@@ -5,10 +5,14 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { CanvasArea } from "@/components/canvas/CanvasArea";
 import { StylePanel } from "@/components/templates/StylePanel";
 import { useSiteLoader } from "@/hooks/useSiteLoader";
+import { useUndoRedo } from "@/hooks/useUndoRedo";
 import { LoadingCanvas } from "../loaders/LoadingCanvas";
 
 export function CanvasEditor() {
   const { isLoading } = useSiteLoader();
+  
+  // Inicializar el sistema de deshacer/rehacer
+  useUndoRedo();
 
   if (isLoading) {
     return (

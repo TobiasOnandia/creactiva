@@ -7,6 +7,7 @@ import { PublishButton } from "@/components/ui/buttons/PublishButton";
 import { DeviceViewSwitcher } from "@/components/ui/DeviceViewSwitcher";
 import { SaveButton } from "@/components/ui/buttons/SaveButton";
 import { PreviewButton } from "@/components/ui/buttons/PreviewButton";
+import { UndoRedoButtons } from "@/components/ui/buttons/UndoRedoButtons";
 
 export const Header = () => {
   return (
@@ -23,9 +24,9 @@ export const Header = () => {
           </Link>
         </div>
 
-        <DeviceViewSwitcher />
-
-        <div className="flex items-center gap-4">
+        <DeviceViewSwitcher />        <div className="flex items-center gap-4">
+          <UndoRedoButtons />
+          <div className="w-px h-6 bg-white/10" /> {/* Separator */}
           <PreviewButton />
           <ClearButton />
           <PublishButton />

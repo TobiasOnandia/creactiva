@@ -3,6 +3,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { CanvasElement } from "@/types/canvas/CanvasTypes";
 import { GridLayout } from "@/types/canvas/LayoutTypes";
+import { useHistoryStore } from "./historyStore";
 
 export interface Section {
   id: string;
@@ -49,6 +50,10 @@ export interface CanvasStore {
   setActiveDevice: (device: DeviceType) => void;
   openStylePanel: (id: string) => void;
   closeStylePanel: () => void;
+
+  // History
+  undo: () => void;
+  redo: () => void;
   togglePreviewMode: () => void;
   
   // Utility
@@ -98,14 +103,21 @@ export const useCanvasStore = create<CanvasStore>()(
 
       setSections: (sections) =>
         set((state) => {
-          state.sections = sections;
-          const activeSection = findSectionById(sections, state.activeSectionId);
+          // Hacer una copia profunda de las secciones
+          const sectionsCopy = JSON.parse(JSON.stringify(sections));
+          
+          state.sections = sectionsCopy;
+          const activeSection = findSectionById(sectionsCopy, state.activeSectionId);
           if (activeSection) {
             state.canvasElements = [...activeSection.elements];
-          } else if (sections[0]) {
-            state.activeSectionId = sections[0].id;
-            state.canvasElements = [...sections[0].elements];
+          } else if (sectionsCopy[0]) {
+            state.activeSectionId = sectionsCopy[0].id;
+            state.canvasElements = [...sectionsCopy[0].elements];
           }
+          
+          // Inicializar el historial con el estado actual
+          useHistoryStore.getState().clear(); // Limpiar cualquier estado anterior
+          useHistoryStore.getState().pushState(sectionsCopy);
         }),
 
       addSection: (section) =>
@@ -114,6 +126,7 @@ export const useCanvasStore = create<CanvasStore>()(
             ...section,
             id: section.id || generateId()
           });
+          useHistoryStore.getState().pushState([...state.sections]);
         }),
 
       removeSection: (id) =>
@@ -123,6 +136,8 @@ export const useCanvasStore = create<CanvasStore>()(
           if (state.activeSectionId === id) {
             state.activeSectionId = state.sections[0]?.id || "";
           }
+
+          useHistoryStore.getState().pushState([...state.sections]);
         }),
 
       setActiveSection: (id) =>
@@ -156,6 +171,7 @@ export const useCanvasStore = create<CanvasStore>()(
             if (sectionId === state.activeSectionId) {
               state.canvasElements = [...section.elements];
             }
+            useHistoryStore.getState().pushState([...state.sections]);
           }
         }),
 
@@ -181,6 +197,7 @@ export const useCanvasStore = create<CanvasStore>()(
               state.deletedElements.push(deletedElement);
               state.canvasElements = [...activeSection.elements]; 
               state.isStylePanelOpen = { id: "", isOpen: false };
+              useHistoryStore.getState().pushState([...state.sections]);
             }
           }
         }),
@@ -194,6 +211,7 @@ export const useCanvasStore = create<CanvasStore>()(
             if (activeSection) {
               activeSection.elements.push(restoredElement);
               state.canvasElements = [...activeSection.elements]; 
+              useHistoryStore.getState().pushState([...state.sections]);
             }
           }
         }),
@@ -210,6 +228,7 @@ export const useCanvasStore = create<CanvasStore>()(
               };
               activeSection.elements.push(newElement);
               state.canvasElements = [...activeSection.elements]; 
+              useHistoryStore.getState().pushState([...state.sections]);
             }
           }
         }),
@@ -234,6 +253,32 @@ export const useCanvasStore = create<CanvasStore>()(
           state.isPreviewMode = !state.isPreviewMode;
         }),
 
+      undo: () => {
+        const previousState = useHistoryStore.getState().undo();
+        if (previousState) {
+          set((state) => {
+            state.sections = previousState;
+            const activeSection = findSectionById(previousState, state.activeSectionId);
+            if (activeSection) {
+              state.canvasElements = [...activeSection.elements];
+            }
+          });
+        }
+      },
+
+      redo: () => {
+        const nextState = useHistoryStore.getState().redo();
+        if (nextState) {
+          set((state) => {
+            state.sections = nextState;
+            const activeSection = findSectionById(nextState, state.activeSectionId);
+            if (activeSection) {
+              state.canvasElements = [...activeSection.elements];
+            }
+          });
+        }
+      },
+
       clearCanvas: () =>
         set((state) => {
           const activeSection = findSectionById(state.sections, state.activeSectionId);
@@ -244,6 +289,8 @@ export const useCanvasStore = create<CanvasStore>()(
           state.canvasElements = []; 
           state.deletedElements = [];
           state.isStylePanelOpen = { id: "", isOpen: false };
+          useHistoryStore.getState().pushState([...state.sections]);
+          useHistoryStore.getState().clear(); // Limpiar el historial después de limpiar el canvas
         }),
     }))
   )
