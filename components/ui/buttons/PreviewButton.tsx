@@ -5,11 +5,16 @@ import { useCanvasStore } from '@/store/canvasStore';
 
 export const PreviewButton = () => {
   const isPreviewMode = useCanvasStore((state) => state.isPreviewMode);
+  
   const togglePreviewMode = useCanvasStore((state) => state.togglePreviewMode);
+  const closeStylePanel = useCanvasStore((state) => state.closeStylePanel)
 
   return (
     <button
-      onClick={togglePreviewMode}
+      onClick={() => {
+        closeStylePanel()
+        togglePreviewMode();
+      }}
       className={`
         flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium
         transition-all duration-200

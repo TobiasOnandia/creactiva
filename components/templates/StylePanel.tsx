@@ -45,7 +45,6 @@ const SPECIFIC_CONTROLS: Record<
   star: StarControls,
 };
 
-// Selector optimizado para solo obtener lo que necesitamos
 const useStylePanelData = () => {
   return useCanvasStore(
     useShallow(
@@ -125,7 +124,7 @@ export const StylePanel = () => {
 
   return (
     <aside 
-      className="h-screen w-96 bg-neutral-900/90 backdrop-blur-lg border-l border-white/10 shadow-2xl shadow-black/50 flex flex-col"
+      className="h-screen w-96   bg-neutral-900/90 backdrop-blur-lg border-l border-white/10 shadow-2xl shadow-black/50 flex flex-col"
       role="complementary"
       aria-label={`Panel de estilos para ${type}`}
     >
