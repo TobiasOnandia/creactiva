@@ -14,24 +14,23 @@ import { SectionHeader } from "@/components/ui/canvas/SectionHeader";
 import { ElementToolbar } from "@/components/ui/canvas/ElementToolbar";
 import { PreviewContent } from "@/components/preview/PreviewContent";
 import { useState } from "react";
-import { GripVertical } from 'lucide-react'; 
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export function CanvasArea() {
-  const canvasElements = useCanvasStore((state) => state.canvasElements);
-  const activeSectionId = useCanvasStore((state) => state.activeSectionId);
-  const sections = useCanvasStore((state) => state.sections);
-  const isPreviewMode = useCanvasStore((state) => state.isPreviewMode);
-  const addElementToSection = useCanvasStore((state) => state.addElementToSection);
-  const updateSectionLayout = useCanvasStore((state) => state.updateSectionLayout);
-  const activeDevice = useCanvasStore((state) => state.activeDevice);
-  const openStylePanel = useCanvasStore((state) => state.openStylePanel);
-  const deleteElement = useCanvasStore((state) => state.deleteElement);
-  const duplicateElement = useCanvasStore((state) => state.duplicateElement);
+    const {
+      canvasElements,
+      activeSectionId,
+      sections,
+      isPreviewMode,
+      activeDevice,
+      updateSectionLayout,
+      openStylePanel,
+      deleteElement,
+      duplicateElement
+    } = useCanvasStore();
+  
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
-  const [hoveredElementId, setHoveredElementId] = useState<string | null>(null);
-
   const activeSection = sections.find(s => s.id === activeSectionId);
 
   const { currentLayout, setCurrentLayout, handleLayoutChange } = useCanvasLayout(
@@ -42,28 +41,13 @@ export function CanvasArea() {
   );
 
   const { handleDrop } = useDragAndDrop(
-    activeSectionId,
     currentLayout,
     setCurrentLayout,
-    addElementToSection,
-    updateSectionLayout
   );
 
   const handleElementClick = (elementId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setSelectedElementId(elementId);
-  };
-
-  const handleElementHover = (elementId: string) => {
-    setHoveredElementId(elementId);
-  };
-
-  const handleElementLeave = () => {
-    setHoveredElementId(null);
-  };
-
-  const handleMainClick = () => {
-    setSelectedElementId(null);
   };
 
   if (isPreviewMode) {
@@ -119,7 +103,6 @@ export function CanvasArea() {
           >
             {canvasElements.map((item) => (
               <div key={item.id} className="grid-item h-full relative group">
-                {/* Drag handle - solo visible fuera del modo preview */}
                 {!isPreviewMode && (
                   <div 
                     data-drag-handle
@@ -131,18 +114,16 @@ export function CanvasArea() {
                   </div>
                 )}
 
-                {/* Element toolbar - solo visible fuera del modo preview */}
                 {!isPreviewMode && (
                   <ElementToolbar
                     elementId={item.id}
                     onEdit={() => openStylePanel(item.id)}
                     onDuplicate={() => duplicateElement(item.id)}
                     onDelete={() => deleteElement(item.id)}
-                    visible={hoveredElementId === item.id || selectedElementId === item.id}
+                    visible={ selectedElementId === item.id}
                   />
                 )}
                 
-                {/* Content */}
                 <div 
                   data-element
                   className={`no-drag h-full w-full cursor-pointer transition-all rounded ${

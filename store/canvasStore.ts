@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 import { CanvasElement } from "@/types/canvas/CanvasTypes";
 import { GridLayout } from "@/types/canvas/LayoutTypes";
 
@@ -11,239 +13,238 @@ export interface Section {
   is_home?: boolean;
 }
 
+export type DeviceType = "mobile" | "tablet" | "desktop";
+
+export interface StylePanel {
+  id: string;
+  isOpen: boolean;
+}
+
 export interface CanvasStore {
   sections: Section[];
   activeSectionId: string;
-  canvasElements: CanvasElement[];
+  canvasElements: CanvasElement[]; 
   deletedElements: CanvasElement[];
   isEditMode: boolean;
-  activeDevice: "mobile" | "tablet" | "desktop";
-  isStylePanelOpen: {
-    id: string;
-    isOpen: boolean;
-  };
+  activeDevice: DeviceType;
+  isStylePanelOpen: StylePanel;
   isPreviewMode: boolean;
+  activeSection: Section | undefined;
+  
+  //  Sections
   addSection: (section: Section) => void;
   removeSection: (id: string) => void;
   setActiveSection: (id: string) => void;
+  setSections: (sections: Section[]) => void;
   updateSectionLayout: (id: string, layout: GridLayout[]) => void;
+  
+  //  Elements
   addElementToSection: (element: CanvasElement, sectionId: string) => void;
-  setActiveDevice: (device: "mobile" | "tablet" | "desktop") => void;
-  clearCanvas: () => void;
-  openStylePanel: (id: string) => void;
   updateElementConfig: (id: string, newConfig: Partial<CanvasElement["config"]>) => void;
   deleteElement: (id: string) => void;
   restoreElement: (id: string) => void;
-  setSections: (sections: Section[]) => void;
   duplicateElement: (id: string) => void;
+  
+  // UI
+  setActiveDevice: (device: DeviceType) => void;
+  openStylePanel: (id: string) => void;
+  closeStylePanel: () => void;
   togglePreviewMode: () => void;
+  
+  // Utility
+  clearCanvas: () => void;
 }
 
-export const useCanvasStore = create<CanvasStore>((set) => ({
-  sections: [
-    {
-      id: "home",
-      name: "Inicio",
-      slug: "inicio",
-      elements: [],
-      layout: [],
-      is_home: true
-    }
-  ],
-  activeSectionId: "home",
-  canvasElements: [],
-  deletedElements: [],
-  isStylePanelOpen: { id: "", isOpen: false },
-  activeDevice: "desktop",
-  isEditMode: false,
-  isPreviewMode: false,
-  setSections: (sections) => 
-    set((state) => ({
-      sections,
-      canvasElements: sections.find(s => s.id === state.activeSectionId)?.elements || []
-    })),
+const createDefaultSection = (): Section => ({
+  id: "home",
+  name: "Inicio",
+  slug: "inicio",
+  elements: [],
+  layout: [],
+  is_home: true
+});
 
-  addSection: (section) =>
-    set((state) => ({
-      sections: [...state.sections, section]
-    })),
+const validateLayoutItem = (item: GridLayout): GridLayout => ({
+  ...item,
+  static: item.static || false,
+  isDraggable: item.isDraggable !== false,
+  minH: item.minH || 2,
+  minW: item.minW || 2
+});
 
-  removeSection: (id) =>
-    set((state) => ({
-      sections: state.sections.filter(section => section.id !== id)
-    })),
+const generateId = (): string => crypto.randomUUID();
 
-  setActiveSection: (id) =>
-    set((state) => {
-      const section = state.sections.find(s => s.id === id);
-      if (!section) return state;
+const findSectionById = (sections: Section[], id: string): Section | undefined =>
+  sections.find(section => section.id === id);
 
-      return {
-        activeSectionId: id,
-        canvasElements: [...section.elements],
-        isStylePanelOpen: { id: "", isOpen: false }
-      };
-    }),
+const findElementById = (elements: CanvasElement[], id: string): CanvasElement | undefined =>
+  elements.find(element => element.id === id);
 
-  updateSectionLayout: (id, layout) =>
-    set((state) => {
-      const validatedLayout = layout.map(item => ({
-        ...item,
-        static: item.static || false,
-        isDraggable: item.isDraggable !== false,
-        minH: item.minH || 2,
-        minW: item.minW || 2
-      }));
+export const useCanvasStore = create<CanvasStore>()(
+  subscribeWithSelector(
+    immer((set, get) => ({
+      sections: [createDefaultSection()],
+      activeSectionId: "home",
+      canvasElements: [],
+      deletedElements: [],
+      isStylePanelOpen: { id: "", isOpen: false },
+      activeDevice: "desktop",
+      isEditMode: false,
+      isPreviewMode: false,
 
-      return {
-        sections: state.sections.map(section =>
-          section.id === id 
-            ? { ...section, layout: validatedLayout }
-            : section
-        )
-      };
-    }),
+      get activeSection() {
+        return findSectionById(get().sections, get().activeSectionId);
+      },
 
-  addElementToSection: (element, sectionId) =>
-    set((state) => {
-      const elementWithId = {
-        ...element,
-        id: element.id || crypto.randomUUID()
-      };
+      setSections: (sections) =>
+        set((state) => {
+          state.sections = sections;
+          const activeSection = findSectionById(sections, state.activeSectionId);
+          if (activeSection) {
+            state.canvasElements = [...activeSection.elements];
+          } else if (sections[0]) {
+            state.activeSectionId = sections[0].id;
+            state.canvasElements = [...sections[0].elements];
+          }
+        }),
 
-      const updatedSections = state.sections.map(section =>
-        section.id === sectionId
-          ? {
-              ...section,
-              elements: [...section.elements, elementWithId]
+      addSection: (section) =>
+        set((state) => {
+          state.sections.push({
+            ...section,
+            id: section.id || generateId()
+          });
+        }),
+
+      removeSection: (id) =>
+        set((state) => {
+          state.sections = state.sections.filter(section => section.id !== id);
+          
+          if (state.activeSectionId === id) {
+            state.activeSectionId = state.sections[0]?.id || "";
+          }
+        }),
+
+      setActiveSection: (id) =>
+        set((state) => {
+          const section = findSectionById(state.sections, id);
+          if (section) {
+            state.activeSectionId = id;
+            state.canvasElements = [...section.elements];
+            state.isStylePanelOpen = { id: "", isOpen: false };
+          }
+        }),
+
+      updateSectionLayout: (id, layout) =>
+        set((state) => {
+          const section = findSectionById(state.sections, id);
+          if (section) {
+            section.layout = layout.map(validateLayoutItem);
+          }
+        }),
+
+      addElementToSection: (element, sectionId) =>
+        set((state) => {
+          const section = findSectionById(state.sections, sectionId);
+          if (section) {
+            const elementWithId = {
+              ...element,
+              id: element.id || generateId()
+            };
+            section.elements.push(elementWithId);
+            
+            if (sectionId === state.activeSectionId) {
+              state.canvasElements = [...section.elements];
             }
-          : section
-      );
+          }
+        }),
 
-      return {
-        sections: updatedSections,
-        canvasElements: 
-          state.activeSectionId === sectionId
-            ? [...state.canvasElements, elementWithId]
-            : state.canvasElements
-      };
-    }),
-
-
-  setActiveDevice: (device) =>
-    set(() => ({
-      activeDevice: device
-    })),
-
-  clearCanvas: () =>
-    set((state) => {
-      const updatedSections = state.sections.map(section =>
-        section.id === state.activeSectionId
-          ? { ...section, elements: [], layout: [] }
-          : section
-      );
-
-      return {
-        sections: updatedSections,
-        canvasElements: [],
-        deletedElements: [],
-        isStylePanelOpen: { id: "", isOpen: false }
-      };
-    }),
-
-  openStylePanel: (id) =>
-    set((state) => ({
-      isStylePanelOpen: {
-        id,
-        isOpen: true
-      }
-    })),
-
-  updateElementConfig: (id, newConfig) =>
-    set((state) => {
-      const updatedElements = state.canvasElements.map(element =>
-        element.id === id
-          ? { ...element, config: { ...element.config, ...newConfig } }
-          : element
-      );
-
-      const updatedSections = state.sections.map(section =>
-        section.id === state.activeSectionId
-          ? { ...section, elements: updatedElements }
-          : section
-      );
-
-      return {
-        canvasElements: updatedElements,
-        sections: updatedSections
-      };
-    }),
-
-  deleteElement: (id) =>
-    set((state) => {
-      const elementToDelete = state.canvasElements.find(e => e.id === id);
-      if (!elementToDelete) return state;
-
-      const updatedElements = state.canvasElements.filter(e => e.id !== id);
-      const updatedSections = state.sections.map(section =>
-        section.id === state.activeSectionId
-          ? { ...section, elements: updatedElements }
-          : section
-      );
-
-      return {
-        canvasElements: updatedElements,
-        sections: updatedSections,
-        deletedElements: [...state.deletedElements, elementToDelete],
-        isStylePanelOpen: { id: "", isOpen: false }
-      };
-    }),
-
-  restoreElement: (id) =>
-    set((state) => {
-      const elementToRestore = state.deletedElements.find(e => e.id === id);
-      if (!elementToRestore) return state;
-
-      const updatedDeleted = state.deletedElements.filter(e => e.id !== id);
-      const updatedElements = [...state.canvasElements, elementToRestore];
-      const updatedSections = state.sections.map(section =>
-        section.id === state.activeSectionId
-          ? { ...section, elements: updatedElements }
-          : section
-      );
-
-      return {
-        deletedElements: updatedDeleted,
-        canvasElements: updatedElements,
-        sections: updatedSections
-      };
-    }),
-
-  duplicateElement: (id) => 
-    set((state) => {
-      const elementToDuplicate = state.canvasElements.find(el => el.id === id);
-      if (!elementToDuplicate) return state;
-
-      const newElement = {
-        ...elementToDuplicate,
-        id: crypto.randomUUID(),
-      };
-
-      const updatedSections = state.sections.map(section =>
-        section.id === state.activeSectionId
-          ? {
-              ...section,
-              elements: [...section.elements, newElement]
+      updateElementConfig: (id, newConfig) =>
+        set((state) => {
+          const activeSection = findSectionById(state.sections, state.activeSectionId);
+          if (activeSection) {
+            const element = findElementById(activeSection.elements, id);
+            if (element) {
+              element.config = { ...element.config, ...newConfig };
+              state.canvasElements = [...activeSection.elements];
             }
-          : section
-      );
+          }
+        }),
 
-      return {
-        sections: updatedSections,
-        canvasElements: [...state.canvasElements, newElement]
-      };
-    }),
+      deleteElement: (id) =>
+        set((state) => {
+          const activeSection = findSectionById(state.sections, state.activeSectionId);
+          if (activeSection) {
+            const elementIndex = activeSection.elements.findIndex(e => e.id === id);
+            if (elementIndex !== -1) {
+              const [deletedElement] = activeSection.elements.splice(elementIndex, 1);
+              state.deletedElements.push(deletedElement);
+              state.canvasElements = [...activeSection.elements]; 
+              state.isStylePanelOpen = { id: "", isOpen: false };
+            }
+          }
+        }),
 
-  togglePreviewMode: () => 
-    set((state) => ({ isPreviewMode: !state.isPreviewMode })),
-}));
+      restoreElement: (id) =>
+        set((state) => {
+          const deletedIndex = state.deletedElements.findIndex(e => e.id === id);
+          if (deletedIndex !== -1) {
+            const [restoredElement] = state.deletedElements.splice(deletedIndex, 1);
+            const activeSection = findSectionById(state.sections, state.activeSectionId);
+            if (activeSection) {
+              activeSection.elements.push(restoredElement);
+              state.canvasElements = [...activeSection.elements]; 
+            }
+          }
+        }),
+
+      duplicateElement: (id) =>
+        set((state) => {
+          const activeSection = findSectionById(state.sections, state.activeSectionId);
+          if (activeSection) {
+            const elementToDuplicate = findElementById(activeSection.elements, id);
+            if (elementToDuplicate) {
+              const newElement = {
+                ...elementToDuplicate,
+                id: generateId(),
+              };
+              activeSection.elements.push(newElement);
+              state.canvasElements = [...activeSection.elements]; 
+            }
+          }
+        }),
+
+      setActiveDevice: (device) =>
+        set((state) => {
+          state.activeDevice = device;
+        }),
+
+      openStylePanel: (id) =>
+        set((state) => {
+          state.isStylePanelOpen = { id, isOpen: true };
+        }),
+
+      closeStylePanel: () =>
+        set((state) => {
+          state.isStylePanelOpen = { id: "", isOpen: false };
+        }),
+
+      togglePreviewMode: () =>
+        set((state) => {
+          state.isPreviewMode = !state.isPreviewMode;
+        }),
+
+      clearCanvas: () =>
+        set((state) => {
+          const activeSection = findSectionById(state.sections, state.activeSectionId);
+          if (activeSection) {
+            activeSection.elements = [];
+            activeSection.layout = [];
+          }
+          state.canvasElements = []; 
+          state.deletedElements = [];
+          state.isStylePanelOpen = { id: "", isOpen: false };
+        }),
+    }))
+  )
+);

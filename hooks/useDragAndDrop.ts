@@ -3,14 +3,43 @@ import { GridLayout } from "@/types/canvas/LayoutTypes";
 import { templateConfigs } from "@/config/templateConfigs";
 import { GRID_CONFIG } from "@/config";
 import { ElementFactory } from "@/components/factories/elementFactory";
+import { useCanvasStore } from "@/store/canvasStore";
 
 export function useDragAndDrop(
-  activeSectionId: string,
   currentLayout: GridLayout[],
   setCurrentLayout: (layout: GridLayout[]) => void,
-  addElementToSection: (element: any, sectionId: string) => void,
-  updateSectionLayout: (id: string, layout: GridLayout[]) => void
 ) {
+
+
+  const addElementToSection = useCanvasStore(state => state.addElementToSection)
+  const updateSectionLayout = useCanvasStore(state => state.updateSectionLayout)
+  const activeSectionId = useCanvasStore(state => state.activeSectionId)
+
+
+  const createLayoutItem = useCallback((
+    elementId: string,
+    x: number,
+    y: number,
+    customProps: Partial<GridLayout> = {}
+  ): GridLayout => ({
+    i: elementId,
+    x,
+    y,
+    w: GRID_CONFIG.defaultSize.w,
+    h: GRID_CONFIG.defaultSize.h,
+    minH: GRID_CONFIG.minSize.h,
+    minW: GRID_CONFIG.minSize.w,
+    static: false,
+    isDraggable: true,
+    ...customProps
+  }), []);
+
+  const updateLayoutAndStore = useCallback((newLayoutItems: GridLayout[]) => {
+    const updatedLayout = [...currentLayout, ...newLayoutItems];
+    setCurrentLayout(updatedLayout);
+    updateSectionLayout(activeSectionId, updatedLayout);
+  }, [currentLayout, setCurrentLayout, updateSectionLayout, activeSectionId]);
+
   const handleTemplateDropDrop = useCallback((
     templateConfig: any,
     item: GridLayout
@@ -20,25 +49,26 @@ export function useDragAndDrop(
       id: crypto.randomUUID()
     }));
 
-    const layoutsWithNewIds = templateConfig.layout.map((layout: any, index: number) => ({
-      ...layout,
-      i: elementsWithNewIds[index].id,
-      x: item.x,
-      y: item.y + index * 2,
-      minH: layout.minH || GRID_CONFIG.minSize.h,
-      minW: layout.minW || GRID_CONFIG.minSize.w,
-      static: false,
-      isDraggable: true
-    }));
+    const layoutsWithNewIds = templateConfig.layout.map((layout: any, index: number) => 
+      createLayoutItem(
+        elementsWithNewIds[index].id,
+        item.x,
+        item.y + index * 2,
+        {
+          w: layout.w || GRID_CONFIG.defaultSize.w,
+          h: layout.h || GRID_CONFIG.defaultSize.h,
+          minH: layout.minH || GRID_CONFIG.minSize.h,
+          minW: layout.minW || GRID_CONFIG.minSize.w,
+        }
+      )
+    );
 
     elementsWithNewIds.forEach((element: any) => {
       addElementToSection(element, activeSectionId);
     });
-    
-    const updatedLayout = [...currentLayout, ...layoutsWithNewIds];
-    setCurrentLayout(updatedLayout);
-    updateSectionLayout(activeSectionId, updatedLayout);
-  }, [activeSectionId, currentLayout, setCurrentLayout, addElementToSection, updateSectionLayout]);
+
+    updateLayoutAndStore(layoutsWithNewIds);
+  }, [activeSectionId, addElementToSection, createLayoutItem, updateLayoutAndStore]);
 
   const handleSingleElementDrop = useCallback((
     elementType: string,
@@ -46,28 +76,24 @@ export function useDragAndDrop(
   ) => {
     const newCanvasElement = ElementFactory.createElement(elementType);
     
-    const newLayoutItem: GridLayout = {
-      i: newCanvasElement.id,
-      x: item.x,
-      y: item.y,
-      w: GRID_CONFIG.defaultSize.w,
-      h: GRID_CONFIG.defaultSize.h,
-      minH: GRID_CONFIG.minSize.h,
-      minW: GRID_CONFIG.minSize.w,
-      static: false,
-      isDraggable: true,
-    };
-    
-    addElementToSection(newCanvasElement, activeSectionId);
-    const updatedLayout = [...currentLayout, newLayoutItem];
-    setCurrentLayout(updatedLayout);
-    updateSectionLayout(activeSectionId, updatedLayout);
-  }, [activeSectionId, currentLayout, setCurrentLayout, addElementToSection, updateSectionLayout]);
+    const newLayoutItem = createLayoutItem(
+      newCanvasElement.id,
+      item.x,
+      item.y
+    );
 
-  const handleDrop = useCallback((layout: GridLayout[], item: GridLayout, e: Event) => {
+    addElementToSection(newCanvasElement, activeSectionId);
+    updateLayoutAndStore([newLayoutItem]);
+  }, [activeSectionId, addElementToSection, createLayoutItem, updateLayoutAndStore]);
+
+  const handleDrop = useCallback((
+    layout: GridLayout[], 
+    item: GridLayout, 
+    e: Event
+  ) => {
     const dragEvent = e as unknown as DragEvent;
     const droppedElementType = dragEvent.dataTransfer?.getData("text/plain");
-
+    
     if (!droppedElementType) {
       console.error("No element type data found in drag event");
       return;
@@ -82,5 +108,7 @@ export function useDragAndDrop(
     }
   }, [handleTemplateDropDrop, handleSingleElementDrop]);
 
-  return { handleDrop };
+  return { 
+    handleDrop,
+  };
 }
