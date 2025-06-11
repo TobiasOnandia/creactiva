@@ -56,12 +56,6 @@ export const sections = [
         colorClass: "bg-purple-500/10",
       },
       {
-        type: "button",
-        icon: ComponentIcon,
-        label: "Botón",
-        colorClass: "bg-emerald-500/10",
-      },
-      {
         type: "divider",
         icon: MinusIcon,
         label: "Separador",

@@ -72,25 +72,6 @@ export const ItemRenderers: Record<
       </div>
     );
   },
-  button: ({ config, id }) => {
-    const openStylePanel = useCanvasStore((state) => state.openStylePanel);
-    const isEditMode = useCanvasStore((state) => state.isEditMode);
-
-    return (
-      <div
-        onClick={isEditMode ? () => openStylePanel(id) : undefined}
-        style={config}
-        className="w-full h-full flex items-center justify-center"
-      >
-        <button
-          className="px-6 py-2.5 rounded-lg text-white text-sm font-medium shadow-lg shadow-blue-500/20 hover:opacity-90 transition-opacity"
-          style={{ pointerEvents: "none", ...config }}
-        >
-          {config.content}
-        </button>
-      </div>
-    );
-  },
   divider: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
     const isEditMode = useCanvasStore((state) => state.isEditMode);

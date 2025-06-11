@@ -48,27 +48,13 @@ export const ButtonControls = ({
           Acción al enviar
         </label>
         <select
-          value={"submit"}
           onChange={(e) => onChange("action", e.target.value)}
           className="w-full px-3 py-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
         >
           <option value="submit">Enviar formulario</option>
-          <option value="url">Redirigir a URL</option>
           <option value="function">Ejecutar función</option>
         </select>
-
-          <div className="mt-2">
-            <label className="text-sm text-neutral-400 mb-1 block">
-              URL de destino
-            </label>
-            <input
-              type="text"
-              value={""}
-              onChange={(e) => onChange("url", e.target.value)}
-              className="w-full px-3 py-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
-              placeholder="https://ejemplo.com"
-            />
-          </div>
+        
       </div>
     )}
   </Section>
