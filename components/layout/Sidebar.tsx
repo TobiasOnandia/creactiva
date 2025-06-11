@@ -14,7 +14,6 @@ export function Sidebar() {
 
   const toggleSidebar = (type: string) => {
     setOpen((prev) => {
-      // Si el panel clickeado es el mismo que está activo, toggle open/close
       if (prev.panel === type && prev.isOpen) {
         return {
           isOpen: false,
@@ -22,17 +21,11 @@ export function Sidebar() {
         };
       }
       
-      // Si es un panel diferente o el sidebar está cerrado, abre el nuevo panel
       return {
         isOpen: true,
         panel: type,
       };
     });
-  };
-
-  // Función para cerrar el sidebar desde dentro del panel
-  const closeSidebar = () => {
-    setOpen(prev => ({ ...prev, isOpen: false }));
   };
 
   return (
@@ -55,7 +48,7 @@ export function Sidebar() {
                   }
                   focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50`}
                 aria-label={item.label}
-                title={item.label} // Añadido para accesibilidad
+                title={item.label}
               >
                 <item.icon
                   className={`w-5 h-5 transition-colors ${

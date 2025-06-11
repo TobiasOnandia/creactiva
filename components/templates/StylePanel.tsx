@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { shallow, useShallow } from "zustand/shallow"; 
 import { useCanvasStore } from "@/store/canvasStore";
-import { CanvasElement } from "@/types/canvas/CanvasTypes";
+import { CanvasElement, ElementConfig } from "@/types/canvas/CanvasTypes";
 import { TextControls } from "@/components/ui/controllers/TextControllers";
 import { ImageControls } from "@/components/ui/controllers/ImageControls";
 import { DividerControls } from "@/components/ui/controllers/DividerControls";
@@ -19,9 +19,10 @@ import { OptionControls } from "@/components/ui/controllers/OptionControls";
 import { ButtonControls } from "@/components/ui/controllers/ButtonControls";
 import { DesignSection } from "@/components/ui/panel/DesignSection";
 import { AppearanceSection } from "@/components/ui/panel/AppearanceSection";
+import { LinkControls } from "../ui/controllers/LinkControls";
 
 export type SpecificProps = {
-  config: React.CSSProperties;
+  config: ElementConfig;
   onChange: (key: string, value: any) => void;
 };
 
@@ -39,6 +40,7 @@ const SPECIFIC_CONTROLS: Record<
   checkbox: (props: SpecificProps) => <OptionControls {...props} isCheckbox={true} />,
   button: (props: SpecificProps) => <ButtonControls {...props} isSubmit={false} />,
   submit: (props: SpecificProps) => <ButtonControls {...props} isSubmit={true} />,
+  link: (props: SpecificProps) => <LinkControls {...props} />,
   divider: DividerControls,
   star: StarControls,
 };

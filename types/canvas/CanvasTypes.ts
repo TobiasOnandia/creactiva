@@ -14,7 +14,9 @@ export interface ElementConfig extends React.CSSProperties {
   label?: string;        
   options?: string[];     
   images?: string;      
-  slides?: string[];      
+  slides?: string[];   
+  href?: string
+  targetBlank?:boolean
   
   onClick?: () => void;
   onChange?: (value: any) => void;

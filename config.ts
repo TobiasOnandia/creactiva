@@ -7,6 +7,7 @@ import {
   ImageIcon,
   LayoutGridIcon,
   LayoutTemplate,
+  Link,
   ListIcon,
   MinusIcon,
   Monitor,
@@ -66,6 +67,13 @@ export const sections = [
         label: "Separador",
         colorClass: "bg-amber-500/10",
       },
+      {
+        type: 'link',
+        icon: Link,
+        label: 'Enlace',
+        colorClass: "bg-amber-500/10",
+
+      }
     ],
   },
   {

@@ -1,7 +1,7 @@
 "use client";
 import { useCanvasStore } from "@/store/canvasStore";
 import { ElementConfig } from "@/types/canvas/CanvasTypes";
-import { ImageIcon, StarIcon } from "lucide-react";
+import { ImageIcon, MoveLeft, MoveRight, StarIcon } from "lucide-react";
 
 export const ItemRenderers: Record<
   string,
@@ -159,9 +159,28 @@ export const ItemRenderers: Record<
         style={config}
         className="w-full h-full bg-neutral-700 flex items-center justify-between px-2 rounded"
       >
-        <div className="w-4 h-4 bg-neutral-600 rounded-full"></div>
-        <div className="text-neutral-400 text-xs">Carrusel</div>
-        <div className="w-4 h-4 bg-neutral-600 rounded-full"></div>
+       
+          {
+          config.images ? (
+            config.images.split(',').map((url, index) => {
+              return (
+                <>
+                <button onClick={() => {++index}}> <MoveRight /> </button>
+                  <img key={index} src={url[index]} alt={config.alt} />
+                <button onClick={() => {index - 1}}> <MoveLeft /> </button>
+
+                </>
+              )
+            })
+          ) :
+            (
+              <>
+               <div className="w-4 h-4 bg-neutral-600 rounded-full"></div>
+                <div className="text-neutral-400 text-xs">Carrusel</div>
+                <div className="w-4 h-4 bg-neutral-600 rounded-full"></div>
+              </>
+          )
+        }
       </div>
     );
   },
@@ -213,6 +232,25 @@ export const ItemRenderers: Record<
         >
           Enviar
         </button>
+      </div>
+    );
+  },
+    link: ({ config, id }) => {
+    const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+    const isEditMode = useCanvasStore((state) => state.isEditMode);
+
+    return (
+      <div
+        onClick={isEditMode ? () => openStylePanel(id) : undefined}
+        style={config}
+        className="w-full h-full flex items-center justify-center hover:opacity-90 transition-opacity"
+      >
+        <a href={config?.href || "#"}
+           className="text-blue-400 underline cursor-pointer"
+           style={{ pointerEvents: "none" }} 
+        >
+          {config?.content || "Enlace de ejemplo"}
+        </a>
       </div>
     );
   },
