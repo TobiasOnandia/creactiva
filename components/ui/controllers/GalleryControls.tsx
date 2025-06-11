@@ -1,4 +1,3 @@
-import { CanvasElement } from "@/types/canvas/CanvasTypes";
 import { NumberInput } from "../panel/NumberInput";
 import { Section } from "../panel/Section";
 import { SpecificProps } from "@/components/templates/StylePanel";
@@ -39,7 +38,7 @@ export const GalleryControls = ({
               <input
                 type="checkbox"
                 id={opt}
-                checked={!!config[opt as keyof CanvasElement['config']]}
+                checked={!!config}
                 onChange={(e) => onChange(opt, e.target.checked)}
                 className="h-4 w-4 text-cyan-500 focus:ring-cyan-500 border-white/10 rounded bg-neutral-800/50"
               />

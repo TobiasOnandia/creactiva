@@ -122,17 +122,30 @@ export const ItemRenderers: Record<
   gallery: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
     const isEditMode = useCanvasStore((state) => state.isEditMode);
-
+    console.log(config)
     return (
       <div
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
         style={config}
         className="w-full h-full bg-neutral-700 grid grid-cols-2 grid-rows-2 gap-1 p-1 rounded"
       >
-        <div className="bg-neutral-600 rounded"></div>
-        <div className="bg-neutral-600 rounded"></div>
-        <div className="bg-neutral-600 rounded"></div>
-        <div className="bg-neutral-600 rounded"></div>
+         {
+          config.images ? (
+            config.images.split(',').map((url, index) => {
+              return (
+                <img key={index} src={url} alt={config.alt} />
+              )
+            })
+          ) :
+            (
+              <>
+                <div className="bg-neutral-600 rounded"></div>
+                <div className="bg-neutral-600 rounded"></div>
+                <div className="bg-neutral-600 rounded"></div>
+                <div className="bg-neutral-600 rounded"></div>
+              </>
+          )
+        }
       </div>
     );
   },
