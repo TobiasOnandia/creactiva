@@ -25,7 +25,7 @@ export class ElementFactory {
     return {
       id: crypto.randomUUID(),
       type,
-      config: { ...baseConfig, ...typeConfig },
+      config: { type, ...baseConfig, ...typeConfig },
     };
   }
 }

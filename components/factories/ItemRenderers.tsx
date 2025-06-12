@@ -249,7 +249,7 @@ export const ItemRenderers: Record<
       </div>
     );
   },
-      card: ({ config, id }) => {
+  card: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
     const isEditMode = useCanvasStore((state) => state.isEditMode);
 
@@ -270,7 +270,7 @@ export const ItemRenderers: Record<
           <h4 className="font-semibold text-neutral-200 text-base mb-1 truncate">{config?.title || "Título de la Tarjeta"}</h4>
           <p className="text-neutral-400 text-xs line-clamp-2">{config?.description || "Descripción corta de la tarjeta."}</p>
             <button className="mt-2 px-3 py-1.5 bg-blue-600 text-white text-xs rounded opacity-70" style={{pointerEvents: "none"}}>
-              {config.content || "Botón de Acción"}
+              {config.buttonText || "Botón de Acción"}
             </button>
         </div>
       </div>

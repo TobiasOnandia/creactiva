@@ -7,23 +7,33 @@ export interface CanvasElement {
 }
 
 export interface ElementConfig extends React.CSSProperties {
-  content?: string;        
-  src?: string;        
-  alt?: string;         
-  text?: string;          
-  label?: string;        
-  options?: string;     
-  images?: string;      
-  slides?: string[];   
-  href?: string
-  targetBlank?: boolean
-  action?: string,
-  
+  id?: string;
+  type: string;
+  content?: string;
+  required?: boolean;
+  href?: string;
+  title?: string;
+  description?: string;
+  src?: string;
+  alt?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  buttonColor?: string;
+  field1?: string;
+  field2?: string;
+  field3?: string;
+  buttonText?: string;
+  options?: string;
+  listType?: "ordered" | "unordered";
+  fontSize?: string | number;
+  label?: string;
+  images?: string;
+  targetBlank?: boolean;
+
   onClick?: () => void;
   onChange?: (value: any) => void;
   onSubmit?: () => void;
   
-  required?: boolean;
   disabled?: boolean;
   placeholder?: string;
 }
