@@ -29,7 +29,9 @@ export interface ElementConfig extends React.CSSProperties {
   label?: string;
   images?: string;
   targetBlank?: boolean;
-
+  submitButtonText?: string;
+  formAction?: string;
+  items?: string; // For select or checkbox options
   onClick?: () => void;
   onChange?: (value: any) => void;
   onSubmit?: () => void;

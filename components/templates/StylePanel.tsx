@@ -21,6 +21,8 @@ import { DesignSection } from "@/components/ui/panel/DesignSection";
 import { AppearanceSection } from "@/components/ui/panel/AppearanceSection";
 import { LinkControls } from "../ui/controllers/LinkControls";
 import { CardControls } from "../ui/controllers/CardControls";
+import { FormControls } from "../ui/controllers/FormControls";
+import { ListControls } from "../ui/controllers/ListControls";
 
 export type SpecificProps = {
   config: ElementConfig;
@@ -42,7 +44,10 @@ const SPECIFIC_CONTROLS: Record<
   button: (props: SpecificProps) => <ButtonControls {...props} isSubmit={false} />,
   submit: (props: SpecificProps) => <ButtonControls {...props} isSubmit={true} />,
   link: (props: SpecificProps) => <LinkControls {...props} />,
-  card:  (props: SpecificProps) => <CardControls {...props} />,
+  card: (props: SpecificProps) => <CardControls {...props} />,
+  form: (props: SpecificProps) => <FormControls {...props} />,
+  list: (props: SpecificProps) => <ListControls {...props} />,
+
   divider: DividerControls,
   star: StarControls,
 };
