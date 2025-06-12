@@ -20,11 +20,10 @@ export const useHistoryStore = create<HistoryState>((set, get) => ({
   future: [],
   canUndo: false,
   canRedo: false,
-  maxHistory: 50, // Límite de estados guardados
+  maxHistory: 50,
 
   pushState: (sections: Section[]) => {
     set(state => {
-      // Si es el primer estado y present está vacío, solo inicializamos present
       if (state.present.length === 0) {
         return {
           ...state,
@@ -32,7 +31,6 @@ export const useHistoryStore = create<HistoryState>((set, get) => ({
         };
       }
 
-      // No guardar si el estado es igual al actual
       if (JSON.stringify(state.present) === JSON.stringify(sections)) {
         return state;
       }

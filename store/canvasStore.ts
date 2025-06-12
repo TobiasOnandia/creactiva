@@ -103,7 +103,6 @@ export const useCanvasStore = create<CanvasStore>()(
 
       setSections: (sections) =>
         set((state) => {
-          // Hacer una copia profunda de las secciones
           const sectionsCopy = JSON.parse(JSON.stringify(sections));
           
           state.sections = sectionsCopy;
@@ -115,8 +114,7 @@ export const useCanvasStore = create<CanvasStore>()(
             state.canvasElements = [...sectionsCopy[0].elements];
           }
           
-          // Inicializar el historial con el estado actual
-          useHistoryStore.getState().clear(); // Limpiar cualquier estado anterior
+          useHistoryStore.getState().clear();
           useHistoryStore.getState().pushState(sectionsCopy);
         }),
 
@@ -290,7 +288,7 @@ export const useCanvasStore = create<CanvasStore>()(
           state.deletedElements = [];
           state.isStylePanelOpen = { id: "", isOpen: false };
           useHistoryStore.getState().pushState([...state.sections]);
-          useHistoryStore.getState().clear(); // Limpiar el historial después de limpiar el canvas
+          useHistoryStore.getState().clear(); 
         }),
     }))
   )

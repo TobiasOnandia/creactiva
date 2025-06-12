@@ -186,15 +186,17 @@ export const ItemRenderers: Record<
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
     const isEditMode = useCanvasStore((state) => state.isEditMode);
 
+    console.log(config)
     return (
-      <div
+      <label
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
         style={config}
-        className="w-full h-full flex items-center px-2 py-1"
+        htmlFor={id}
+        className="w-full h-full flex items-center px-2 py-1 gap-2"
       >
-        <div className="w-4 h-4 bg-neutral-600 rounded mr-2"></div>
-        <span className="text-neutral-300 text-sm">Opción</span>
-      </div>
+        <input type="checkbox" name="" id={id} />
+        <span className="text-neutral-300 text-sm">{config.label || 'Opcion'}</span>
+      </label>
     );
   },
   submit: ({ config, id }) => {
