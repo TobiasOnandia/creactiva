@@ -12,7 +12,7 @@ export interface ElementConfig extends React.CSSProperties {
   alt?: string;         
   text?: string;          
   label?: string;        
-  options?: string[];     
+  options?: string;     
   images?: string;      
   slides?: string[];   
   href?: string

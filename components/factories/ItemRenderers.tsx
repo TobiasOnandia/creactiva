@@ -168,6 +168,7 @@ export const ItemRenderers: Record<
   select: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
     const isEditMode = useCanvasStore((state) => state.isEditMode);
+    console.log(config)
 
     return (
       <div
@@ -175,10 +176,22 @@ export const ItemRenderers: Record<
         style={config}
         className="w-full h-full flex items-center px-2  py-1"
       >
-        <div className="w-full h-6 bg-neutral-600 rounded flex items-center justify-between px-2 text-xs text-neutral-400">
-          <span>Seleccionar...</span>
-          <span className="ml-2">&#9660;</span>
-        </div>
+        <select name="" id="" required={config.required}>
+          {
+            config.options ? (
+              config.options.split(',').map((option, index) => (
+                <option key={index} value={option}>{option}</option>
+              ))
+            ) : (
+              <>
+                <option value="">Opcion 1</option>
+                <option value="">Opcion 2</option>
+                <option value="">Opcion 3</option>
+              </>
+            )
+          }
+        </select>
+    
       </div>
     );
   },
@@ -186,15 +199,15 @@ export const ItemRenderers: Record<
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
     const isEditMode = useCanvasStore((state) => state.isEditMode);
 
-    console.log(config)
     return (
       <label
         onClick={isEditMode ? () => openStylePanel(id) : undefined}
         style={config}
         htmlFor={id}
+        
         className="w-full h-full flex items-center px-2 py-1 gap-2"
       >
-        <input type="checkbox" name="" id={id} />
+        <input required={config.required} type="checkbox" name="" id={id} />
         <span className="text-neutral-300 text-sm">{config.label || 'Opcion'}</span>
       </label>
     );
