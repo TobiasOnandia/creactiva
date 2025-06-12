@@ -11,7 +11,9 @@ import {
   ListIcon,
   MinusIcon,
   Monitor,
+  PanelTop,
   Pilcrow,
+  RectangleVertical,
   SendIcon,
   SettingsIcon,
   SlidersVerticalIcon,
@@ -21,7 +23,6 @@ import {
   Tablet,
   TextIcon,
 } from "lucide-react";
-import { CanvasElement, DeviceConfig } from "./types/canvas/CanvasTypes";
 
 export const mainNavItems = [
   { id: "pages", label: "Páginas", icon: StickyNote },
@@ -44,9 +45,9 @@ export const sections = [
     icon: SquareStackIcon,
     elements: [
       {
-        type: "header",
+        type: "hero",
         icon: TextIcon,
-        label: "Encabezado",
+        label: "Portada",
         colorClass: "bg-cyan-500/10",
       },
       {
@@ -116,6 +117,36 @@ export const sections = [
         label: "Botón Enviar",
         colorClass: "bg-cyan-500/10",
       },
+    ],
+  },
+   {
+    title: "Componentes Avanzados",
+    icon: ClipboardListIcon,
+    elements: [
+      {
+        type: "list",
+        icon: ListIcon,
+        label: "Lista",
+        colorClass: "bg-orange-500/10",
+      },
+      {
+        type: "form",
+        icon: ClipboardListIcon,
+        label: "formulario",
+        colorClass: "bg-violet-500/10",
+      },
+      {
+        type: "card",
+        icon: RectangleVertical,
+        label: "Tarejeta",
+        colorClass: "bg-cyan-500/10",
+      },
+      {
+        type: "header",
+        icon: PanelTop,
+        label: "Encabezado",
+        colorClass: "bg-cyan-500/10",
+      }
     ],
   },
 ];
