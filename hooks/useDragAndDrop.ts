@@ -4,13 +4,13 @@ import { templateConfigs } from "@/config/templateConfigs";
 import { GRID_CONFIG } from "@/config";
 import { ElementFactory } from "@/components/factories/elementFactory";
 import { useCanvasStore } from "@/store/canvasStore";
+import { ELEMENT_TYPE_CONFIG } from "@/config/elementConfig";
+import { ElementType } from "@/types/canvas/CanvasTypes";
 
 export function useDragAndDrop(
   currentLayout: GridLayout[],
   setCurrentLayout: (layout: GridLayout[]) => void,
 ) {
-
-
   const addElementToSection = useCanvasStore(state => state.addElementToSection)
   const updateSectionLayout = useCanvasStore(state => state.updateSectionLayout)
   const activeSectionId = useCanvasStore(state => state.activeSectionId)
@@ -71,15 +71,18 @@ export function useDragAndDrop(
   }, [activeSectionId, addElementToSection, createLayoutItem, updateLayoutAndStore]);
 
   const handleSingleElementDrop = useCallback((
-    elementType: string,
+    elementType: ElementType,
     item: GridLayout
   ) => {
     const newCanvasElement = ElementFactory.createElement(elementType);
     
+    const defaultSize = ELEMENT_TYPE_CONFIG[elementType] || GRID_CONFIG.defaultSize;
+
     const newLayoutItem = createLayoutItem(
       newCanvasElement.id,
       item.x,
-      item.y
+      item.y,
+      { w: defaultSize.w, h: defaultSize.h }
     );
 
     addElementToSection(newCanvasElement, activeSectionId);
@@ -92,7 +95,7 @@ export function useDragAndDrop(
     e: Event
   ) => {
     const dragEvent = e as unknown as DragEvent;
-    const droppedElementType = dragEvent.dataTransfer?.getData("text/plain");
+    const droppedElementType = dragEvent.dataTransfer?.getData("text/plain") as ElementType;
     
     if (!droppedElementType) {
       console.error("No element type data found in drag event");

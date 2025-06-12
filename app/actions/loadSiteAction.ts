@@ -2,7 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { GridLayout } from '@/types/canvas/LayoutTypes';
-import { ElementConfig } from '@/types/canvas/CanvasTypes';
+import { ElementConfig, ElementType  } from '@/types/canvas/CanvasTypes';
 
 interface LayoutData {
   layout_data: GridLayout[];
@@ -10,7 +10,7 @@ interface LayoutData {
 
 interface Element {
   id: string;
-  type: string;
+  type: ElementType;
   config: Partial<ElementConfig>;
 }
 

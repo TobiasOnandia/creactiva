@@ -1,8 +1,8 @@
 import { DEFAULT_ELEMENT_CONFIGS } from "@/config";
-import { CanvasElement } from "@/types/canvas/CanvasTypes";
+import { CanvasElement, ElementType } from "@/types/canvas/CanvasTypes";
 
 export class ElementFactory {
-  static createElement(type: string): CanvasElement {
+    static createElement(type: ElementType): CanvasElement {
     const baseConfig = {
       backgroundColor: "transparent",
       color: "#f8fafc",

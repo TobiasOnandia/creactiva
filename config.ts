@@ -1,7 +1,6 @@
 import {
   CheckSquareIcon,
   ClipboardListIcon,
-  ComponentIcon,
   CopyPlus,
   HelpCircle,
   ImageIcon,
@@ -153,8 +152,6 @@ export const sections = [
 
 export const categories = ["Landing", "Dashboard", "Blog", "Portfolio"];
 
-
-
 export type DeviceType = "mobile" | "tablet" | "desktop";
 
 export const DEVICE_CONFIG = {
@@ -193,7 +190,7 @@ export const DEFAULT_ELEMENT_CONFIGS = {
     color: "#ffffff",
     fontSize: 16,
     fontWeight: "bold",
-    textAlign: "center" as const,
+    textAlign: "center",
     content: "Botón",
     paddingInline: 24,
     paddingBlock: 12,
@@ -202,12 +199,12 @@ export const DEFAULT_ELEMENT_CONFIGS = {
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    textAlign: "center" as const,
+    textAlign: "center",
     content: "Encabezado",
   },
   text: {
     content: "Texto de ejemplo",
-    textAlign: "left" as const,
+    textAlign: "left",
   },
   paragraph: {
     content: "Párrafo de ejemplo con contenido más extenso para mostrar el diseño.",

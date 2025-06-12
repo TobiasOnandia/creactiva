@@ -1,14 +1,45 @@
 import { GridLayout } from "./LayoutTypes";
 
+export type ElementType =
+  | "header"
+  | "paragraph"
+  | "button"
+  | "link"
+  | "image"
+  | "gallery"
+  | "text"
+  | "form"
+  | "input"
+  | "textarea"
+  | "divider"
+  | "video"
+  | "map"
+  | "icon"
+  | "card"
+  | "list"
+  | "quote"
+  | "code"
+  | "table"
+  | "progress"
+  | "alert"
+  | "rating"
+  | "spacer"
+  | "menu"
+  | "tabs"
+  | "accordion"
+  | "carousel"
+  | "grid"
+  | "container";
+
 export interface CanvasElement {
   id: string;
-  type: string;
+  type: ElementType;
   config: ElementConfig; 
 }
 
 export interface ElementConfig extends React.CSSProperties {
   id?: string;
-  type: string;
+  type: ElementType;
   content?: string;
   required?: boolean;
   href?: string;
