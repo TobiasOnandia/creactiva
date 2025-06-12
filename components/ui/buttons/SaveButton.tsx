@@ -36,7 +36,7 @@ export const SaveButton = () => {
         } else {
           reject(result.error);
         }
-      } catch (error) {
+      } catch {
         reject(new Error('Error al guardar los cambios'));
       } finally {
         setIsSaving(false);

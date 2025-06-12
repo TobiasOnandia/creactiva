@@ -2,6 +2,7 @@
 import { useMemo } from 'react';
 import { useCanvasStore } from '@/store/canvasStore';
 import { CanvasItemContent } from '../canvas/CanvasItemContent';
+import { ElementConfig } from '@/types/canvas/CanvasTypes';
 
 // Constants
 const ROW_HEIGHT = 90;
@@ -12,7 +13,7 @@ interface ElementWithLayout {
   element: {
     id: string;
     type: string;
-    config: any;
+    config: ElementConfig;
   };
   layout: {
     i: string;

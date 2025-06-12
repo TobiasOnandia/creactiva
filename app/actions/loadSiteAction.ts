@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { GridLayout } from '@/types/canvas/LayoutTypes';
+import { ElementConfig } from '@/types/canvas/CanvasTypes';
 
 interface LayoutData {
   layout_data: GridLayout[];
@@ -10,7 +11,7 @@ interface LayoutData {
 interface Element {
   id: string;
   type: string;
-  config: Record<string, any>;
+  config: Partial<ElementConfig>;
 }
 
 interface Section {
@@ -76,7 +77,7 @@ export async function loadSite() {
         elements: section.elements?.map((element: Element) => ({
           id: element.id,
           type: element.type,
-          config: element.config
+          config: { ...element.config, type: element.type }
         })) || [],
         layout: validatedLayout
       };

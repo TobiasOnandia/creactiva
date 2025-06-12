@@ -7,7 +7,7 @@ import {
   X,
   Copy,
 } from "lucide-react";
-import { shallow, useShallow } from "zustand/shallow"; 
+import { useShallow } from "zustand/shallow"; 
 import { useCanvasStore } from "@/store/canvasStore";
 import { CanvasElement, ElementConfig } from "@/types/canvas/CanvasTypes";
 import { TextControls } from "@/components/ui/controllers/TextControllers";
@@ -27,27 +27,27 @@ import { HeaderControls } from "../ui/controllers/HeaderControls";
 
 export type SpecificProps = {
   config: ElementConfig;
-  onChange: (key: string, value: any) => void;
+  onChange: (key: string, value: string | number | boolean | undefined) => void;
 };
 
 const SPECIFIC_CONTROLS: Record<
   string,
-  React.FC<SpecificProps & { [key: string]: any }>
+  React.FC<SpecificProps & { [key: string]: unknown }>
 > = {
-  header: (props: SpecificProps) => <HeaderControls {...props}  />,
+  header: (props) => <HeaderControls {...props}  />,
   text: TextControls,
   paragraph: TextControls,
   image: ImageControls,
-  gallery: (props: SpecificProps) => <GalleryControls {...props} isCarousel={false} />,
-  carousel: (props: SpecificProps) => <GalleryControls {...props} isCarousel={true} />,
-  select: (props: SpecificProps) => <OptionControls {...props} isCheckbox={false} />,
-  checkbox: (props: SpecificProps) => <OptionControls {...props} isCheckbox={true} />,
-  button: (props: SpecificProps) => <ButtonControls {...props} isSubmit={false} />,
-  submit: (props: SpecificProps) => <ButtonControls {...props} isSubmit={true} />,
-  link: (props: SpecificProps) => <LinkControls {...props} />,
-  card: (props: SpecificProps) => <CardControls {...props} />,
-  form: (props: SpecificProps) => <FormControls {...props} />,
-  list: (props: SpecificProps) => <ListControls {...props} />,
+  gallery: (props) => <GalleryControls {...props} isCarousel={false} />,
+  carousel: (props) => <GalleryControls {...props} isCarousel={true} />,
+  select: (props) => <OptionControls {...props} isCheckbox={false} />,
+  checkbox: (props) => <OptionControls {...props} isCheckbox={true} />,
+  button: (props) => <ButtonControls {...props} isSubmit={false} />,
+  submit: (props) => <ButtonControls {...props} isSubmit={true} />,
+  link: (props) => <LinkControls {...props} />,
+  card: (props) => <CardControls {...props} />,
+  form: (props) => <FormControls {...props} />,
+  list: (props) => <ListControls {...props} />,
 
   divider: DividerControls,
   star: StarControls,
@@ -99,7 +99,7 @@ export const StylePanel = () => {
 
   // Handlers memoizados para evitar re-renders innecesarios
   const handleChange = useCallback(
-    (key: string, value: any) => {
+    (key: string, value: string | number | boolean | undefined) => {
       if (!isStylePanelOpen.id) return;
       updateElementConfig(isStylePanelOpen.id, { [key]: value });
     },

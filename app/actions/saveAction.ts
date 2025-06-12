@@ -3,26 +3,31 @@
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { GridLayout } from '@/types/canvas/LayoutTypes';
+import { CanvasElement, ElementConfig } from '@/types/canvas/CanvasTypes';
 
-export async function saveSite(siteData: {
-  sections: {
-    id: string;
-    name: string;
-    slug: string;
-    elements: any[];
-    layout: GridLayout[];
-    is_home?: boolean;
-  }[];
+interface SectionData {
+  id: string;
+  name: string;
+  slug: string;
+  elements: Partial<CanvasElement>[];
+  layout: GridLayout[];
+  is_home?: boolean;
+}
+
+interface SiteData {
+  sections: SectionData[];
   name?: string;
   slug?: string;
-}) {
+}
+
+export async function saveSite(siteData: SiteData) {
   const supabase = await createClient();
 
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('No se encontró usuario');
 
-    let { data: existingSite } = await supabase
+    const { data: existingSite } = await supabase
       .from('sites')
       .select('*')
       .eq('user_id', user.id)
@@ -65,8 +70,14 @@ export async function saveSite(siteData: {
         .eq('section_id', dbSection.id);
 
       if (section.elements?.length > 0) {
-        const elementsToUpsert = section.elements.map((element: any) => {
-          const elementData: any = {
+        const elementsToUpsert = section.elements.map((element) => {
+          const elementData: {
+            section_id: string;
+            type: string | undefined;
+            config: Partial<ElementConfig> | undefined;
+            updated_at: string;
+            id?: string;
+          } = {
             section_id: dbSection.id,
             type: element.type,
             config: element.config,
@@ -90,8 +101,8 @@ export async function saveSite(siteData: {
       }
 
       const currentElementIds = section.elements
-        ?.filter((el: { id: string }) => el.id && !el.id.startsWith('temp_id'))
-        ?.map((el: { id: string }) => el.id) || [];
+        ?.filter(el => el.id && !el.id.startsWith('temp_id'))
+        .map(el => el.id!) || [];
 
       const elementsToDelete = existingElements
         ?.filter((el: { id: string }) => !currentElementIds.includes(el.id))

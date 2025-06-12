@@ -1,6 +1,6 @@
 'use client';
 
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function EditorLayout({ children }: PropsWithChildren) {

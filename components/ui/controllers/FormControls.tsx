@@ -69,7 +69,7 @@ export const FormControls = ({ config, onChange }: SpecificProps) => {
         </div>
 
         <div className="text-xs text-neutral-500 mt-4 p-2 bg-neutral-800/30 rounded-md">
-          Nota: La configuración de campos individuales (tipo, nombre, etc.) se gestionaría en una sección más avanzada o por un tipo de elemento "Campo de Entrada" separado.
+          Nota: La configuración de campos individuales (tipo, nombre, etc.) se gestionaría en una sección más avanzada o por un tipo de elemento &quot;Campo de Entrada&quot; separado.
         </div>
       </div>
     </Section>

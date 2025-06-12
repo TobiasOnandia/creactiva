@@ -2,7 +2,7 @@ import { SpecificProps } from "@/components/templates/StylePanel";
 import { Section } from "../panel/Section";
 
 export const OptionControls = ({
-  config,
+
   onChange,
   isCheckbox = false,
 }: SpecificProps & { isCheckbox?: boolean }) => (

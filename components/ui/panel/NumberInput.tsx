@@ -8,6 +8,7 @@ interface NumberInputProps {
   defaultValue: number;
   min?: number;
   max?: number;
+  onChange?: (value: number) => void;
 }
 
 const INPUT_TO_CONFIG_KEY: Record<string, keyof CanvasElement['config']> = {
@@ -31,7 +32,9 @@ export const NumberInput = ({
   label,
   id,
   defaultValue,
+  min,
   max,
+  onChange,
 }: NumberInputProps) => {
   const updateElementConfig = useCanvasStore((state) => state.updateElementConfig);
   const isStylePanelOpen = useCanvasStore((state) => state.isStylePanelOpen);
@@ -52,13 +55,19 @@ export const NumberInput = ({
       : defaultValue;
 
   
-  const defaultValueNumber = isNaN(currentValue as number) ? defaultValue : currentValue;
+  const displayValue = isNaN(currentValue as number) ? defaultValue : currentValue;
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isStylePanelOpen.id) return;
-    if (!configKey) return; 
     const newValue = e.target.valueAsNumber;
-    updateElementConfig(isStylePanelOpen.id, { [configKey]: newValue });
+    if (isNaN(newValue)) return;
+
+    if (onChange) {
+      onChange(newValue);
+    } else {
+      if (!isStylePanelOpen.id) return;
+      if (!configKey) return; 
+      updateElementConfig(isStylePanelOpen.id, { [configKey]: newValue });
+    }
   };
 
   return (
@@ -70,8 +79,8 @@ export const NumberInput = ({
       <input
         type="number"
         id={id}
-        value={defaultValueNumber as number}
-        min={1}
+        value={displayValue as number}
+        min={min ?? 1}
         max={max}
         onChange={handleChange}
         className="w-20 px-2 py-1 bg-neutral-800/50 border border-neutral-700 rounded-md text-neutral-300 text-xs focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"

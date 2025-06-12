@@ -11,7 +11,7 @@ interface ElementToolbarProps {
 }
 
 export const ElementToolbar = ({ 
-  elementId,
+
   onEdit,
   onDuplicate,
   onDelete,

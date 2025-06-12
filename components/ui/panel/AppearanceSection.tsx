@@ -6,7 +6,7 @@ import { Section } from "./Section";
 export const AppearanceSection = ({
   config,
   onChange,
-}: { config: CanvasElement['config']; onChange: (key: string, value: any) => void }) => (
+}: { config: CanvasElement['config']; onChange: (key: string, value: string | number) => void }) => (
   <Section title="Apariencia" dotColor="bg-purple-500">
     <div className="space-y-4">
       <ColorInput

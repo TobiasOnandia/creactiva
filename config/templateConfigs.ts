@@ -22,6 +22,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "header",
         type: "header",
         config: {
+          type: "header",
           content: "Mi Landing Page",
           fontSize: 48,
           fontWeight: "bold",
@@ -34,6 +35,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "hero",
         type: "paragraph",
         config: {
+          type: "paragraph",
           content: "Transforma tus ideas en realidad con nuestra plataforma intuitiva",
           fontSize: 24,
           textAlign: "center",
@@ -45,6 +47,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "cta",
         type: "button",
         config: {
+          type: "button",
           content: "Comenzar Ahora",
           backgroundColor: "#3b82f6",
           color: "#ffffff",
@@ -97,6 +100,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "welcomeHeader",
         type: "header",
         config: {
+          type: "header",
           content: "Bienvenido al Dashboard",
           fontSize: 32,
           fontWeight: "bold",
@@ -108,6 +112,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "stats1",
         type: "text",
         config: {
+          type: "text",
           content: "Estadísticas Principales",
           backgroundColor: "#f3f4f6",
           padding: 24,
@@ -119,6 +124,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "stats2",
         type: "text",
         config: {
+          type: "text",
           content: "Datos Recientes",
           backgroundColor: "#f3f4f6",
           padding: 24,
@@ -169,6 +175,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "blogTitle",
         type: "header",
         config: {
+          type: "header",
           content: "Mi Blog",
           fontSize: 40,
           fontWeight: "bold",
@@ -181,6 +188,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "blogPost",
         type: "text",
         config: {
+          type: "text",
           content: "Última Publicación",
           fontSize: 24,
           color: "#4a4a4a",
@@ -191,6 +199,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "sidebar",
         type: "text",
         config: {
+          type: "text",
           content: "Categorías",
           backgroundColor: "#f3f4f6",
           padding: 16,
@@ -241,6 +250,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "portfolioHeader",
         type: "header",
         config: {
+          type: "header",
           content: "Mi Portafolio",
           fontSize: 48,
           fontWeight: "bold",
@@ -253,6 +263,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "gallery",
         type: "gallery",
         config: {
+          type: "gallery",
           columns: 3,
           gap: 16,
         },
@@ -261,6 +272,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "contact",
         type: "text",
         config: {
+          type: "text",
           content: "¡Contáctame!",
           fontSize: 24,
           textAlign: "center",
@@ -311,6 +323,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "shopHeader",
         type: "header",
         config: {
+          type: "header",
           content: "Mi Tienda",
           fontSize: 40,
           fontWeight: "bold",
@@ -323,6 +336,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "productsGrid",
         type: "gallery",
         config: {
+          type: "gallery",
           columns: 4,
           gap: 24,
         }
@@ -331,6 +345,7 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         id: "cart",
         type: "text",
         config: {
+          type: "text",
           content: "Carrito",
           fontSize: 20,
           backgroundColor: "#f3f4f6",

@@ -1,6 +1,7 @@
 "use client"; 
 
 import { Settings,  Code, Search } from 'lucide-react';
+import Image from 'next/image';
 
 export const SiteSettingsPanel = () => {
   return (
@@ -32,7 +33,7 @@ export const SiteSettingsPanel = () => {
             <label htmlFor="favicon" className="text-sm text-neutral-400">
               Favicon URL
             <figure className="flex items-center gap-2">
-              <img src="https://www.google.com/favicon.ico" alt="Favicon" className="w-6 h-6 rounded-md border border-neutral-700 flex-shrink-0" />
+              <Image src="https://www.google.com/favicon.ico" alt="Favicon" width={24} height={24} className="rounded-md border border-neutral-700 flex-shrink-0" unoptimized />
               <input
                 type="text"
                 id="favicon"
