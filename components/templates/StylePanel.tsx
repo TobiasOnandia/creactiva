@@ -23,6 +23,7 @@ import { LinkControls } from "../ui/controllers/LinkControls";
 import { CardControls } from "../ui/controllers/CardControls";
 import { FormControls } from "../ui/controllers/FormControls";
 import { ListControls } from "../ui/controllers/ListControls";
+import { HeaderControls } from "../ui/controllers/HeaderControls";
 
 export type SpecificProps = {
   config: ElementConfig;
@@ -33,7 +34,7 @@ const SPECIFIC_CONTROLS: Record<
   string,
   React.FC<SpecificProps & { [key: string]: any }>
 > = {
-  header: TextControls,
+  header: (props: SpecificProps) => <HeaderControls {...props}  />,
   text: TextControls,
   paragraph: TextControls,
   image: ImageControls,

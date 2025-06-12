@@ -1,13 +1,12 @@
 "use client";
 
-import { SpecificProps } from "@/components/templates/StylePanel"; // Asegúrate de la ruta correcta
+import { SpecificProps } from "@/components/templates/StylePanel"; 
 import { Section } from "../panel/Section";
 
 export const ListControls = ({ config, onChange }: SpecificProps) => {
   return (
     <Section title="Lista" dotColor="bg-lime-500"> 
       <div className="space-y-4">
-        {/* Elementos de la Lista */}
         <div>
           <label htmlFor="listItems" className="text-sm text-neutral-400 mb-1 block">
             Elementos de la Lista (separados por coma)

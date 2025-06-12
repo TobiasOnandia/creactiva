@@ -11,7 +11,6 @@ import { LoadingCanvas } from "../loaders/LoadingCanvas";
 export function CanvasEditor() {
   const { isLoading } = useSiteLoader();
   
-  // Inicializar el sistema de deshacer/rehacer
   useUndoRedo();
 
   if (isLoading) {

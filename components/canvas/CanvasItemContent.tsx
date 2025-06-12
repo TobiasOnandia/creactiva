@@ -1,4 +1,5 @@
 import { ItemRenderers } from "@/components/factories/ItemRenderers";
+import { ElementConfig } from "@/types/canvas/CanvasTypes";
 
 type CanvasItemType =
   | "header"
@@ -15,7 +16,7 @@ type CanvasItemType =
   | "submit";
 interface CanvasItemContentProps {
   type: CanvasItemType | string;
-  config: React.CSSProperties;
+  config: ElementConfig;
   id:string
 }
 

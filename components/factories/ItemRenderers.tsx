@@ -6,7 +6,8 @@ import { ImageIcon, MoveLeft, MoveRight, StarIcon } from "lucide-react";
 export const ItemRenderers: Record<
   string,
   React.FC<{ config: ElementConfig; id: string }>
-> = {
+  > = {
+
   hero: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
     const isEditMode = useCanvasStore((state) => state.isEditMode);
@@ -20,6 +21,71 @@ export const ItemRenderers: Record<
       </section>
     );
   },
+  header: ({ config, id }) => {
+  const openStylePanel = useCanvasStore((state) => state.openStylePanel);
+  const isEditMode = useCanvasStore((state) => state.isEditMode);
+
+  // Elementos de navegación por defecto
+  const navItems = config?.navItems?.split(',').map(item => item.trim()).filter(item => item !== '') || 
+    ["Inicio", "Servicios", "Acerca de", "Contacto"];
+
+  return (
+    <header
+      onClick={isEditMode ? () => openStylePanel(id) : undefined}
+      style={config}
+      className="w-full h-full bg-neutral-900 border-b border-neutral-700/50 flex items-center justify-between px-6 py-4 hover:opacity-90 transition-opacity"
+    >
+      {/* Logo/Título */}
+      <div className="flex items-center">
+        <h1 className="text-2xl font-bold text-white tracking-tight">
+          {config?.title || "Mi Sitio"}
+        </h1>
+      </div>
+
+      {/* Navegación */}
+      <nav className="hidden md:flex items-center space-x-8">
+        {navItems.map((item, index) => (
+          <a
+            key={index}
+            href="#"
+            className="text-neutral-300 hover:text-white transition-colors text-sm font-medium"
+            style={{ pointerEvents: "none" }}
+          >
+            {item}
+          </a>
+        ))}
+      </nav>
+
+      {/* Botones de autenticación */}
+      <div className="flex items-center space-x-4">
+        <button
+          className="px-4 py-2 text-neutral-300 hover:text-white transition-colors text-sm font-medium border border-neutral-600 rounded-md hover:border-neutral-500"
+          style={{ pointerEvents: "none" }}
+        >
+          {config?.loginText || "Iniciar Sesión"}
+        </button>
+        <button
+          className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white transition-colors text-sm font-medium rounded-md"
+          style={{ pointerEvents: "none" }}
+        >
+          {config?.registerText || "Registrarse"}
+        </button>
+      </div>
+
+      {/* Menú móvil (hamburguesa) */}
+      <div className="md:hidden flex items-center">
+        <button
+          className="text-neutral-300 hover:text-white transition-colors"
+          style={{ pointerEvents: "none" }}
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </header>
+  );
+},
   text: ({ config, id }) => {
     const openStylePanel = useCanvasStore((state) => state.openStylePanel);
     const isEditMode = useCanvasStore((state) => state.isEditMode);
