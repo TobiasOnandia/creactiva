@@ -15,7 +15,6 @@ export function useDragAndDrop(
   const updateSectionLayout = useCanvasStore(state => state.updateSectionLayout)
   const activeSectionId = useCanvasStore(state => state.activeSectionId)
 
-
   const createLayoutItem = useCallback((
     elementId: string,
     x: number,

@@ -2,7 +2,7 @@
 
 import { BackgroundCanvas } from "@/components/background/BackgroundCanvas";
 import { CanvasItemContent } from "@/components/canvas/CanvasItemContent";
-import { Responsive, WidthProvider } from "react-grid-layout";
+import { Layout, Responsive, WidthProvider } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -34,7 +34,7 @@ export function CanvasArea() {
   );
   const activeSection = sections.find((s) => s.id === activeSectionId);
 
-  const { currentLayout, setCurrentLayout, handleLayoutChange } =
+  const { currentLayouts, setCurrentLayouts, handleLayoutChange } =
     useCanvasLayout(
       activeSectionId,
       activeSection,
@@ -42,11 +42,22 @@ export function CanvasArea() {
       updateSectionLayout
     );
 
-  const { handleDrop } = useDragAndDrop(currentLayout, setCurrentLayout);
+  const { handleDrop } = useDragAndDrop(currentLayouts.lg, (layout) => {
+    setCurrentLayouts((prev) => ({ ...prev, lg: layout }));
+  });
 
   const handleElementClick = (elementId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setSelectedElementId(elementId);
+  };
+
+  const handleLayoutChangeWithBreakpoint = (
+    layout: Layout[],
+    layouts: { [key: string]: Layout[] }
+  ) => {
+    Object.keys(layouts).forEach((breakpoint) => {
+      handleLayoutChange(layouts[breakpoint], breakpoint);
+    });
   };
 
   if (isPreviewMode) {
@@ -74,17 +85,11 @@ export function CanvasArea() {
 
           <ResponsiveGridLayout
             className="layout h-full"
-            layouts={{
-              lg: currentLayout,
-              md: currentLayout,
-              sm: currentLayout,
-              xs: currentLayout,
-              xxs: currentLayout,
-            }}
+            layouts={currentLayouts}
             breakpoints={GRID_CONFIG.breakpoints}
             cols={GRID_CONFIG.cols}
             rowHeight={GRID_CONFIG.rowHeight}
-            onLayoutChange={handleLayoutChange}
+            onLayoutChange={handleLayoutChangeWithBreakpoint}
             autoSize={true}
             isDraggable={true}
             isResizable={true}
