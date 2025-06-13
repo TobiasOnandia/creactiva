@@ -54,7 +54,6 @@ export const ButtonControls = ({
           <option value="submit">Enviar formulario</option>
           <option value="function">Ejecutar función</option>
         </select>
-        
       </div>
     )}
   </Section>

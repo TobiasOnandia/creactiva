@@ -2,7 +2,6 @@ import { SpecificProps } from "@/components/templates/StylePanel";
 import { Section } from "../panel/Section";
 
 export const OptionControls = ({
-
   onChange,
   isCheckbox = false,
 }: SpecificProps & { isCheckbox?: boolean }) => (
@@ -26,7 +25,8 @@ export const OptionControls = ({
     </label>
 
     {!isCheckbox && (
-      <label className="text-sm text-neutral-400 mb-1 block">Texto por defecto
+      <label className="text-sm text-neutral-400 mb-1 block">
+        Texto por defecto
         <input
           type="text"
           onChange={(e) => onChange("placeholder", e.target.value)}
@@ -45,5 +45,5 @@ export const OptionControls = ({
       />
       Campo obligatorio
     </label>
-  </Section >
+  </Section>
 );
