@@ -5,8 +5,11 @@ import { SecondaryPanel } from "@/components/aside/SecondaryPanel";
 import { TemplatesPanel } from "@/components/templates/TemplatesPanel";
 import { PagesPanel } from "@/components/templates/PagesPanel";
 import { SiteSettingsPanel } from "@/components/templates/SiteSettingsPanel";
+import { useCanvasStore } from "@/store/canvasStore";
 
 export function Sidebar() {
+  const previewMode = useCanvasStore((state) => state.isPreviewMode);
+  console.log(previewMode);
   const [open, setOpen] = useState({
     isOpen: false,
     panel: "add",
@@ -20,7 +23,7 @@ export function Sidebar() {
           panel: type,
         };
       }
-      
+
       return {
         isOpen: true,
         panel: type,
@@ -34,7 +37,7 @@ export function Sidebar() {
         <nav className="flex flex-col items-center gap-1.5 px-1.5">
           {mainNavItems.map((item) => {
             const isActive = item.id === open.panel && open.isOpen;
-            
+
             return (
               <button
                 key={item.id}
@@ -73,10 +76,10 @@ export function Sidebar() {
       <div className={`transition-all duration-300 ease-in-out `}>
         {open.isOpen && (
           <>
-            {open.panel === "add" && <SecondaryPanel  />}
-            {open.panel === "templates" && <TemplatesPanel  />}
-            {open.panel === "pages" && <PagesPanel  />}
-            {open.panel === "settings" && <SiteSettingsPanel  />}
+            {open.panel === "add" && <SecondaryPanel />}
+            {open.panel === "templates" && <TemplatesPanel />}
+            {open.panel === "pages" && <PagesPanel />}
+            {open.panel === "settings" && <SiteSettingsPanel />}
           </>
         )}
       </div>

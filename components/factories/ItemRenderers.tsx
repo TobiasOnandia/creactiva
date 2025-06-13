@@ -40,59 +40,22 @@ const Header: React.FC<ItemRendererProps> = ({ config, id }) => {
     <header
       onClick={isEditMode ? () => openStylePanel(id) : undefined}
       style={config}
-      className="w-full h-full bg-neutral-900 border-b border-neutral-700/50 flex items-center justify-between px-6 py-4 hover:opacity-90 transition-opacity"
+      className="w-full h-full f bg-neutral-900 border-b border-neutral-700/50 flex flex-wrap items-center justify-between px-6 py-4 hover:opacity-90 transition-opacity"
     >
-      <div className="flex items-center">
-        <h1 className="text-2xl font-bold text-white tracking-tight">
-          {config?.title || "Mi Sitio"}
-        </h1>
-      </div>
+      <h1 className="text-2xl font-bold text-white tracking-tight">
+        {config?.title || "Mi Sitio"}
+      </h1>
       <nav className="hidden md:flex items-center space-x-8">
         {navItems.map((item: string, index: number) => (
           <a
             key={index}
-            href="#"
+            href={config?.navLinks?.[index] || "#"}
             className="text-neutral-300 hover:text-white transition-colors text-sm font-medium"
-            style={{ pointerEvents: "none" }}
           >
             {item}
           </a>
         ))}
       </nav>
-      <div className="flex items-center space-x-4">
-        <button
-          className="px-4 py-2 text-neutral-300 hover:text-white transition-colors text-sm font-medium border border-neutral-600 rounded-md hover:border-neutral-500"
-          style={{ pointerEvents: "none" }}
-        >
-          {config?.loginText || "Iniciar Sesión"}
-        </button>
-        <button
-          className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white transition-colors text-sm font-medium rounded-md"
-          style={{ pointerEvents: "none" }}
-        >
-          {config?.registerText || "Registrarse"}
-        </button>
-      </div>
-      <div className="md:hidden flex items-center">
-        <button
-          className="text-neutral-300 hover:text-white transition-colors"
-          style={{ pointerEvents: "none" }}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
-      </div>
     </header>
   );
 };
