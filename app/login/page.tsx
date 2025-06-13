@@ -2,9 +2,9 @@
 
 import { SignInWithGoogle } from "@/components/actions/SignInWithGoogle";
 import { Separator } from "@/components/ui/form/Separator";
-import { FormField } from '@/components/ui/form/FormField'; 
-import { AuthLayout } from '@/components/ui/auth/AuthLayout'; 
-import { login } from '../actions/loginAction';
+import { FormField } from "@/components/ui/form/FormField";
+import { AuthLayout } from "@/components/ui/auth/AuthLayout";
+import { login } from "../actions/loginAction";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -34,7 +34,7 @@ export default function LoginPage() {
         <>
           ¿No tienes una cuenta?
           <a
-            href="/registro" 
+            href="/registro"
             className="font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
           >
             Regístrate ahora
@@ -45,7 +45,7 @@ export default function LoginPage() {
       <form onSubmit={handleSubmit} className="pt-6 flex flex-col gap-4">
         <FormField
           id="email"
-          name='email'
+          name="email"
           label="Correo electrónico"
           type="email"
           placeholder="tu@email.com"
@@ -53,13 +53,13 @@ export default function LoginPage() {
         />
         <FormField
           id="password"
-          name='password'
+          name="password"
           label="contraseña"
           type="password"
           placeholder="••••••••"
         />
         <a
-          href="/recuperar" 
+          href="/recuperar"
           className="text-xs text-cyan-400 text-right hover:text-cyan-300 transition-colors"
         >
           ¿Olvidaste tu contraseña?
@@ -71,11 +71,11 @@ export default function LoginPage() {
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.2)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="relative flex items-center justify-center gap-2">
-           {pending ? "Ingresando..." : "Iniciar sesión"}
+            {pending ? "Ingresando..." : "Iniciar sesión"}
           </div>
         </button>
       </form>
-      <Separator  /> 
+      <Separator />
       <SignInWithGoogle />
     </AuthLayout>
   );

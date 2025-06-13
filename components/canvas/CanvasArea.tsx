@@ -18,32 +18,32 @@ import { useState } from "react";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export function CanvasArea() {
-    const {
-      canvasElements,
-      activeSectionId,
-      sections,
-      isPreviewMode,
-      activeDevice,
-      updateSectionLayout,
-      openStylePanel,
-      deleteElement,
-      duplicateElement
-    } = useCanvasStore();
-  
-  const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
-  const activeSection = sections.find(s => s.id === activeSectionId);
-
-  const { currentLayout, setCurrentLayout, handleLayoutChange } = useCanvasLayout(
-    activeSectionId,
-    activeSection,
+  const {
     canvasElements,
-    updateSectionLayout
-  );
+    activeSectionId,
+    sections,
+    isPreviewMode,
+    activeDevice,
+    updateSectionLayout,
+    openStylePanel,
+    deleteElement,
+    duplicateElement,
+  } = useCanvasStore();
 
-  const { handleDrop } = useDragAndDrop(
-    currentLayout,
-    setCurrentLayout,
+  const [selectedElementId, setSelectedElementId] = useState<string | null>(
+    null
   );
+  const activeSection = sections.find((s) => s.id === activeSectionId);
+
+  const { currentLayout, setCurrentLayout, handleLayoutChange } =
+    useCanvasLayout(
+      activeSectionId,
+      activeSection,
+      canvasElements,
+      updateSectionLayout
+    );
+
+  const { handleDrop } = useDragAndDrop(currentLayout, setCurrentLayout);
 
   const handleElementClick = (elementId: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -55,14 +55,16 @@ export function CanvasArea() {
   }
 
   return (
-    <main 
+    <main
       className={`relative w-full h-screen overflow-hidden ${
-        isPreviewMode ? 'bg-white' : 'bg-gradient-to-br from-neutral-950 to-neutral-900/80'
+        isPreviewMode
+          ? "bg-white"
+          : "bg-gradient-to-br from-neutral-950 to-neutral-900/80"
       }`}
     >
       {!isPreviewMode && <BackgroundCanvas />}
-      
-      <section 
+
+      <section
         data-canvas
         className="absolute inset-0 p-8 flex items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full"
       >
@@ -90,25 +92,29 @@ export function CanvasArea() {
             isDroppable={true}
             draggableCancel=".no-drag"
             draggableHandle=".drag-handle"
-            droppingItem={{ 
-              i: "dropping-item", 
-              w: GRID_CONFIG.defaultSize.w, 
-              h: GRID_CONFIG.defaultSize.h 
+            droppingItem={{
+              i: "dropping-item",
+              w: GRID_CONFIG.defaultSize.w,
+              h: GRID_CONFIG.defaultSize.h,
             }}
             onDrop={handleDrop}
             compactType={null}
             preventCollision={true}
-            style={{ minHeight: '100%' }}
+            style={{ minHeight: "100%" }}
             useCSSTransforms={true}
           >
             {canvasElements.map((item) => (
               <div key={item.id} className="grid-item h-full relative group">
                 {!isPreviewMode && (
-                  <div 
+                  <div
                     data-drag-handle
                     className="drag-handle absolute -top-2 -left-2 w-6 h-6 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-move z-20 flex items-center justify-center"
                   >
-                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
                     </svg>
                   </div>
@@ -120,21 +126,37 @@ export function CanvasArea() {
                     onEdit={() => openStylePanel(item.id)}
                     onDuplicate={() => duplicateElement(item.id)}
                     onDelete={() => deleteElement(item.id)}
-                    visible={ selectedElementId === item.id}
+                    visible={selectedElementId === item.id}
                   />
                 )}
-                
-                <div 
+
+                <div
                   data-element
                   className={`no-drag h-full w-full cursor-pointer transition-all rounded ${
-                    !isPreviewMode ? `
-                      ${selectedElementId === item.id ? 'ring-2 ring-cyan-500 shadow-lg shadow-cyan-500/20' : 'hover:ring-2 hover:ring-cyan-500/30'}
-                      ${selectedElementId && selectedElementId !== item.id ? 'opacity-50' : ''}
-                    ` : ''
+                    !isPreviewMode
+                      ? `
+                      ${
+                        selectedElementId === item.id
+                          ? "ring-2 ring-cyan-500 shadow-lg shadow-cyan-500/20"
+                          : "hover:ring-2 hover:ring-cyan-500/30"
+                      }
+                      ${
+                        selectedElementId && selectedElementId !== item.id
+                          ? "opacity-50"
+                          : ""
+                      }
+                    `
+                      : ""
                   }`}
-                  onClick={(e) => !isPreviewMode && handleElementClick(item.id, e)}
+                  onClick={(e) =>
+                    !isPreviewMode && handleElementClick(item.id, e)
+                  }
                 >
-                  <CanvasItemContent id={item.id} type={item.type} config={item.config} />
+                  <CanvasItemContent
+                    id={item.id}
+                    type={item.type}
+                    config={item.config}
+                  />
                 </div>
               </div>
             ))}
