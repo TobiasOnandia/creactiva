@@ -43,7 +43,7 @@ export function PreviewMode({ children }: { children: React.ReactNode }) {
       >
         {isPreviewMode && (
           <>
-            <div className="  h-20 top-0 left-0 right-0 z-30 bg-neutral-900/95 backdrop-blur-sm border-b border-neutral-800">
+            <div className="fixed h-20 top-0 left-0 right-0 z-30 bg-neutral-900/95 backdrop-blur-sm border-b border-neutral-800">
               <header className="flex items-center h-full justify-between px-6 py-3">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
