@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/form/Separator";
 import { FormField } from '@/components/ui/form/FormField'; 
 import { AuthLayout } from '@/components/ui/auth/AuthLayout'; 
 import { login } from '../actions/loginAction';
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 

@@ -1,5 +1,6 @@
 import { ItemRenderers } from "@/components/factories/ItemRenderers";
 import { ElementConfig } from "@/types/canvas/CanvasTypes";
+import { Json } from "@/types/database/database.types";
 
 type CanvasItemType =
   | "header"
@@ -25,7 +26,7 @@ export const CanvasItemContent = ({ id,  type, config }: CanvasItemContentProps)
 
   const Renderer = ItemRenderers[type];
   if (Renderer) {
-    return <Renderer config={config} id={id} />;
+        return <Renderer config={config as unknown as Json} id={id} />;
   }
 
 
