@@ -49,7 +49,7 @@ const Header: React.FC<ItemRendererProps> = ({ config, id }) => {
         {navItems.map((item: string, index: number) => (
           <a
             key={index}
-            href={config?.navLinks?.[index] || "#"}
+            href="#"
             className="text-neutral-300 hover:text-white transition-colors text-sm font-medium"
           >
             {item}
