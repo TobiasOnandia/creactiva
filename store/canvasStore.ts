@@ -32,31 +32,26 @@ export interface CanvasStore {
   isPreviewMode: boolean;
   activeSection: Section | undefined;
   
-  //  Sections
   addSection: (section: Section) => void;
   removeSection: (id: string) => void;
   setActiveSection: (id: string) => void;
   setSections: (sections: Section[]) => void;
   updateSectionLayout: (id: string, layout: GridLayout[]) => void;
   
-  //  Elements
   addElementToSection: (element: CanvasElement, sectionId: string) => void;
   updateElementConfig: (id: string, newConfig: Partial<CanvasElement["config"]>) => void;
   deleteElement: (id: string) => void;
   restoreElement: (id: string) => void;
   duplicateElement: (id: string) => void;
   
-  // UI
   setActiveDevice: (device: DeviceType) => void;
   openStylePanel: (id: string) => void;
   closeStylePanel: () => void;
 
-  // History
   undo: () => void;
   redo: () => void;
   togglePreviewMode: () => void;
   
-  // Utility
   clearCanvas: () => void;
 }
 
