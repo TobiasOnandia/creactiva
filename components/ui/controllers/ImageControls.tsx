@@ -4,7 +4,7 @@ import { Section } from "../panel/Section";
 
 export const ImageControls = ({ config, onChange }: SpecificProps) => (
   <Section title="Imagen" dotColor="bg-rose-500">
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       <div>
         <label className="text-sm text-neutral-400 mb-1 block">
           URL de la imagen
@@ -51,7 +51,10 @@ export const ImageControls = ({ config, onChange }: SpecificProps) => (
           onChange={(e) => onChange("lazyLoad", e.target.checked)}
           className="h-4 w-4 text-cyan-500 focus:ring-cyan-500 border-white/10 rounded bg-neutral-800/50"
         />
-        <label htmlFor="lazyLoad" className="ml-2 block text-sm text-neutral-300">
+        <label
+          htmlFor="lazyLoad"
+          className="ml-2 block text-sm text-neutral-300"
+        >
           Carga diferida (lazy load)
         </label>
       </div>

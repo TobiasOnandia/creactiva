@@ -1,13 +1,7 @@
 "use client";
 import { useMemo, useCallback } from "react";
-import {
-  Palette,
-  Trash2,
-  Undo2,
-  X,
-  Copy,
-} from "lucide-react";
-import { useShallow } from "zustand/shallow"; 
+import { Palette, Trash2, Undo2, X, Copy } from "lucide-react";
+import { useShallow } from "zustand/shallow";
 import { useCanvasStore } from "@/store/canvasStore";
 import { CanvasElement, ElementConfig } from "@/types/canvas/CanvasTypes";
 import { TextControls } from "@/components/ui/controllers/TextControllers";
@@ -34,7 +28,7 @@ const SPECIFIC_CONTROLS: Record<
   string,
   React.FC<SpecificProps & { [key: string]: unknown }>
 > = {
-  header: (props) => <HeaderControls {...props}  />,
+  header: (props) => <HeaderControls {...props} />,
   text: TextControls,
   paragraph: TextControls,
   image: ImageControls,
@@ -55,17 +49,15 @@ const SPECIFIC_CONTROLS: Record<
 
 const useStylePanelData = () => {
   return useCanvasStore(
-    useShallow(
-      (state) => ({
-        canvasElements: state.canvasElements,
-        isStylePanelOpen: state.isStylePanelOpen,
-        deleteElement: state.deleteElement,
-        restoreElement: state.restoreElement,
-        updateElementConfig: state.updateElementConfig,
-        closeStylePanel: state.closeStylePanel,
-        duplicateElement: state.duplicateElement,
-      }),
-    ),
+    useShallow((state) => ({
+      canvasElements: state.canvasElements,
+      isStylePanelOpen: state.isStylePanelOpen,
+      deleteElement: state.deleteElement,
+      restoreElement: state.restoreElement,
+      updateElementConfig: state.updateElementConfig,
+      closeStylePanel: state.closeStylePanel,
+      duplicateElement: state.duplicateElement,
+    }))
   );
 };
 
@@ -89,7 +81,7 @@ export const StylePanel = () => {
   // Memoizar propiedades derivadas
   const elementData = useMemo(() => {
     if (!selectedElement) return null;
-    
+
     return {
       type: selectedElement.type,
       config: selectedElement.config || {},
@@ -131,7 +123,7 @@ export const StylePanel = () => {
   const { type, config, SpecificComponent } = elementData;
 
   return (
-    <aside 
+    <aside
       className="h-screen w-96   bg-neutral-900/90 backdrop-blur-lg border-l border-white/10 shadow-2xl shadow-black/50 flex flex-col"
       role="complementary"
       aria-label={`Panel de estilos para ${type}`}

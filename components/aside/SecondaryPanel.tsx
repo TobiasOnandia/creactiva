@@ -4,7 +4,7 @@ import { SectionPanel } from "@/components/aside/SectionsPanel";
 
 export const SecondaryPanel = () => {
   return (
-    <section className="h-full bg-neutral-900/80 backdrop-blur-xl border-r border-white/10 shadow-xl shadow-black/40 w-72 flex flex-col">
+    <section className="h-full bg-neutral-900/80 backdrop-blur-xl border-r border-white/10 shadow-xl shadow-black/40 w-76 flex flex-col">
       <header className="p-4 border-b border-white/10">
         <h3 className="text-lg font-semibold text-neutral-200 flex items-center gap-2">
           <PuzzleIcon className="w-5 h-5 text-cyan-400" />
