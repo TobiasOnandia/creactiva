@@ -45,9 +45,9 @@ export const templateConfigs: Record<string, TemplateConfig> = {
       },
       {
         id: "cta",
-        type: "button",
+        type: "link",
         config: {
-          type: "button",
+          type: "link",
           content: "Comenzar Ahora",
           backgroundColor: "#3b82f6",
           color: "#ffffff",
@@ -197,9 +197,9 @@ export const templateConfigs: Record<string, TemplateConfig> = {
       },
       {
         id: "sidebar",
-        type: "text",
+        type: "list",
         config: {
-          type: "text",
+          type: "list",
           content: "Categorías",
           backgroundColor: "#f3f4f6",
           padding: 16,
