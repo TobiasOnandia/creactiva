@@ -1,21 +1,20 @@
-'use client';
+"use client";
 
-import { Settings, Copy, Trash2 } from 'lucide-react';
+import { Settings, Copy } from "lucide-react";
+import { DeleteButton } from "../buttons/DeleteButton";
 
 interface ElementToolbarProps {
   elementId: string;
   onEdit: () => void;
   onDuplicate: () => void;
-  onDelete: () => void;
   visible: boolean;
 }
 
-export const ElementToolbar = ({ 
-
+export const ElementToolbar = ({
+  elementId,
   onEdit,
   onDuplicate,
-  onDelete,
-  visible 
+  visible,
 }: ElementToolbarProps) => {
   if (!visible) return null;
 
@@ -26,35 +25,31 @@ export const ElementToolbar = ({
           e.stopPropagation();
           onEdit();
         }}
-        className="p-1.5 rounded-md hover:bg-white/5 text-cyan-400 hover:text-cyan-300 transition-colors"
+        className="p-1.5 rounded-md cursor-pointer hover:bg-white/5 text-cyan-400 hover:text-cyan-300 transition-colors"
         title="Editar estilos"
       >
         <Settings className="w-4 h-4" />
       </button>
-      
+
       <span className="w-px h-4 bg-white/10" />
-      
+
       <button
         onClick={(e) => {
           e.stopPropagation();
           onDuplicate();
         }}
-        className="p-1.5 rounded-md hover:bg-white/5 text-neutral-400 hover:text-neutral-300 transition-colors"
+        className="p-1.5 rounded-md cursor-pointer hover:bg-white/5 text-neutral-400 hover:text-neutral-300 transition-colors"
         title="Duplicar elemento"
       >
         <Copy className="w-4 h-4" />
       </button>
-      
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onDelete();
-        }}
-        className="p-1.5 rounded-md hover:bg-white/5 text-red-400 hover:text-red-300 transition-colors"
-        title="Eliminar elemento"
-      >
-        <Trash2 className="w-4 h-4" />
-      </button>
+
+      <span className="w-px h-4 bg-white/10" />
+
+      <DeleteButton
+        id={elementId}
+        className="p-1.5 rounded-md cursor-pointer hover:bg-white/5 text-red-400 hover:text-red-300 transition-colors"
+      />
     </nav>
   );
 };

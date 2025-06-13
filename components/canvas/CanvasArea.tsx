@@ -26,7 +26,6 @@ export function CanvasArea() {
     activeDevice,
     updateSectionLayout,
     openStylePanel,
-    deleteElement,
     duplicateElement,
   } = useCanvasStore();
 
@@ -125,7 +124,6 @@ export function CanvasArea() {
                     elementId={item.id}
                     onEdit={() => openStylePanel(item.id)}
                     onDuplicate={() => duplicateElement(item.id)}
-                    onDelete={() => deleteElement(item.id)}
                     visible={selectedElementId === item.id}
                   />
                 )}
