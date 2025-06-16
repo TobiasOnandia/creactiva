@@ -5,9 +5,62 @@ import { LogIn, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export const UserMenu = () => {
+interface UserMenuProps {
+  isMobile?: boolean;
+}
+
+export const UserMenu = ({ isMobile = false }: UserMenuProps) => {
   const auth = useAuth();
-  const router = useRouter()
+  const router = useRouter();
+  if (isMobile) {
+    return (
+      <div className="space-y-2">
+        <div className="flex items-center gap-3 p-2 bg-neutral-800/50 rounded-lg">
+          <User className="text-neutral-400 w-5 h-5" />
+          <div className="flex-1">
+            <p className="text-sm font-medium text-neutral-200">
+              {auth?.user?.user_metadata.username || "Usuario"}
+            </p>
+            <p className="text-xs text-neutral-400">
+              {auth?.user?.user_metadata.email || "No autenticado"}
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-1">
+          <Link
+            href="/settings"
+            className="flex items-center gap-3 px-3 py-2 text-sm text-neutral-300 hover:bg-neutral-800/50 rounded-lg transition-colors"
+          >
+            <Settings className="w-4 h-4" />
+            Configuración
+          </Link>
+
+          {auth ? (
+            <button
+              onClick={() => {
+                supabaseClient.auth.signOut();
+                router.push("/login");
+              }}
+              className="flex items-center cursor-pointer gap-3 w-full px-3 py-2 text-sm text-red-400 hover:bg-neutral-800/50 rounded-lg transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              Cerrar sesión
+            </button>
+          ) : (
+            <Link
+              href="/login"
+              className="flex items-center gap-3 px-3 py-2 text-sm text-neutral-300 hover:bg-neutral-800/50 rounded-lg transition-colors"
+            >
+              <LogIn className="w-4 h-4" />
+              Iniciar sesión
+            </Link>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <section className="relative group z-100">
       <button className="flex items-center gap-2 rounded-full p-2 bg-neutral-800  hover:bg-neutral-700 transition-colors">
@@ -33,8 +86,8 @@ export const UserMenu = () => {
         {auth ? (
           <button
             onClick={() => {
-              supabaseClient.auth.signOut()
-              router.push('/login')
+              supabaseClient.auth.signOut();
+              router.push("/login");
             }}
             className="flex items-center cursor-pointer gap-2 w-full px-3 py-2 text-sm text-red-400 hover:bg-neutral-800/50"
           >

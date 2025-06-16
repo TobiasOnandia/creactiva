@@ -1,10 +1,78 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-montserrat);
+    --font-sans: var(--font-montserrat);
 }
 
 body {
-  font-family: var(--font-montserrat), sans-serif;
+    font-family: var(--font-montserrat), sans-serif;
 }
 
+/* Animaciones para el menú mobile */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Animaciones para el mobile sidebar */
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutToRight {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes slideUpFromBottom {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.animate-slideInFromRight {
+    animation: slideInFromRight 0.3s ease-out;
+}
+
+.animate-slideOutToRight {
+    animation: slideOutToRight 0.3s ease-in;
+}
+
+.animate-slideUpFromBottom {
+    animation: slideUpFromBottom 0.3s ease-out;
+}
+
+/* Smooth scroll para elementos mobile */
+.mobile-sidebar-content {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Prevenir scroll del body cuando modal está abierto */
+.overflow-hidden {
+    overflow: hidden !important;
+}

@@ -4,7 +4,11 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useState } from "react";
 
-export const PreviewButton = () => {
+interface PreviewButtonProps {
+  fullWidth?: boolean;
+}
+
+export const PreviewButton = ({ fullWidth = false }: PreviewButtonProps) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const isPreviewMode = useCanvasStore((state) => state.isPreviewMode);
   const togglePreviewMode = useCanvasStore((state) => state.togglePreviewMode);
@@ -38,7 +42,7 @@ export const PreviewButton = () => {
       onClick={handleTogglePreview}
       disabled={isTransitioning}
       className={`
-        flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium
+        flex items-center ${fullWidth ? "justify-center w-full" : ""} gap-2 px-4 py-2 rounded-lg text-sm font-medium
         transition-all duration-300 ease-in-out
         disabled:opacity-70 disabled:cursor-not-allowed
         ${

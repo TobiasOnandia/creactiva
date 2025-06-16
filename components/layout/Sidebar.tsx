@@ -6,14 +6,26 @@ import { TemplatesPanel } from "@/components/templates/TemplatesPanel";
 import { PagesPanel } from "@/components/templates/PagesPanel";
 import { SiteSettingsPanel } from "@/components/templates/SiteSettingsPanel";
 import { useCanvasStore } from "@/store/canvasStore";
+import { MobileSidebar } from "./MobileSidebar";
+import { useBreakpoint } from "@/hooks/useMediaQuery";
 
 export function Sidebar() {
   const previewMode = useCanvasStore((state) => state.isPreviewMode);
-  console.log(previewMode);
+  const isMobile = useBreakpoint.useMobile();
   const [open, setOpen] = useState({
     isOpen: false,
     panel: "add",
   });
+
+  // Si estamos en mobile, usar el componente mobile
+  if (isMobile) {
+    return <MobileSidebar isPreviewMode={previewMode} />;
+  }
+
+  // Si estamos en preview mode en desktop, no mostrar sidebar
+  if (previewMode) {
+    return null;
+  }
 
   const toggleSidebar = (type: string) => {
     setOpen((prev) => {

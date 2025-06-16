@@ -47,7 +47,7 @@ export const ElementToolbar = ({
       <span className="w-px h-4 bg-white/10" />
 
       <DeleteButton
-        id={elementId}
+        elementId={elementId}
         className="p-1.5 rounded-md cursor-pointer hover:bg-white/5 text-red-400 hover:text-red-300 transition-colors"
       />
     </nav>

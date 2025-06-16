@@ -34,7 +34,7 @@ export type ElementType =
 export interface CanvasElement {
   id: string;
   type: ElementType;
-  config: ElementConfig; 
+  config: ElementConfig;
 }
 
 export interface ElementConfig extends React.CSSProperties {
@@ -68,9 +68,11 @@ export interface ElementConfig extends React.CSSProperties {
   onClick?: () => void;
   onChange?: (value: any) => void;
   onSubmit?: () => void;
-  
+
   disabled?: boolean;
   placeholder?: string;
+  stickyHeader?: boolean;
+  showMobileMenu?: boolean;
 }
 
 export interface DeviceConfig {
@@ -86,7 +88,6 @@ export interface LayoutItem extends GridLayout {
   static: boolean;
   isDraggable: boolean;
 }
-
 
 export type StyleConfig = Pick<ElementConfig, keyof React.CSSProperties>;
 export type PropsConfig = Omit<ElementConfig, keyof React.CSSProperties>;

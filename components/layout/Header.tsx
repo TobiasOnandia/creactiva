@@ -8,8 +8,16 @@ import { DeviceViewSwitcher } from "@/components/ui/DeviceViewSwitcher";
 import { SaveButton } from "@/components/ui/buttons/SaveButton";
 import { PreviewButton } from "@/components/ui/buttons/PreviewButton";
 import { UndoRedoButtons } from "@/components/ui/buttons/UndoRedoButtons";
+import { MobileHeader } from "./MobileHeader";
+import { useBreakpoint } from "@/hooks/useMediaQuery";
 
 export const Header = () => {
+  const isMobile = useBreakpoint.useMobile();
+
+  if (isMobile) {
+    return <MobileHeader />;
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full bg-neutral-900/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/40">
       <div className="flex items-center justify-between px-6 py-3">
@@ -24,9 +32,10 @@ export const Header = () => {
           </Link>
         </div>
 
-        <DeviceViewSwitcher />        <div className="flex items-center gap-4">
+        <DeviceViewSwitcher />
+        <div className="flex items-center gap-4">
           <UndoRedoButtons />
-          <div className="w-px h-6 bg-white/10" /> {/* Separator */}
+          <div className="w-px h-6 bg-white/10" />
           <PreviewButton />
           <ClearButton />
           <PublishButton />

@@ -30,7 +30,7 @@ export function CanvasArea() {
   } = useCanvasStore();
 
   const [selectedElementId, setSelectedElementId] = useState<string | null>(
-    null
+    null,
   );
   const activeSection = sections.find((s) => s.id === activeSectionId);
 
@@ -39,7 +39,7 @@ export function CanvasArea() {
       activeSectionId,
       activeSection,
       canvasElements,
-      updateSectionLayout
+      updateSectionLayout,
     );
 
   const { handleDrop } = useDragAndDrop(currentLayouts.lg, (layout) => {
@@ -53,7 +53,7 @@ export function CanvasArea() {
 
   const handleLayoutChangeWithBreakpoint = (
     layout: Layout[],
-    layouts: { [key: string]: Layout[] }
+    layouts: { [key: string]: Layout[] },
   ) => {
     Object.keys(layouts).forEach((breakpoint) => {
       handleLayoutChange(layouts[breakpoint], breakpoint);
@@ -76,7 +76,7 @@ export function CanvasArea() {
 
       <section
         data-canvas
-        className="absolute inset-0 p-8 flex items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full"
+        className="absolute inset-0 p-8 flex z-10 items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full"
       >
         <GridContainer activeDevice={activeDevice}>
           <div data-editor-ui>
@@ -112,7 +112,7 @@ export function CanvasArea() {
                 {!isPreviewMode && (
                   <div
                     data-drag-handle
-                    className="drag-handle absolute -top-2 -left-2 w-6 h-6 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-move z-20 flex items-center justify-center"
+                    className="drag-handle absolute -top-2 -left-2 w-6 h-6 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-move flex items-center justify-center"
                   >
                     <svg
                       className="w-3 h-3 text-white"

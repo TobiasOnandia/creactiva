@@ -9,9 +9,9 @@ export const SectionPanel = ({ title, elements }: (typeof sections)[0]) => {
 
   return (
     <Section title={title} dotColor="bg-cyan-500">
-      {elements.map((element) => (
+      {elements.map((element, index) => (
         <section
-          key={crypto.randomUUID()}
+          key={`${element.type}-${index}`}
           id={element.type}
           draggable
           onDragStart={handleDragStart}
