@@ -39,7 +39,7 @@ export interface CanvasElement {
 
 export interface ElementConfig extends React.CSSProperties {
   id?: string;
-  type: ElementType;
+  type?: ElementType;
   content?: string;
   required?: boolean;
   href?: string;

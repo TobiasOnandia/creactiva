@@ -49,12 +49,10 @@ export const templateConfigs: Record<string, TemplateConfig> = {
         config: {
           type: "link",
           content: "Comenzar Ahora",
-          backgroundColor: "#3b82f6",
-          color: "#ffffff",
-          fontSize: 18,
-          padding: 16,
-          borderRadius: 8,
-          textAlign: "center"
+          color: "#60a5fa",
+          fontSize: 16,
+          textDecoration: "underline",
+          padding: "4px",
         }
       }
     ],
