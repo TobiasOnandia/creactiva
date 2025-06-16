@@ -65,10 +65,6 @@ export interface ElementConfig extends React.CSSProperties {
   formAction?: string;
   items?: string;
   navItems?: string;
-  loginText?: string;
-  registerText?: string;
-  stickyHeader?: boolean;
-  showMobileMenu?: boolean;
   onClick?: () => void;
   onChange?: (value: any) => void;
   onSubmit?: () => void;

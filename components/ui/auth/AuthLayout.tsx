@@ -1,4 +1,4 @@
-import { BackgroundForm } from '@/components/ui/form/BackgroundForm'; 
+import { BackgroundForm } from "@/components/ui/form/BackgroundForm";
 
 interface AuthLayoutProps {
   title: string;
@@ -7,7 +7,12 @@ interface AuthLayoutProps {
   footerContent: React.ReactNode;
 }
 
-export const AuthLayout = ({ title, subtitle, children, footerContent }: AuthLayoutProps) => {
+export const AuthLayout = ({
+  title,
+  subtitle,
+  children,
+  footerContent,
+}: AuthLayoutProps) => {
   return (
     <main className="min-h-screen bg-gradient-to-br from-neutral-950 to-neutral-900 flex flex-col items-center justify-center p-4">
       <BackgroundForm />
@@ -23,7 +28,9 @@ export const AuthLayout = ({ title, subtitle, children, footerContent }: AuthLay
               </div>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-center text-neutral-200 mb-2">{title}</h1>
+          <h1 className="text-2xl font-bold text-center text-neutral-200 mb-2">
+            {title}
+          </h1>
           <p className="text-center text-neutral-400">{subtitle}</p>
         </header>
 
