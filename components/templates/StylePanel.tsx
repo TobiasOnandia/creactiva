@@ -20,7 +20,7 @@ import { ListControls } from "../ui/controllers/ListControls";
 import { HeaderControls } from "../ui/controllers/HeaderControls";
 import { DeleteButton } from "../ui/buttons/DeleteButton";
 import { MobileStylePanel } from "./MobileStylePanel";
-import { useBreakpoint } from "@/hooks/useMediaQuery";
+import { useBreakpoints } from "@/hooks/useMediaQuery";
 
 export type SpecificProps = {
   config: ElementConfig;
@@ -115,7 +115,7 @@ const ElementControls = ({
 };
 
 export const StylePanel = () => {
-  const isMobile = useBreakpoint.useMobile();
+  const { isMobile } = useBreakpoints();
   const isStylePanelOpen = useCanvasStore((state) => state.isStylePanelOpen);
   const { selectedElement, updateElementConfig, closeStylePanel } =
     useStylePanelData(isStylePanelOpen.id);

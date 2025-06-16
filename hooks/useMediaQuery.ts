@@ -1,16 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-/**
- * Custom hook para detectar si una media query coincide con la pantalla actual
- * @param query La media query CSS a evaluar (ej: '(max-width: 768px)')
- * @returns Boolean indicando si la media query coincide
- */
 export function useMediaQuery(query: string): boolean {
-  // Inicializar con false si estamos en el servidor o true/false según el match inicial en cliente
   const [matches, setMatches] = useState<boolean>(false);
 
   useEffect(() => {
-    // En el cliente, verificamos el estado inicial
     const media = window.matchMedia(query);
     setMatches(media.matches);
 
@@ -20,25 +13,43 @@ export function useMediaQuery(query: string): boolean {
     };
 
     // Agregar listener para cambios en la media query
-    media.addEventListener('change', listener);
+    media.addEventListener("change", listener);
 
     // Cleanup: remover el listener cuando el componente se desmonte
     return () => {
-      media.removeEventListener('change', listener);
+      media.removeEventListener("change", listener);
     };
   }, [query]); // Re-ejecutar solo si cambia la query
 
   return matches;
 }
 
-/**
- * Proporciona breakpoints predefinidos para facilitar el uso
- */
-export const useBreakpoint = {
-  useMobile: () => useMediaQuery('(max-width: 767px)'),
-  useTablet: () => useMediaQuery('(min-width: 768px) and (max-width: 1023px)'),
-  useDesktop: () => useMediaQuery('(min-width: 1024px)'),
-  useLargeDesktop: () => useMediaQuery('(min-width: 1280px)'),
-};
+
+export function useBreakpoints() {
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1023px)");
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const isLargeDesktop = useMediaQuery("(min-width: 1280px)");
+
+  return {
+    isMobile,
+    isTablet,
+    isDesktop,
+    isLargeDesktop,
+  };
+}
+
+export function useMobile() {
+  return useMediaQuery("(max-width: 767px)");
+}
+
+
+export function useTablet() {
+  return useMediaQuery("(min-width: 768px) and (max-width: 1023px)");
+}
+
+export function useDesktop() {
+  return useMediaQuery("(min-width: 1024px)");
+}
 
 export default useMediaQuery;

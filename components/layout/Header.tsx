@@ -9,10 +9,10 @@ import { SaveButton } from "@/components/ui/buttons/SaveButton";
 import { PreviewButton } from "@/components/ui/buttons/PreviewButton";
 import { UndoRedoButtons } from "@/components/ui/buttons/UndoRedoButtons";
 import { MobileHeader } from "./MobileHeader";
-import { useBreakpoint } from "@/hooks/useMediaQuery";
+import { useBreakpoints } from "@/hooks/useMediaQuery";
 
 export const Header = () => {
-  const isMobile = useBreakpoint.useMobile();
+  const { isMobile } = useBreakpoints();
 
   if (isMobile) {
     return <MobileHeader />;

@@ -11,16 +11,14 @@ import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import { GRID_CONFIG } from "@/config";
 import { GridContainer } from "@/components/ui/canvas/GridContainer";
 import { SectionHeader } from "@/components/ui/canvas/SectionHeader";
-import { ElementToolbar } from "@/components/ui/canvas/ElementToolbar";
-import { MobileCanvasArea } from "@/components/canvas/MobileCanvasArea";
+import { MobileElementToolbar } from "@/components/ui/canvas/MobileElementToolbar";
 import { PreviewContent } from "@/components/preview/PreviewContent";
-import { useBreakpoints } from "@/hooks/useMediaQuery";
+import { useElementSelection } from "@/hooks/useElementSelection";
 import { useState } from "react";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-export function CanvasArea() {
-  const { isMobile } = useBreakpoints();
+export function MobileCanvasArea() {
   const {
     canvasElements,
     activeSectionId,
@@ -32,9 +30,13 @@ export function CanvasArea() {
     duplicateElement,
   } = useCanvasStore();
 
-  const [selectedElementId, setSelectedElementId] = useState<string | null>(
-    null
-  );
+  const {
+    selectedElementId,
+    selectElement,
+    deselectElement,
+    isElementSelected,
+  } = useElementSelection();
+
   const activeSection = sections.find((s) => s.id === activeSectionId);
 
   const { currentLayouts, setCurrentLayouts, handleLayoutChange } =
@@ -51,7 +53,15 @@ export function CanvasArea() {
 
   const handleElementClick = (elementId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setSelectedElementId(elementId);
+    if (isElementSelected(elementId)) {
+      deselectElement();
+    } else {
+      selectElement(elementId);
+    }
+  };
+
+  const handleCanvasClick = () => {
+    deselectElement();
   };
 
   const handleLayoutChangeWithBreakpoint = (
@@ -62,10 +72,6 @@ export function CanvasArea() {
       handleLayoutChange(layouts[breakpoint], breakpoint);
     });
   };
-
-  if (isMobile) {
-    return <MobileCanvasArea />;
-  }
 
   if (isPreviewMode) {
     return <PreviewContent />;
@@ -83,46 +89,61 @@ export function CanvasArea() {
 
       <section
         data-canvas
-        className="absolute inset-0 p-8 flex z-10 items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full"
+        className="absolute inset-0 p-4 flex z-10 items-center justify-center overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-700 scrollbar-thumb-rounded-full"
+        onClick={handleCanvasClick}
       >
         <GridContainer activeDevice={activeDevice}>
-          <div data-editor-ui>
+          <div data-editor-ui className="mb-4">
             <SectionHeader sectionName={activeSection?.name} />
           </div>
 
           <ResponsiveGridLayout
             className="layout h-full"
             layouts={currentLayouts}
-            breakpoints={GRID_CONFIG.breakpoints}
-            cols={GRID_CONFIG.cols}
+            breakpoints={{
+              lg: 1200,
+              md: 996,
+              sm: 768,
+              xs: 480,
+              xxs: 0,
+            }}
+            cols={{
+              lg: 12, // Reducido para mobile
+              md: 10,
+              sm: 8,
+              xs: 6,
+              xxs: 4,
+            }}
             rowHeight={GRID_CONFIG.rowHeight}
             onLayoutChange={handleLayoutChangeWithBreakpoint}
             autoSize={true}
-            isDraggable={true}
-            isResizable={true}
+            isDraggable={!selectedElementId}
+            isResizable={!selectedElementId}
             isDroppable={true}
-            draggableCancel=".no-drag"
-            draggableHandle=".drag-handle"
+            draggableCancel=".no-drag, .mobile-toolbar-menu"
+            draggableHandle=".mobile-drag-handle"
             droppingItem={{
               i: "dropping-item",
-              w: GRID_CONFIG.defaultSize.w,
-              h: GRID_CONFIG.defaultSize.h,
+              w: 4, // Tamaño más pequeño para mobile
+              h: 3,
             }}
             onDrop={handleDrop}
             compactType={null}
             preventCollision={true}
             style={{ minHeight: "100%" }}
             useCSSTransforms={true}
+            margin={[8, 8]} // Menor margen para mobile
           >
             {canvasElements.map((item) => (
               <div key={item.id} className="grid-item h-full relative group">
-                {!isPreviewMode && (
+                {/* Mobile drag handle - más grande y visible */}
+                {!isPreviewMode && !selectedElementId && (
                   <div
                     data-drag-handle
-                    className="drag-handle absolute -top-2 -left-2 w-6 h-6 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-move flex items-center justify-center"
+                    className="mobile-drag-handle absolute -top-2 -left-2 w-8 h-8 bg-cyan-500 rounded-full opacity-80 hover:opacity-100 transition-opacity cursor-move flex items-center justify-center shadow-lg border-2 border-white/20"
                   >
                     <svg
-                      className="w-3 h-3 text-white"
+                      className="w-4 h-4 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -131,27 +152,33 @@ export function CanvasArea() {
                   </div>
                 )}
 
+                {/* Mobile Element Toolbar */}
                 {!isPreviewMode && (
-                  <ElementToolbar
-                    elementId={item.id}
-                    onEdit={() => openStylePanel(item.id)}
-                    onDuplicate={() => duplicateElement(item.id)}
-                    visible={selectedElementId === item.id}
-                  />
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="mobile-toolbar-menu"
+                  >
+                                        <MobileElementToolbar
+                      elementId={item.id}
+                      onEdit={() => openStylePanel(item.id)}
+                      onDuplicate={() => duplicateElement(item.id)}
+                      visible={isElementSelected(item.id)}
+                    />
+                  </div>
                 )}
 
                 <div
                   data-element
-                  className={`no-drag h-full w-full cursor-pointer transition-all rounded ${
+                  className={`no-drag h-full w-full transition-all rounded-lg touch-manipulation ${
                     !isPreviewMode
                       ? `
                       ${
-                        selectedElementId === item.id
-                          ? "ring-2 ring-cyan-500 shadow-lg shadow-cyan-500/20"
-                          : "hover:ring-2 hover:ring-cyan-500/30"
+                        isElementSelected(item.id)
+                          ? "ring-2 ring-cyan-500 shadow-lg shadow-cyan-500/20 bg-cyan-500/5"
+                          : "hover:ring-2 hover:ring-cyan-500/30 active:ring-2 active:ring-cyan-500/50"
                       }
                       ${
-                        selectedElementId && selectedElementId !== item.id
+                        selectedElementId && !isElementSelected(item.id)
                           ? "opacity-50"
                           : ""
                       }
@@ -161,6 +188,10 @@ export function CanvasArea() {
                   onClick={(e) =>
                     !isPreviewMode && handleElementClick(item.id, e)
                   }
+                  style={{
+                    minHeight: "60px", // Altura mínima para elementos táctiles
+                    minWidth: "80px", // Ancho mínimo para elementos táctiles
+                  }}
                 >
                   <CanvasItemContent
                     id={item.id}
@@ -173,6 +204,15 @@ export function CanvasArea() {
           </ResponsiveGridLayout>
         </GridContainer>
       </section>
+
+      {/* Indicador de elementos seleccionados */}
+      {selectedElementId && !isPreviewMode && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-30 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full backdrop-blur-sm">
+          <p className="text-xs text-cyan-400 font-medium">
+            Elemento seleccionado • Toca las opciones para editar
+          </p>
+        </div>
+      )}
     </main>
   );
 }

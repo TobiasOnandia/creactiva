@@ -6,13 +6,13 @@ import { CanvasArea } from "@/components/canvas/CanvasArea";
 import { StylePanel } from "@/components/templates/StylePanel";
 import { useSiteLoader } from "@/hooks/useSiteLoader";
 import { useUndoRedo } from "@/hooks/useUndoRedo";
-import { useBreakpoint } from "@/hooks/useMediaQuery";
+import { useMobile } from "@/hooks/useMediaQuery";
 import { LoadingCanvas } from "../loaders/LoadingCanvas";
 import { AlertCircle } from "lucide-react";
 
 export function CanvasEditor() {
   const { isLoading, error } = useSiteLoader();
-  const isMobile = useBreakpoint.useMobile();
+  const isMobile = useMobile();
 
   useUndoRedo();
 
