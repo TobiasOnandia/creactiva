@@ -32,27 +32,15 @@ export const HeaderControls = ({ config, onChange }: SpecificProps) => {
         />
       </label>
 
-      <label htmlFor="loginText" className="text-sm text-neutral-400 mb-1 ">
-        Texto Botón Login
+      <label htmlFor="linkHref" className="text-sm text-neutral-400">
+        URL (href)
         <input
           type="text"
-          id="loginText"
-          value={config.loginText || ""}
-          onChange={(e) => onChange("loginText", e.target.value)}
-          className="w-full px-3 py-2 mt-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
-          placeholder="Iniciar Sesión"
-        />
-      </label>
-
-      <label htmlFor="registerText" className="text-sm text-neutral-400 mb-1 ">
-        Texto Botón Registro
-        <input
-          type="text"
-          id="registerText"
-          value={config.registerText || ""}
-          onChange={(e) => onChange("registerText", e.target.value)}
+          id="linkHref"
+          value={config.navHref || ""}
+          onChange={(e) => onChange("navHref", e.target.value)}
           className="w-full px-3 py-2 bg-neutral-800/50 border border-white/10 rounded-xl text-neutral-300 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
-          placeholder="Registrarse"
+          placeholder="Ej: https://ejemplo.com, https://ejemplo.com, https://ejemplo.com"
         />
       </label>
 

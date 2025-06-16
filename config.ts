@@ -195,19 +195,163 @@ export const DEFAULT_ELEMENT_CONFIGS = {
     paddingInline: 24,
     paddingBlock: 12,
     boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1)",
+    borderRadius: "6px",
   },
-  header: {
-    fontSize: 24,
+  
+  hero: {
+    backgroundColor: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    color: "#ffffff",
+    fontSize: 48,
     fontWeight: "bold",
     textAlign: "center",
-    content: "Encabezado",
+    content: "Bienvenido a Nuestro Sitio",
+    padding: "60px 20px",
+    minHeight: "400px",
   },
-  text: {
-    content: "Texto de ejemplo",
+  
+  header: {
+    backgroundColor: "#171717",
+    color: "#ffffff",
+    fontSize: 24,
+    fontWeight: "bold",
     textAlign: "left",
+    title: "Mi Sitio Web",
+    navItems: "Inicio, Servicios, Acerca de, Contacto",
+    borderBottom: "1px solid rgba(115, 115, 115, 0.3)",
+    padding: "16px 24px",
   },
+  
+  text: {
+    content: "Texto de ejemplo para mostrar el contenido",
+    fontSize: 16,
+    color: "#e5e5e5",
+    textAlign: "left",
+    lineHeight: "1.6",
+    padding: "8px",
+  },
+  
   paragraph: {
-    content: "Párrafo de ejemplo con contenido más extenso para mostrar el diseño.",
-    textAlign: "left" as const,
+    content: "Este es un párrafo de ejemplo con contenido más extenso para mostrar cómo se ve el diseño con texto largo. Perfecto para descripciones detalladas.",
+    fontSize: 16,
+    color: "#d4d4d4",
+    textAlign: "left",
+    lineHeight: "1.7",
+    padding: "16px",
+    backgroundColor: "rgba(38, 38, 38, 0.3)",
+    borderRadius: "8px",
+  },
+  
+  image: {
+    src: "",
+    alt: "Imagen de ejemplo",
+    borderRadius: "8px",
+    backgroundColor: "rgba(38, 38, 38, 0.5)",
+    border: "1px solid rgba(115, 115, 115, 0.3)",
+  },
+  
+  gallery: {
+    images: "",
+    alt: "Galería de imágenes",
+    backgroundColor: "#404040",
+    borderRadius: "8px",
+    padding: "4px",
+    gap: "4px",
+  },
+  
+  carousel: {
+    images: "",
+    alt: "Carrusel de imágenes",
+    backgroundColor: "#404040",
+    borderRadius: "8px",
+    overflow: "hidden",
+  },
+  
+  select: {
+    options: "Opción 1, Opción 2, Opción 3",
+    required: false,
+    backgroundColor: "#262626",
+    color: "#e5e5e5",
+    border: "1px solid #404040",
+    borderRadius: "6px",
+    padding: "8px 12px",
+    fontSize: 14,
+  },
+  
+  checkbox: {
+    label: "Acepto los términos y condiciones",
+    required: false,
+    color: "#d4d4d4",
+    fontSize: 14,
+    padding: "8px",
+  },
+  
+  submit: {
+    backgroundColor: "#0891b2",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: "600",
+    borderRadius: "6px",
+    padding: "12px 24px",
+    border: "none",
+    cursor: "pointer",
+    boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+  },
+  
+  link: {
+    content: "Enlace de ejemplo",
+    href: "#",
+    color: "#60a5fa",
+    fontSize: 16,
+    textDecoration: "underline",
+    padding: "4px",
+  },
+  
+  card: {
+    src: "",
+    alt: "Imagen de tarjeta",
+    title: "Título de la Tarjeta",
+    description: "Descripción breve y atractiva de la tarjeta que captura la atención del usuario.",
+    buttonText: "Ver Más",
+    backgroundColor: "#262626",
+    color: "#e5e5e5",
+    borderRadius: "12px",
+    border: "1px solid rgba(115, 115, 115, 0.3)",
+    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+    overflow: "hidden",
+  },
+  
+  form: {
+    title: "Formulario de Contacto",
+    backgroundColor: "#262626",
+    color: "#e5e5e5",
+    borderRadius: "12px",
+    border: "1px solid rgba(115, 115, 115, 0.3)",
+    padding: "24px",
+    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+  },
+  
+  list: {
+    options: "Primer elemento de la lista, Segundo elemento importante, Tercer elemento destacado",
+    listType: "unordered", 
+    backgroundColor: "#262626",
+    color: "#d4d4d4",
+    borderRadius: "12px",
+    border: "1px solid rgba(115, 115, 115, 0.3)",
+    padding: "20px",
+    fontSize: 14,
+    lineHeight: "1.6",
+  },
+  
+  divider: {
+    backgroundColor: "#525252",
+    height: "2px",
+    borderRadius: "1px",
+    margin: "16px 0",
+    opacity: "0.6",
+  },
+  
+  star: {
+    color: "#fbbf24",
+    fontSize: 24,
   },
 } as const;

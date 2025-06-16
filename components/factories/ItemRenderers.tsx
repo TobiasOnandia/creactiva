@@ -2,6 +2,7 @@
 import { useCanvasStore } from "@/store/canvasStore";
 import { ElementConfig } from "@/types/canvas/CanvasTypes";
 import { ImageIcon, MoveLeft, MoveRight, StarIcon } from "lucide-react";
+import NextLink from "next/link";
 import NextImage from "next/image";
 import { useState } from "react";
 
@@ -36,6 +37,11 @@ const Header: React.FC<ItemRendererProps> = ({ config, id }) => {
     "Acerca de",
     "Contacto",
   ];
+
+  const navHref = config?.navHref
+    ?.split(",")
+    .map((item: string) => item.trim()) || ["#", "#", "#", "#"];
+
   return (
     <header
       onClick={isEditMode ? () => openStylePanel(id) : undefined}
@@ -47,13 +53,13 @@ const Header: React.FC<ItemRendererProps> = ({ config, id }) => {
       </h1>
       <nav className="hidden md:flex items-center space-x-8">
         {navItems.map((item: string, index: number) => (
-          <a
+          <NextLink
             key={index}
-            href="#"
+            href={navHref[index] || "#"}
             className="text-neutral-300 hover:text-white transition-colors text-sm font-medium"
           >
             {item}
-          </a>
+          </NextLink>
         ))}
       </nav>
     </header>
@@ -319,13 +325,13 @@ const Link: React.FC<ItemRendererProps> = ({ config, id }) => {
       style={config}
       className="w-full h-full flex items-center justify-center hover:opacity-90 transition-opacity"
     >
-      <a
+      <NextLink
         href={config?.href || "#"}
         className="text-blue-400 underline cursor-pointer"
         style={{ pointerEvents: "none" }}
       >
         {config?.content || "Enlace de ejemplo"}
-      </a>
+      </NextLink>
     </div>
   );
 };

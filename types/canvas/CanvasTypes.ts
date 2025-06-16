@@ -59,6 +59,7 @@ export interface ElementConfig extends React.CSSProperties {
   fontSize?: string | number;
   label?: string;
   images?: string;
+  navHref?: string;
   targetBlank?: boolean;
   submitButtonText?: string;
   formAction?: string;
@@ -66,8 +67,8 @@ export interface ElementConfig extends React.CSSProperties {
   navItems?: string;
   loginText?: string;
   registerText?: string;
-stickyHeader?: boolean;
-showMobileMenu?: boolean;
+  stickyHeader?: boolean;
+  showMobileMenu?: boolean;
   onClick?: () => void;
   onChange?: (value: any) => void;
   onSubmit?: () => void;
