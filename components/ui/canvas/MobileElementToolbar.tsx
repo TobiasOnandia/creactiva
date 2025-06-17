@@ -25,7 +25,11 @@ export const MobileElementToolbar = ({
         bg-neutral-900/80 backdrop-blur-md
         border border-white/10 rounded-full shadow-2xl shadow-black/50
         transition-all duration-300 ease-in-out
-        ${visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"}
+        ${
+          visible
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-2 pointer-events-none"
+        }
       `}
     >
       <button

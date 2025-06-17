@@ -14,7 +14,6 @@ import { SectionHeader } from "@/components/ui/canvas/SectionHeader";
 import { MobileElementToolbar } from "@/components/ui/canvas/MobileElementToolbar";
 import { PreviewContent } from "@/components/preview/PreviewContent";
 import { useElementSelection } from "@/hooks/useElementSelection";
-import { useState } from "react";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -158,7 +157,7 @@ export function MobileCanvasArea() {
                     onClick={(e) => e.stopPropagation()}
                     className="mobile-toolbar-menu"
                   >
-                                        <MobileElementToolbar
+                    <MobileElementToolbar
                       elementId={item.id}
                       onEdit={() => openStylePanel(item.id)}
                       onDuplicate={() => duplicateElement(item.id)}
