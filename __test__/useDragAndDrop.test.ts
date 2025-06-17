@@ -104,7 +104,6 @@ describe('useDragAndDrop', () => {
     
     result.current.handleDrop([], item, mockEvent)
     
-    // No debe llamar a los mocks
     expect(mockAddElementToSection).not.toHaveBeenCalled()
     expect(mockUpdateSectionLayout).not.toHaveBeenCalled()
     expect(setCurrentLayout).not.toHaveBeenCalled()
