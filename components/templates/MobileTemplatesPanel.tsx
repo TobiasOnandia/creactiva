@@ -12,135 +12,11 @@ import {
   useAddTemplateMobile,
   TemplateType,
 } from "@/hooks/useAddTemplateMobile";
-
-export const templates = [
-  {
-    title: "Landing Clásica",
-    type: "landing" as TemplateType,
-    description: "Header + Hero + Contenido + Footer",
-    category: "Landing",
-    structure: (
-      <div className="space-y-1.5">
-        <div className="h-3 bg-cyan-500/30 rounded-full" />
-        <div className="h-8 bg-purple-500/30 rounded-lg" />
-        <div className="h-20 bg-rose-500/30 rounded-lg" />
-        <div className="h-24 bg-emerald-500/30 rounded-lg" />
-        <div className="h-3 bg-cyan-500/30 rounded-full" />
-      </div>
-    ),
-  },
-  {
-    title: "Dashboard",
-    type: "dashboard" as TemplateType,
-    description: "Sidebar + Header + Contenido",
-    category: "Dashboard",
-    structure: (
-      <div className="flex gap-1.5 h-28">
-        <div className="w-1/4 bg-amber-500/30 rounded-lg" />
-        <div className="flex-1 space-y-1.5">
-          <div className="h-4 bg-blue-500/30 rounded-full" />
-          <div className="h-22 bg-indigo-500/30 rounded-lg" />
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: "Blog Moderno",
-    type: "blog" as TemplateType,
-    description: "Header + Contenido + Sidebar + Footer",
-    category: "Blog",
-    structure: (
-      <div className="space-y-1.5 h-24">
-        <div className="h-3 bg-cyan-500/30 rounded-full" />
-        <div className="flex gap-1.5 flex-1">
-          <div className="w-3/4 bg-purple-500/30 rounded-lg" />
-          <div className="w-1/4 bg-emerald-500/30 rounded-lg" />
-        </div>
-        <div className="h-3 bg-cyan-500/30 rounded-full" />
-      </div>
-    ),
-  },
-  {
-    title: "Portafolio",
-    type: "portfolio" as TemplateType,
-    description: "Hero Fullscreen + Grid + Contacto",
-    category: "Portfolio",
-    structure: (
-      <div className="space-y-1.5 h-24">
-        <div className="h-12 bg-rose-500/30 rounded-lg" />
-        <div className="grid grid-cols-2 gap-1.5">
-          <div className="h-6 bg-blue-500/30 rounded" />
-          <div className="h-6 bg-blue-500/30 rounded" />
-        </div>
-        <div className="h-6 bg-amber-500/30 rounded-lg" />
-      </div>
-    ),
-  },
-  {
-    title: "Tienda Online",
-    type: "ecommerce" as TemplateType,
-    description: "Navbar complejo + Product Grid + Carrito",
-    category: "Portfolio",
-    structure: (
-      <div className="space-y-1.5 h-24">
-        <div className="h-6 bg-purple-500/30 rounded-lg" />
-        <div className="h-4 bg-cyan-500/30 rounded-full" />
-        <div className="grid grid-cols-3 gap-1.5">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-6 bg-emerald-500/30 rounded" />
-          ))}
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: "Hero Simple",
-    type: "landing" as TemplateType,
-    description: "Título grande + Botón call-to-action",
-    category: "Landing",
-    structure: (
-      <div className="space-y-2">
-        <div className="h-12 bg-gradient-to-r from-purple-500/30 to-cyan-500/30 rounded-lg" />
-        <div className="h-6 bg-emerald-500/30 rounded-lg mx-8" />
-      </div>
-    ),
-  },
-  {
-    title: "Formulario Contacto",
-    type: "landing" as TemplateType,
-    description: "Formulario completo con validación",
-    category: "Landing",
-    structure: (
-      <div className="space-y-1.5">
-        <div className="h-4 bg-cyan-500/30 rounded" />
-        <div className="h-8 bg-neutral-500/30 rounded" />
-        <div className="h-8 bg-neutral-500/30 rounded" />
-        <div className="h-16 bg-neutral-500/30 rounded" />
-        <div className="h-6 bg-blue-500/30 rounded mx-6" />
-      </div>
-    ),
-  },
-  {
-    title: "Galería + Info",
-    type: "portfolio" as TemplateType,
-    description: "Grid de imágenes con descripción",
-    category: "Portfolio",
-    structure: (
-      <div className="space-y-1.5">
-        <div className="h-6 bg-purple-500/30 rounded-lg" />
-        <div className="grid grid-cols-2 gap-1">
-          <div className="h-12 bg-rose-500/30 rounded" />
-          <div className="h-12 bg-blue-500/30 rounded" />
-        </div>
-        <div className="h-4 bg-neutral-400/30 rounded" />
-      </div>
-    ),
-  },
-];
+import { templates } from "./TemplatesPanel";
 
 export const MobileTemplatesPanel = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType | null>(
-    null,
+    null
   );
   const [selectedCategory, setSelectedCategory] = useState<string>("Landing");
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -156,7 +32,6 @@ export const MobileTemplatesPanel = () => {
     const success = await addTemplateToCanvas(templateType);
 
     if (success) {
-      // Feedback visual temporal
       setTimeout(() => {
         setSelectedTemplate(null);
       }, 500);
@@ -212,15 +87,6 @@ export const MobileTemplatesPanel = () => {
     }
   };
 
-  const filteredTemplates = templates.filter((template) => {
-    const matchesCategory =
-      selectedCategory === "Todos" || template.category === selectedCategory;
-    const matchesSearch =
-      template.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      template.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
-
   return (
     <section className="h-full bg-neutral-900/80 backdrop-blur-xl border-r border-white/10 shadow-xl shadow-black/40 w-full flex flex-col">
       <header className="p-4 border-b border-white/10">
@@ -271,12 +137,12 @@ export const MobileTemplatesPanel = () => {
         <div className="flex items-center gap-2 px-1">
           <StarIcon className="w-4 h-4 text-amber-400" />
           <span className="text-sm font-medium text-neutral-300">
-            {filteredTemplates.length} plantillas disponibles
+            {templates.length} plantillas disponibles
           </span>
         </div>
 
         <div className="space-y-3">
-          {filteredTemplates.map((template, index) => {
+          {templates.map((template, index) => {
             const templateState = getTemplateState(template.type);
             const isProcessing = selectedTemplate === template.type && isAdding;
 
@@ -298,10 +164,10 @@ export const MobileTemplatesPanel = () => {
                           templateState === "success"
                             ? "text-emerald-300"
                             : templateState === "loading"
-                              ? "text-cyan-300"
-                              : templateState === "selected"
-                                ? "text-cyan-300"
-                                : "text-neutral-200 group-hover:text-cyan-300"
+                            ? "text-cyan-300"
+                            : templateState === "selected"
+                            ? "text-cyan-300"
+                            : "text-neutral-200 group-hover:text-cyan-300"
                         }`}
                       >
                         <div
@@ -309,8 +175,8 @@ export const MobileTemplatesPanel = () => {
                             templateState === "success"
                               ? "bg-emerald-500"
                               : templateState === "loading"
-                                ? "bg-cyan-500 animate-pulse"
-                                : "bg-cyan-500"
+                              ? "bg-cyan-500 animate-pulse"
+                              : "bg-cyan-500"
                           }`}
                         />
                         <span className="truncate">{template.title}</span>
@@ -320,8 +186,8 @@ export const MobileTemplatesPanel = () => {
                           templateState === "success"
                             ? "text-emerald-400"
                             : templateState === "loading"
-                              ? "text-cyan-400"
-                              : "text-neutral-400 group-hover:text-neutral-300"
+                            ? "text-cyan-400"
+                            : "text-neutral-400 group-hover:text-neutral-300"
                         }`}
                       >
                         {template.description}
@@ -338,8 +204,8 @@ export const MobileTemplatesPanel = () => {
                         templateState === "success"
                           ? "text-emerald-400 bg-emerald-500/10"
                           : templateState === "loading"
-                            ? "text-cyan-400 bg-cyan-500/10"
-                            : "text-neutral-500 hover:text-cyan-400 hover:bg-cyan-500/10"
+                          ? "text-cyan-400 bg-cyan-500/10"
+                          : "text-neutral-500 hover:text-cyan-400 hover:bg-cyan-500/10"
                       }`}
                     >
                       {getTemplateIcon(template.type)}
@@ -351,8 +217,8 @@ export const MobileTemplatesPanel = () => {
                       templateState === "success"
                         ? "bg-emerald-900/20 border-emerald-500/20 shadow-emerald-500/10"
                         : templateState === "loading"
-                          ? "bg-cyan-900/20 border-cyan-500/20 shadow-cyan-500/10"
-                          : "bg-neutral-900/70 border-white/5 shadow-black/30 group-hover:shadow-cyan-500/10"
+                        ? "bg-cyan-900/20 border-cyan-500/20 shadow-cyan-500/10"
+                        : "bg-neutral-900/70 border-white/5 shadow-black/30 group-hover:shadow-cyan-500/10"
                     }`}
                   >
                     {template.structure}
@@ -364,10 +230,10 @@ export const MobileTemplatesPanel = () => {
                     templateState === "success"
                       ? "border-emerald-500/20"
                       : templateState === "loading"
-                        ? "border-cyan-500/40"
-                        : templateState === "selected"
-                          ? "border-cyan-500/20"
-                          : "border-transparent group-hover:border-cyan-500/20"
+                      ? "border-cyan-500/40"
+                      : templateState === "selected"
+                      ? "border-cyan-500/20"
+                      : "border-transparent group-hover:border-cyan-500/20"
                   }`}
                 />
               </button>
@@ -375,7 +241,7 @@ export const MobileTemplatesPanel = () => {
           })}
         </div>
 
-        {filteredTemplates.length === 0 && (
+        {templates.length === 0 && (
           <div className="text-center py-8">
             <LayoutTemplate className="w-12 h-12 text-neutral-600 mx-auto mb-3" />
             <p className="text-neutral-400">No se encontraron plantillas</p>
