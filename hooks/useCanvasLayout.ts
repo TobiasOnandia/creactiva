@@ -1,4 +1,3 @@
-// useCanvasLayout.ts (versión mejorada)
 
 import { useState, useEffect, useCallback } from "react";
 import { GridLayout } from "@/types/canvas/LayoutTypes";

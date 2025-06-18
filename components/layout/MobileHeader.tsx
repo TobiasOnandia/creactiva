@@ -21,7 +21,6 @@ export const MobileHeader = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  // Cerrar menú automáticamente al cambiar el tamaño de pantalla
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -109,7 +108,9 @@ export const MobileHeader = () => {
                       }`}
                     />
                     <span
-                      className={`text-sm ${isActive ? "text-white" : "text-neutral-400"}`}
+                      className={`text-sm ${
+                        isActive ? "text-white" : "text-neutral-400"
+                      }`}
                     >
                       {currentDeviceType.charAt(0).toUpperCase() +
                         currentDeviceType.slice(1)}

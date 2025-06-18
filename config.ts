@@ -27,7 +27,6 @@ export const mainNavItems = [
   { id: "pages", label: "Páginas", icon: StickyNote },
   { id: "templates", label: "Plantillas", icon: LayoutTemplate },
   { id: "add", label: "Añadir Elementos", icon: CopyPlus },
-  { id: "assets", label: "Multimedia", icon: ImageIcon },
   { id: "settings", label: "Ajustes Sitio", icon: SettingsIcon },
 ];
 

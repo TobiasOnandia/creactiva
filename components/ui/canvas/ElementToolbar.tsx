@@ -19,7 +19,7 @@ export const ElementToolbar = ({
   if (!visible) return null;
 
   return (
-    <nav className="absolute -top-10 left-1/2 z-50 -translate-x-1/2 flex items-center gap-1 px-1.5 py-1 rounded-lg bg-neutral-900/95 border border-white/10 backdrop-blur-sm shadow-lg opacity-100 transition-opacity duration-200">
+    <nav className="absolute -top-10 left-1/2  -translate-x-1/2 flex items-center gap-1 px-1.5 py-1 rounded-lg bg-neutral-900/95 border border-white/10 backdrop-blur-sm shadow-lg opacity-100 transition-opacity duration-200">
       <button
         onClick={(e) => {
           e.stopPropagation();

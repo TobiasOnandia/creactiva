@@ -2,7 +2,6 @@
 
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { GRID_CONFIG } from "@/config";
 import { useCanvasLayout } from "@/hooks/useCanvasLayout";
 
 const mockUpdateSectionLayout = vi.fn();
