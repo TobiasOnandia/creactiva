@@ -6,7 +6,7 @@ Creactiva es un editor visual de sitios web de arrastrar y soltar (drag & drop),
 ## 🚀 Tecnologías Utilizadas
 
 - **React**
-- **Next.js**
+- **Next.js (app router)**
 - **Zustand**
 - **react-grid-layout**
 - **Tailwind CSS**
@@ -134,6 +134,7 @@ Creactiva es un editor visual de sitios web de arrastrar y soltar (drag & drop),
 - **UX mejorada**: Auto-cierre al redimensionar o click fuera del menú
 
 #### Características del Header Mobile:
+
 - Logo compacto adaptado
 - Menú hamburguesa con animaciones
 - Selector de dispositivo (Mobile/Tablet/Desktop)
@@ -142,6 +143,7 @@ Creactiva es un editor visual de sitios web de arrastrar y soltar (drag & drop),
 - Menú de usuario expandido
 
 #### Funcionalidades móviles implementadas:
+
 - [x] **Header Mobile**: Responsive con menú hamburguesa y navegación optimizada
 - [x] **Sidebar Mobile**: Bottom navigation y drawer full-screen implementados
 - [x] **Style Panel Mobile**: Modal full-screen para edición de elementos
@@ -150,6 +152,7 @@ Creactiva es un editor visual de sitios web de arrastrar y soltar (drag & drop),
 - [x] **Canvas Mobile**: Interface táctil optimizada con selección inteligente y toolbar flotante
 
 #### Características del Canvas Mobile:
+
 - **Selección táctil**: Long press y tap para seleccionar elementos
 - **Toolbar flotante**: Menú contextual con acciones touch-friendly
 - **Grid responsivo**: Configuración específica para pantallas pequeñas
@@ -158,6 +161,7 @@ Creactiva es un editor visual de sitios web de arrastrar y soltar (drag & drop),
 - **Estados visuales claros**: Indicadores obvios de selección y deselección
 
 #### Próximas mejoras móviles:
+
 - [ ] Gestos swipe para navegación rápida
 - [ ] Multi-selección de elementos
 - [ ] Quick actions con double-tap
