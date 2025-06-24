@@ -10,9 +10,12 @@ import { PreviewButton } from "@/components/ui/buttons/PreviewButton";
 import { UndoRedoButtons } from "@/components/ui/buttons/UndoRedoButtons";
 import { MobileHeader } from "./MobileHeader";
 import { useBreakpoints } from "@/hooks/useMediaQuery";
+import { useCanvasStore } from "@/store/canvasStore";
 
 export const Header = () => {
   const { isMobile } = useBreakpoints();
+  const activeSection = useCanvasStore((state) => state.activeSection);
+  const slug = activeSection?.slug || "";
 
   if (isMobile) {
     return <MobileHeader />;
@@ -38,7 +41,7 @@ export const Header = () => {
           <div className="w-px h-6 bg-white/10" />
           <PreviewButton />
           <ClearButton />
-          <PublishButton />
+          <PublishButton slug={slug} />
           <SaveButton />
           <UserMenu />
         </div>

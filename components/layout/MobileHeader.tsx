@@ -18,6 +18,8 @@ export const MobileHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const activeDevice = useCanvasStore((state) => state.activeDevice);
   const setActiveDevice = useCanvasStore((state) => state.setActiveDevice);
+  const activeSection = useCanvasStore((state) => state.activeSection);
+  const slug = activeSection?.slug || "";
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -133,7 +135,7 @@ export const MobileHeader = () => {
             <div className="grid grid-cols-2 gap-2">
               <PreviewButton fullWidth />
               <ClearButton fullWidth />
-              <PublishButton fullWidth />
+              <PublishButton fullWidth slug={slug} />
               <SaveButton fullWidth />
             </div>
           </div>
